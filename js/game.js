@@ -1,10 +1,28 @@
 let canvas;
-let ctx;
-let character = new MoveableObject();
+let world;
+let keyboard = new Keyboard();
 
 function init(){
     canvas = document.getElementById('canvas');
-    ctx = canvas.getContext('2d')
-    console.log('my character is ', character);
-    
+    world = new World(canvas, keyboard);
 }
+
+const KEYS = {
+    'KeyA': 'LEFT',
+    'ArrowLeft': 'LEFT',
+    'KeyD': 'RIGHT',
+    'ArrowRight': 'RIGHT',
+    'KeyW': 'UP',
+    'ArrowUp': 'UP',
+    'KeyS': 'DOWN',
+    'ArrowDown': 'DOWN',
+    'Space': 'SPACE'
+};
+
+window.addEventListener('keydown', (event) => {
+    if (KEYS[event.code]) keyboard[KEYS[event.code]] = true;
+});
+
+window.addEventListener('keyup', (event) => {
+    if (KEYS[event.code]) keyboard[KEYS[event.code]] = false;
+});
