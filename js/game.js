@@ -16,7 +16,7 @@ const KEYS = {
     'ArrowUp': 'UP',
     'KeyS': 'DOWN',
     'ArrowDown': 'DOWN',
-    'Space': 'SPACE'
+    'Space': 'UP'
 };
 
 window.addEventListener('keydown', (event) => {

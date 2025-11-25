@@ -3,7 +3,7 @@ class Chicken extends MovableObject {
     width = this.height * 1.02;
     y = 302;
     x = 200 + Math.random() * 500;
-    speed = 0.15;
+    speed = 0.15 + Math.random() * 0.5;
     IMAGES_WALKING = [
         '../imgs/3_enemies_chicken/chicken_normal/1_walk/1_w.png',
         '../imgs/3_enemies_chicken/chicken_normal/1_walk/2_w.png',
@@ -18,18 +18,13 @@ class Chicken extends MovableObject {
     }
 
     animate() {
-        this.moveLeft();
-        this.animateWalking();
-    }
-
-
-    moveLeft() {
-        const id = setInterval(() => {
-            this.x -= this.speed + (Math.random() * 1);
-            if (this.x <= 200 || this.x >= 700) {
-                clearInterval(id);
+        setInterval(() => {
+            if (this.x > 200) {
+                this.moveLeft();
             }
         }, 1000 / 60);
+
+        this.animateWalking();
     }
 
     animateWalking() {

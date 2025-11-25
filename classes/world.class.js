@@ -19,18 +19,27 @@ class World {
         this.character.world = this;
     }
 
-    addToMap(movableObject) {
-        if (movableObject.otherDirection) {
-            this.ctx.save();
-            this.ctx.translate(movableObject.width, 0);
-            this.ctx.scale(-1, 1);
-            movableObject.x = movableObject.x * -1;
+    addToMap(mo) {
+        if (mo.otherDirection) {
+            this.flipImg(mo);
         }
-        this.ctx.drawImage(movableObject.img, movableObject.x, movableObject.y, movableObject.width, movableObject.height);
-        if (movableObject.otherDirection) {
-            movableObject.x = movableObject.x * -1;
-            this.ctx.restore();
+        mo.drawMovableObject(this.ctx);
+        if (mo.otherDirection) {
+            this.flipImgBack(mo);
         }
+        mo.drawFrame(this.ctx);
+    }
+
+    flipImg(mo) {
+        this.ctx.save();
+        this.ctx.translate(mo.width, 0);
+        this.ctx.scale(-1, 1);
+        mo.x = mo.x * -1;
+    }
+
+    flipImgBack(mo) {
+        mo.x = mo.x * -1;
+        this.ctx.restore();
     }
 
     addObjectsToMap(objects) {
@@ -46,6 +55,7 @@ class World {
         this.addObjectsToMap(this.level.clouds);
         this.addObjectsToMap(this.level.enemies);
         this.addToMap(this.character);
+
         this.ctx.translate(-this.camera_x, 0);
         let self = this;
         requestAnimationFrame(function () {
