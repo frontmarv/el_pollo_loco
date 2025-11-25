@@ -1,10 +1,17 @@
 class Character extends MovableObject {
     height = 250;
     width = this.height * 0.51;
-    y = 100;
+    y = 102;
     x = 10;
     speed = 5;
     currentPosition;
+    healthPoints = 100;
+    offset = {
+        x: 27,
+        y: 95,
+        width: 70,
+        height: 107
+    };
     IMGAES_IDLE_SHORT = [
         '../imgs/2_character_pepe/1_idle/idle/I-1.png',
         '../imgs/2_character_pepe/1_idle/idle/I-2.png',
@@ -63,28 +70,25 @@ class Character extends MovableObject {
         '../imgs/2_character_pepe/5_dead/D-57.png',
     ];
     world;
+    isDead = false;
 
     constructor() {
         super().loadImage('../imgs/2_character_pepe/1_idle/idle/I-1.png');
         super.loadImages(this.IMGAES_IDLE_SHORT);
+        super.loadImages(this.IMGAES_IDLE_LONG);
         super.loadImages(this.IMAGES_WALKING);
         super.loadImages(this.IMAGES_JUMPING);
+        super.loadImages(this.IMGAES_HURT);
+        super.loadImages(this.IMGAES_DEAD);
         super.applyGravity();
         this.animate();
     }
-
-    idleShort() {
-        setInterval(() => {
-            this.playAnimation(this.IMGAES_IDLE_SHORT);
-        }, 100);
-    }
-
 
 
     animate() {
 
         setInterval(() => {
-            if (this.world.keyboard.LEFT && this.x > 0) {
+            if (this.world.keyboard.LEFT && this.x) {
                 this.otherDirection = true;
                 this.moveLeft();
             }
@@ -96,20 +100,24 @@ class Character extends MovableObject {
 
             this.world.camera_x = -this.x + 100;
 
-            
+
 
         }, 1000 / 60);
 
         setInterval(() => {
-            if (this.isAboveGround()) {
+            if (this.healthPoints <= 0 && this.isDead) {
+                this.playAnimation(this.IMGAES_DEAD);
+                return;
+            } else if (this.isHurt()) {
+                this.playAnimation(this.IMGAES_HURT);
+            }
+            else if (this.isAboveGround()) {
                 this.playAnimation(this.IMAGES_JUMPING);
-            }
 
-            if (this.world.keyboard.UP && !this.isAboveGround()) {
+            } else if (this.world.keyboard.UP && !this.isAboveGround()) {
                 this.jump();
-            }
 
-            if (this.world.keyboard.LEFT || this.world.keyboard.RIGHT) {
+            } else if (this.world.keyboard.LEFT || this.world.keyboard.RIGHT) {
                 this.playAnimation(this.IMAGES_WALKING);
             };
         }, 50);

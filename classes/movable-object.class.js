@@ -1,32 +1,47 @@
-class MovableObject {
-    x;
-    y;
-    img;
-    height;
-    width;
-    imageCache = {};
-    currentImage = 0;
+class MovableObject extends DrawableObject {
     speed;
     otherDirection = false;
     speedY = 0;
     acceleration = 2.5;
-    currentPosition;
+    offset;
 
-
-    drawFrame(ctx) {
+    drawOffsetFrame(ctx) {
         if (this instanceof Character || this instanceof Chicken || this instanceof Endboss) {
             ctx.lineWidth = "2";
-            ctx.strokeStyle = "red";
+            ctx.strokeStyle = "green";
             ctx.beginPath();
-            ctx.rect(this.x, this.y, this.width, this.height);
+            ctx.rect(this.x + this.offset.x, this.y + this.offset.y, this.width - this.offset.width, this.height - this.offset.height);
             ctx.stroke();
         }
-
     }
 
     drawMovableObject(ctx) {
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
     }
+
+    isColliding(mo) {
+        return this.x + this.offset.x + this.width - this.offset.width > mo.x + mo.offset.x &&
+            this.y + this.offset.y + this.height - this.offset.height > mo.y + mo.offset.y &&
+            this.x + this.offset.x < mo.x + mo.offset.x + mo.width - mo.offset.width &&
+            this.y + this.offset.y < mo.y + mo.offset.y + mo.height - mo.offset.height;
+    }
+
+    isHit() {
+        this.healthPoints -= 5;
+        if (this.healthPoints <= 0) {
+            this.healthPoints = 0;
+            this.isDead = true;
+        } else {
+            this.lastHit = new Date().getTime();
+        }
+    }
+
+    isHurt() {
+        let timePassed = new Date().getTime() - this.lastHit;
+        timePassed = timePassed / 1000;
+        return timePassed < 0.5
+    }
+
 
     applyGravity() {
         setInterval(() => {
@@ -38,26 +53,6 @@ class MovableObject {
 
     isAboveGround() {
         return this.y < 100;
-    }
-
-    loadImage(path) {
-        this.img = new Image();
-        this.img.src = path;
-    }
-
-    loadImages(array) {
-        array.forEach((path) => {
-            let img = new Image();
-            img.src = path;
-            this.imageCache[path] = img;
-        });
-    }
-
-    playAnimation(images) {
-        let i = this.currentImage % images.length;
-        let path = images[i];
-        this.img = this.imageCache[path];
-        this.currentImage++;
     }
 
     jump() {
