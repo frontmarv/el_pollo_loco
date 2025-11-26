@@ -11,6 +11,7 @@ class Cloud extends MovableObject {
     }
 
     animate() {
+        // ############## >>>>>>>>>>>>>>>>>>>>> Noch anpassen!!!!!!!!!
         const id = setInterval(() => {
             this.x -= this.speed;
             if (this.x <= 0) {

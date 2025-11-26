@@ -10,6 +10,8 @@ class Endboss extends MovableObject {
         width: 30,
         height: 60
     };
+    endbossDefeated = false;
+    
     IMAGES_WALKING = [
         '../imgs/4_enemie_boss_chicken/1_walk/G1.png',
         '../imgs/4_enemie_boss_chicken/1_walk/G2.png',

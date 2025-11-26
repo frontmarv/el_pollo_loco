@@ -44,7 +44,7 @@ class DrawableObject {
 
     
     drawOffsetFrame(ctx) {
-        if (this instanceof Character || this instanceof Chicken || this instanceof Endboss || this instanceof Coin || this instanceof Bottle) {
+        if (this instanceof Character || this instanceof Chicken ||  this instanceof SmallChicken) {
             ctx.lineWidth = "2";
             ctx.strokeStyle = "green";
             ctx.beginPath();
@@ -59,4 +59,5 @@ class DrawableObject {
             this.x + this.offset.x < object.x + object.offset.x + object.width - object.offset.width &&
             this.y + this.offset.y < object.y + object.offset.y + object.height - object.offset.height;
     }
+    
 }

@@ -4,6 +4,7 @@ class BottleBar extends DrawableObject {
     height = 40;
     width = this.height * 3.8;
     percentageBottle = 0;
+    amountOfBottles = 0;
     world;
 
     IMAGES_BOTTLEBAR = [
@@ -23,8 +24,16 @@ class BottleBar extends DrawableObject {
 
     setPercentageBottle(percentage) {
         this.percentageBottle += percentage;
+        this.updateBottleStatusbar();
+    }
+
+    updateBottleStatusbar() {
         let index = this.resolveImgIndex(this.percentageBottle);
         let path = this.IMAGES_BOTTLEBAR[index];
         this.img = this.imageCache[path];
+    }
+
+    increaseBottles() {
+        this.amountOfBottles++;
     }
 }

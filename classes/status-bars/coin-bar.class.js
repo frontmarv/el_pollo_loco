@@ -4,6 +4,7 @@ class CoinBar extends DrawableObject {
     height = 40;
     width = this.height * 3.8;
     percentageCoin = 0;
+    amountOfCoins = 0;
     world;
 
     IMAGES_COINBAR = [
@@ -25,8 +26,22 @@ class CoinBar extends DrawableObject {
 
     setPercentageCoin(percentage) {
         this.percentageCoin += percentage;
+        this.updateCoinStatusbar();
+    }
+
+    updateCoinStatusbar() {
         let index = this.resolveImgIndex(this.percentageCoin);
         let path = this.IMAGES_COINBAR[index];
         this.img = this.imageCache[path];
+    }
+
+    resetPercentage() {
+        this.percentageCoin = 0;
+        this.setPercentageCoin(0);
+    }
+
+    handleCoinCollection() {
+        this.amountOfCoins++;
+        this.setPercentageCoin(10);
     }
 }

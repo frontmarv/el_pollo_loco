@@ -4,6 +4,8 @@ class World {
     healthbar = new HealthBar();
     coinbar = new CoinBar();
     bottlebar = new BottleBar();
+    gameOver = new GameOverScreen();
+    youWon = new WinningScreen();
     canvas;
     ctx;
     keyboard;
@@ -23,6 +25,7 @@ class World {
         this.healthbar.world = this;
         this.coinbar.world = this;
         this.bottlebar.world = this;
+        this.gameOver.world = this;
     }
 
     checkCollisions() {
@@ -35,15 +38,23 @@ class World {
             })
             this.level.coins.forEach((collectedCoin, index) => {
                 if (this.character.isColliding(collectedCoin)) {
+                    this.coinbar.handleCoinCollection();
+                    if (this.coinbar.amountOfCoins === 10) {
+                        this.bottlebar.increaseBottles();
+                        this.bottlebar.updateBottleStatusbar();
+                        this.coinbar.resetPercentage();
+                        this.coinbar.updateCoinStatusbar();
+                    }
                     this.level.coins.splice(index, 1);
-                    this.coinbar.setPercentageCoin(10);
+
                 }
             })
 
             this.level.bottles.forEach((bottle, index) => {
                 if (this.character.isColliding(bottle)) {
+                    this.bottlebar.increaseBottles();
                     this.level.bottles.splice(index, 1);
-                    this.bottlebar.setPercentageBottle(100/3);
+                    this.bottlebar.setPercentageBottle(100 / 3);
                 }
             })
         }, 100);
@@ -85,6 +96,8 @@ class World {
     }
 
     draw() {
+        if (this.character.isDead) { this.drawGameOver(); return;}
+        if (this.endbossDefeated) { this.drawWinningScreen(); return;}
         this.ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         this.ctx.translate(this.camera_x, 0);
@@ -110,6 +123,35 @@ class World {
         requestAnimationFrame(function () {
             self.draw();
         });
+    }
+
+    drawGameOver() {
+
+        setTimeout(() => {
+            this.ctx.clearRect(0, 0, canvas.width, canvas.height);
+            this.ctx.translate(this.camera_x, 0);
+            this.addObjectsToMap(this.level.background);
+            this.addObjectsToMap(this.level.clouds);
+            this.addToMap(this.character);
+            this.ctx.translate(-this.camera_x, 0);
+            this.gameOver.drawFixedObject(this.ctx);
+            this.ctx.translate(this.camera_x, 0);
+            this.ctx.translate(-this.camera_x, 0);
+
+        }, 500);
+
+    }
+
+    drawWinningScreen() {
+        this.ctx.clearRect(0, 0, canvas.width, canvas.height);
+        this.ctx.translate(this.camera_x, 0);
+        this.addObjectsToMap(this.level.background);
+        this.addObjectsToMap(this.level.clouds);
+        this.addToMap(this.character);
+        this.ctx.translate(-this.camera_x, 0);
+        this.youWon.drawFixedObject(this.ctx);
+        this.ctx.translate(this.camera_x, 0);
+        this.ctx.translate(-this.camera_x, 0);
     }
 
 

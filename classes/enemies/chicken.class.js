@@ -1,9 +1,9 @@
 class Chicken extends MovableObject {
-    height = 50;
+    height = 65;
     width = this.height * 1.02;
-    y = 295;
-    x = 200 + Math.random() * 500;
-    speed = 0.15 + Math.random() * 0.5;
+    y = 280;
+    x = 200 + Math.random() * 900;
+    speed = 0.25 + Math.random() * 0.5;
     offset = {
         x: 0,
         y: 0,
@@ -30,15 +30,13 @@ class Chicken extends MovableObject {
             if (this.x <= 200) {
                 this.otherDirection = true;
             }
-            if (this.x >= 500) {
+            if (this.x >= 1000) {
                 this.otherDirection = false;
             }
             if (this.otherDirection == false) {
                 this.moveLeft();
             } else { this.moveRight(); }
-
         }, 1000 / 60);
-
         this.animateWalking();
     }
 

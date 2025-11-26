@@ -73,6 +73,8 @@ class Character extends MovableObject {
     isDead = false;
     lastKeyboardEvent = 0;
 
+
+
     constructor() {
         super().loadImage('../imgs/2_character_pepe/1_idle/idle/I-1.png');
         super.loadImages(this.IMGAES_IDLE_SHORT);
@@ -87,6 +89,17 @@ class Character extends MovableObject {
 
     }
 
+    intervalIds = [];
+
+    setStoppableInterval(fn, time) {
+        let id = setInterval(fn, time);
+        this.intervalIds.push(id);
+    }
+
+    stopGame() {
+        this.intervalIds.forEach(clearInterval);
+    }
+
     checkTimer(timeToCheck) {
         let timePassed = new Date().getTime() - timeToCheck;
         timePassed = timePassed / 1000;
@@ -95,7 +108,7 @@ class Character extends MovableObject {
 
     animate() {
 
-        setInterval(() => {
+        this.setStoppableInterval(() => {
             if (this.world.keyboard.LEFT && this.x) {
                 this.otherDirection = true;
                 this.moveLeft();
@@ -107,7 +120,7 @@ class Character extends MovableObject {
             this.world.camera_x = -this.x + 100;
         }, 1000 / 60);
 
-        setInterval(() => {
+        this.setStoppableInterval(() => {
             if (this.world.keyboard.LEFT || this.world.keyboard.RIGHT || this.world.keyboard.UP || this.world.keyboard.SPACE) {
                 this.lastKeyboardEvent = new Date().getTime();
             }
@@ -118,23 +131,24 @@ class Character extends MovableObject {
             }
         }, 150);
 
-        setInterval(() => {
+        this.setStoppableInterval(() => {
             if (this.healthPoints <= 0 && this.isDead) {
                 this.playAnimation(this.IMGAES_DEAD);
+                this.stopGame();
                 return;
             } else if (this.isHurt()) {
                 this.playAnimation(this.IMGAES_HURT);
             }
             else if (this.world.keyboard.UP && !this.isAboveGround()) {
                 this.jump();
-            } else if (this.world.keyboard.LEFT || this.world.keyboard.RIGHT) {
+            } else if ((this.world.keyboard.LEFT || this.world.keyboard.RIGHT) && !this.isAboveGround()) {
                 this.playAnimation(this.IMAGES_WALKING);
             };
-        }, 80);
+        }, 60);
 
 
         // Jump
-        setInterval(() => {
+        this.setStoppableInterval(() => {
             if (this.isAboveGround()) {
                 this.playAnimation(this.IMAGES_JUMPING);
             }

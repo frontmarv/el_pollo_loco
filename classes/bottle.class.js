@@ -9,7 +9,9 @@ class Bottle extends DrawableObject {
         width: 10,
         height: 0
     };
-
+    SINGLE_BOTTLE = [
+        '../imgs/6_salsa_bottle/salsa_bottle.png'
+    ];
     BOTTLE_ON_GROUND = [
         '../imgs/6_salsa_bottle/1_salsa_bottle_on_ground.png',
         '../imgs/6_salsa_bottle/2_salsa_bottle_on_ground.png'
@@ -31,6 +33,7 @@ class Bottle extends DrawableObject {
 
     constructor() {
         super().loadImage(this.BOTTLE_ON_GROUND[Math.floor(Math.random() * 2)]);
+        super.loadImages(this.SINGLE_BOTTLE);
         super.loadImages(this.BOTTLE_ON_GROUND);
         super.loadImages(this.BOTTLE_ROTATION);
         super.loadImages(this.BOTTLE_SPLASH);
