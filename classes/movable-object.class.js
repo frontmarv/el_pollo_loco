@@ -1,29 +1,16 @@
 class MovableObject extends DrawableObject {
     speed;
-    otherDirection = false;
     speedY = 0;
     acceleration = 2.5;
     offset;
+    otherDirection = false;
+    isDead;
+    lastHit = 0;
 
-    drawOffsetFrame(ctx) {
-        if (this instanceof Character || this instanceof Chicken || this instanceof Endboss) {
-            ctx.lineWidth = "2";
-            ctx.strokeStyle = "green";
-            ctx.beginPath();
-            ctx.rect(this.x + this.offset.x, this.y + this.offset.y, this.width - this.offset.width, this.height - this.offset.height);
-            ctx.stroke();
-        }
-    }
+
 
     drawMovableObject(ctx) {
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-    }
-
-    isColliding(mo) {
-        return this.x + this.offset.x + this.width - this.offset.width > mo.x + mo.offset.x &&
-            this.y + this.offset.y + this.height - this.offset.height > mo.y + mo.offset.y &&
-            this.x + this.offset.x < mo.x + mo.offset.x + mo.width - mo.offset.width &&
-            this.y + this.offset.y < mo.y + mo.offset.y + mo.height - mo.offset.height;
     }
 
     isHit() {
@@ -52,7 +39,7 @@ class MovableObject extends DrawableObject {
     }
 
     isAboveGround() {
-        return this.y < 100;
+        return this.y < 102;
     }
 
     jump() {

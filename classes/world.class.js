@@ -31,8 +31,19 @@ class World {
                 if (this.character.isColliding(enemy)) {
                     this.character.isHit();
                     this.healthbar.setPercentageHealth(this.character.healthPoints)
-                    console.log(this.character.healthPoints);
+                }
+            })
+            this.level.coins.forEach((collectedCoin, index) => {
+                if (this.character.isColliding(collectedCoin)) {
+                    this.level.coins.splice(index, 1);
+                    this.coinbar.setPercentageCoin(10);
+                }
+            })
 
+            this.level.bottles.forEach((bottle, index) => {
+                if (this.character.isColliding(bottle)) {
+                    this.level.bottles.splice(index, 1);
+                    this.bottlebar.setPercentageBottle(100/3);
                 }
             })
         }, 100);
@@ -50,6 +61,10 @@ class World {
         mo.drawOffsetFrame(this.ctx);
     }
 
+    addObjectsToMap(objects) {
+        objects.forEach(o => { this.addToMap(o) });
+    }
+
     flipImg(mo) {
         this.ctx.save();
         this.ctx.translate(mo.width, 0);
@@ -62,9 +77,11 @@ class World {
         this.ctx.restore();
     }
 
-
-    addObjectsToMap(objects) {
-        objects.forEach(o => { this.addToMap(o) });
+    addFixedObjectsToMap(objects) {
+        objects.forEach(object => {
+            object.drawFixedObject(this.ctx);
+            object.drawOffsetFrame(this.ctx);
+        })
     }
 
     draw() {
@@ -74,6 +91,9 @@ class World {
 
         this.addObjectsToMap(this.level.background);
         this.addObjectsToMap(this.level.clouds);
+        this.addFixedObjectsToMap(this.level.coins);
+        this.addFixedObjectsToMap(this.level.bottles);
+
         // fixed object movement
         this.ctx.translate(-this.camera_x, 0);
         this.healthbar.drawFixedObject(this.ctx);
@@ -81,6 +101,7 @@ class World {
         this.bottlebar.drawFixedObject(this.ctx);
         this.ctx.translate(this.camera_x, 0);
         // until here
+
         this.addObjectsToMap(this.level.enemies);
         this.addToMap(this.character);
         this.ctx.translate(-this.camera_x, 0);
@@ -93,5 +114,7 @@ class World {
 
 
 }
+
+
 
 

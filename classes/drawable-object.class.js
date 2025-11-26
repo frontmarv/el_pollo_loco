@@ -8,8 +8,6 @@ class DrawableObject {
     currentImage = 0;
     currentPosition;
     healthPoints;
-    isDead;
-    lastHit = 0;
 
     loadImage(path) {
         this.img = new Image();
@@ -42,5 +40,23 @@ class DrawableObject {
         else if (percentage > 40) { return 2 }
         else if (percentage > 20) { return 1 }
         else { return 0 }
+    }
+
+    
+    drawOffsetFrame(ctx) {
+        if (this instanceof Character || this instanceof Chicken || this instanceof Endboss || this instanceof Coin || this instanceof Bottle) {
+            ctx.lineWidth = "2";
+            ctx.strokeStyle = "green";
+            ctx.beginPath();
+            ctx.rect(this.x + this.offset.x, this.y + this.offset.y, this.width - this.offset.width, this.height - this.offset.height);
+            ctx.stroke();
+        }
+    }
+
+        isColliding(object) {
+        return this.x + this.offset.x + this.width - this.offset.width > object.x + object.offset.x &&
+            this.y + this.offset.y + this.height - this.offset.height > object.y + object.offset.y &&
+            this.x + this.offset.x < object.x + object.offset.x + object.width - object.offset.width &&
+            this.y + this.offset.y < object.y + object.offset.y + object.height - object.offset.height;
     }
 }

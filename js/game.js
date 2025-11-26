@@ -14,8 +14,6 @@ const KEYS = {
     'ArrowRight': 'RIGHT',
     'KeyW': 'UP',
     'ArrowUp': 'UP',
-    'KeyS': 'DOWN',
-    'ArrowDown': 'DOWN',
     'Space': 'UP'
 };
 
@@ -26,3 +24,4 @@ window.addEventListener('keydown', (event) => {
 window.addEventListener('keyup', (event) => {
     if (KEYS[event.code]) keyboard[KEYS[event.code]] = false;
 });
+

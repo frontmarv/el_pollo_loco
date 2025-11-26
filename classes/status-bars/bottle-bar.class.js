@@ -6,7 +6,7 @@ class BottleBar extends DrawableObject {
     percentageBottle = 0;
     world;
 
-    IMAGES_BOTTLE = [
+    IMAGES_BOTTLEBAR = [
         '../imgs/7_statusbars/1_statusbar/3_statusbar_bottle/green/0.png',
         '../imgs/7_statusbars/1_statusbar/3_statusbar_bottle/green/20.png',
         '../imgs/7_statusbars/1_statusbar/3_statusbar_bottle/green/40.png',
@@ -18,13 +18,13 @@ class BottleBar extends DrawableObject {
 
     constructor() {
         super().loadImage('../imgs/7_statusbars/1_statusbar/3_statusbar_bottle/green/0.png');
-        super.loadImages(this.IMAGES_BOTTLE);
+        super.loadImages(this.IMAGES_BOTTLEBAR);
     }
 
     setPercentageBottle(percentage) {
-        this.percentageBottle = percentage;
-        let index = this.resolveImgIndex(percentage);
-        let path = this.IMAGES_BOTTLE[index];
+        this.percentageBottle += percentage;
+        let index = this.resolveImgIndex(this.percentageBottle);
+        let path = this.IMAGES_BOTTLEBAR[index];
         this.img = this.imageCache[path];
     }
 }
