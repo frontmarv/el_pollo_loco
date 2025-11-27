@@ -57,6 +57,12 @@ class Character extends MovableObject {
         '../imgs/2_character_pepe/5_dead/D-56.png',
         '../imgs/2_character_pepe/5_dead/D-57.png',
     ];
+    sounds = {
+        snoring: new Audio('../audio/character/character-dying.mp3'),
+        jumping: new Audio('../audio/character/character-jumping.mp3'),
+        walking: new Audio('../audio/character/character-walking.mp3'),
+        dying: new Audio('../audio/character/character-dying.mp3')
+    };
     world;
     isDead = false;
     lastKeyboardEvent = 0;
@@ -124,7 +130,7 @@ class Character extends MovableObject {
             }
             if (this.checkTimer(this.lastKeyboardEvent) > 5) {
                 this.playAnimation(this.IMGAES_IDLE_LONG);
-            } else if (this.checkTimer(this.lastKeyboardEvent) > 2) {
+            } else if (this.checkTimer(this.lastKeyboardEvent) > 0.1) {
                 this.playAnimation(this.IMGAES_IDLE_SHORT);
             }
         }, 150);
