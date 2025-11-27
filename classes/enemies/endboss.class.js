@@ -1,17 +1,6 @@
 class Endboss extends MovableObject {
-    height = 300;
-    width = this.height * 0.86;
-    y = 80;
-    x = 1000;
-    speed = 0.15;
-    offset = {
-        x: 20,
-        y: 50,
-        width: 30,
-        height: 60
-    };
     endbossDefeated = false;
-    
+
     IMAGES_WALKING = [
         '../imgs/4_enemie_boss_chicken/1_walk/G1.png',
         '../imgs/4_enemie_boss_chicken/1_walk/G2.png',
@@ -49,9 +38,20 @@ class Endboss extends MovableObject {
         '../imgs/4_enemie_boss_chicken/5_dead/G26.png'
     ];
 
-    constructor() {
+    constructor(lvlLength) {
         super().loadImage('../imgs/4_enemie_boss_chicken/1_walk/G1.png');
         super.loadImages(this.IMAGES_WALKING);
+        this.height = 300;
+        this.width = this.height * 0.86;
+        this.y = 80;
+        this.x = lvlLength - 200;
+        this.speed = 0.15;
+        this.offset = {
+            x: 20,
+            y: 50,
+            width: 30,
+            height: 60
+        };
         this.animate();
     }
 

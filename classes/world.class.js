@@ -21,6 +21,7 @@ class World {
     }
 
     setWorld() {
+        this.level.world = this;
         this.character.world = this;
         this.healthbar.world = this;
         this.coinbar.world = this;
@@ -96,8 +97,8 @@ class World {
     }
 
     draw() {
-        if (this.character.isDead) { this.drawGameOver(); return;}
-        if (this.endbossDefeated) { this.drawWinningScreen(); return;}
+        if (this.character.isDead) { this.drawGameOver(); return; }
+        if (this.endbossDefeated) { this.drawWinningScreen(); return; }
         this.ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         this.ctx.translate(this.camera_x, 0);

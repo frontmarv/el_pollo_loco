@@ -1,12 +1,13 @@
+const lvlLength = 2200;
 const level1 = new Level(
     [
-        new Chicken(),
-        new Chicken(),
-        new Chicken(),
-        new Endboss(),
-        new SmallChicken(),
-        new SmallChicken(),
-        new SmallChicken()
+        new Chicken(lvlLength),
+        new Chicken(lvlLength),
+        new Chicken(lvlLength),
+        new Endboss(lvlLength),
+        new SmallChicken(lvlLength),
+        new SmallChicken(lvlLength),
+        new SmallChicken(lvlLength)
     ],
     [
         new Cloud('../imgs/5_background/layers/4_clouds/1.png')
@@ -36,20 +37,21 @@ const level1 = new Level(
         new BackgroundObject('../imgs/5_background/layers/1_first_layer/2.png', 700 * 3),
     ],
     [
-        new Coin(),
-        new Coin(),
-        new Coin(),
-        new Coin(),
-        new Coin(),
-        new Coin(),
-        new Coin(),
-        new Coin(),
-        new Coin(),
-        new Coin()
+        new Coin(lvlLength),
+        new Coin(lvlLength),
+        new Coin(lvlLength),
+        new Coin(lvlLength),
+        new Coin(lvlLength),
+        new Coin(lvlLength),
+        new Coin(lvlLength),
+        new Coin(lvlLength),
+        new Coin(lvlLength),
+        new Coin(lvlLength)
     ],
     [
-        new Bottle(),
-        new Bottle(),
-        new Bottle()
-    ]
+        new Bottle(lvlLength),
+        new Bottle(lvlLength),
+        new Bottle(lvlLength)
+    ],
+    lvlLength
 );

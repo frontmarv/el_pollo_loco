@@ -1,14 +1,5 @@
 class Bottle extends DrawableObject {
-    x = 200 + Math.random() * 1000;
-    y = 295;
-    height = 50;
-    width = 50;
-    offset = {
-        x: 8,
-        y: 0,
-        width: 10,
-        height: 0
-    };
+
     SINGLE_BOTTLE = [
         '../imgs/6_salsa_bottle/salsa_bottle.png'
     ];
@@ -31,11 +22,21 @@ class Bottle extends DrawableObject {
         '../imgs/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png'
     ];
 
-    constructor() {
+    constructor(lvlLength) {
         super().loadImage(this.BOTTLE_ON_GROUND[Math.floor(Math.random() * 2)]);
         super.loadImages(this.SINGLE_BOTTLE);
         super.loadImages(this.BOTTLE_ON_GROUND);
         super.loadImages(this.BOTTLE_ROTATION);
         super.loadImages(this.BOTTLE_SPLASH);
+        this.x = 200 + Math.random() * lvlLength;
+        this.y = 295;
+        this.height = 50;
+        this.width = 50;
+        this.offset = {
+            x: 8,
+            y: 0,
+            width: 10,
+            height: 0
+        };
     }
 }

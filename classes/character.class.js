@@ -1,17 +1,5 @@
 class Character extends MovableObject {
-    height = 250;
-    width = this.height * 0.51;
-    y = 102;
-    x = 10;
-    speed = 5;
-    currentPosition;
-    healthPoints = 100;
-    offset = {
-        x: 32,
-        y: 95,
-        width: 65,
-        height: 107
-    };
+
     IMGAES_IDLE_SHORT = [
         '../imgs/2_character_pepe/1_idle/idle/I-1.png',
         '../imgs/2_character_pepe/1_idle/idle/I-2.png',
@@ -73,8 +61,6 @@ class Character extends MovableObject {
     isDead = false;
     lastKeyboardEvent = 0;
 
-
-
     constructor() {
         super().loadImage('../imgs/2_character_pepe/1_idle/idle/I-1.png');
         super.loadImages(this.IMGAES_IDLE_SHORT);
@@ -83,10 +69,22 @@ class Character extends MovableObject {
         super.loadImages(this.IMAGES_JUMPING);
         super.loadImages(this.IMGAES_HURT);
         super.loadImages(this.IMGAES_DEAD);
+        this.height = 250;
+        this.width = this.height * 0.51;
+        this.y = 102;
+        this.x = 10;
+        this.speed = 5;
+        this.currentPosition;
+        this.healthPoints = 100;
+        this.offset = {
+            x: 32,
+            y: 95,
+            width: 65,
+            height: 107
+        };
         super.applyGravity();
         this.lastKeyboardEvent = new Date().getTime();
         this.animate();
-
     }
 
     intervalIds = [];
@@ -154,6 +152,7 @@ class Character extends MovableObject {
             }
         }, 80);
     }
+
 
 
 }

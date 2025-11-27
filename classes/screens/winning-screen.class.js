@@ -1,11 +1,10 @@
 class WinningScreen extends DrawableObject {
-    x = 120;
-    y = 10;
-    img;
-    height = 400;
-    width = this.height * 1.12;
 
     constructor() {
-        super().loadImage('../imgs/You won, you lost/You won A.png')
+        super().loadImage('../imgs/You won, you lost/You won A.png');
+        this.x = 120;
+        this.y = 10;
+        this.height = 400;
+        this.width = this.height * 1.12;
     }
 }

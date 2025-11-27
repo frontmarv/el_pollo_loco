@@ -8,6 +8,7 @@ class DrawableObject {
     currentImage = 0;
     currentPosition;
     healthPoints;
+    offset;
 
     loadImage(path) {
         this.img = new Image();
