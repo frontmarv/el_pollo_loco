@@ -33,15 +33,12 @@ class Character extends MovableObject {
         '../imgs/2_character_pepe/2_walk/W-26.png',
     ];
     IMAGES_JUMPING = [
-        '../imgs/2_character_pepe/3_jump/J-31.png',
-        '../imgs/2_character_pepe/3_jump/J-32.png',
         '../imgs/2_character_pepe/3_jump/J-33.png',
         '../imgs/2_character_pepe/3_jump/J-34.png',
         '../imgs/2_character_pepe/3_jump/J-35.png',
         '../imgs/2_character_pepe/3_jump/J-36.png',
         '../imgs/2_character_pepe/3_jump/J-37.png',
-        '../imgs/2_character_pepe/3_jump/J-38.png',
-        '../imgs/2_character_pepe/3_jump/J-39.png'
+        '../imgs/2_character_pepe/3_jump/J-38.png'
     ];
     IMGAES_HURT = [
         '../imgs/2_character_pepe/4_hurt/H-41.png',
@@ -57,15 +54,11 @@ class Character extends MovableObject {
         '../imgs/2_character_pepe/5_dead/D-56.png',
         '../imgs/2_character_pepe/5_dead/D-57.png',
     ];
-    sounds = {
-        snoring: new Audio('../audio/character/character-dying.mp3'),
-        jumping: new Audio('../audio/character/character-jumping.mp3'),
-        walking: new Audio('../audio/character/character-walking.mp3'),
-        dying: new Audio('../audio/character/character-dying.mp3')
-    };
+    sounds;
     world;
     isDead = false;
     lastKeyboardEvent = 0;
+    animationAlreadyPlayed = false;
 
     constructor() {
         super().loadImage('../imgs/2_character_pepe/1_idle/idle/I-1.png');
@@ -91,6 +84,15 @@ class Character extends MovableObject {
         super.applyGravity();
         this.lastKeyboardEvent = new Date().getTime();
         this.animate();
+        this.sounds = {
+            snoring: SoundManager.register(new Audio('../audio/character/character-snoring.mp3')),
+            jumping: SoundManager.register(new Audio('../audio/character/character-jumping.mp3')),
+            walking: SoundManager.register(new Audio('../audio/character/character-walking.mp3')),
+            hurting: SoundManager.register(new Audio('../audio/character/character-hurt.mp3')), 
+            dying: SoundManager.register(new Audio('../audio/character/character-dying.mp3'))
+        };
+        this.sounds.walking.loop = true;
+        this.sounds.snoring.loop = true;
     }
 
     intervalIds = [];
@@ -113,38 +115,58 @@ class Character extends MovableObject {
     animate() {
 
         this.setStoppableInterval(() => {
-            if (this.world.keyboard.LEFT && this.x) {
+            // move left
+            if (this.world.keyboard.LEFT && this.x > 0) {
                 this.otherDirection = true;
+                this.sounds.walking.play();
                 this.moveLeft();
             }
-            if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
+            //move right
+            else if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
                 this.otherDirection = false;
+                this.sounds.walking.play();
                 this.moveRight();
             }
-            this.world.camera_x = -this.x + 100;
+            else {
+                this.sounds.walking.pause();
+            }
+            this.world.camera_x = Math.min(0, Math.max(-(this.world.level.level_end_x - this.world.canvas.width + 100), -this.x + 100));
         }, 1000 / 60);
 
         this.setStoppableInterval(() => {
+            // idle timer
             if (this.world.keyboard.LEFT || this.world.keyboard.RIGHT || this.world.keyboard.UP || this.world.keyboard.SPACE) {
                 this.lastKeyboardEvent = new Date().getTime();
             }
-            if (this.checkTimer(this.lastKeyboardEvent) > 5) {
-                this.playAnimation(this.IMGAES_IDLE_LONG);
-            } else if (this.checkTimer(this.lastKeyboardEvent) > 0.1) {
-                this.playAnimation(this.IMGAES_IDLE_SHORT);
+            if (!this.isAboveGround()) {
+                if (this.checkTimer(this.lastKeyboardEvent) > 5) {
+                    this.sounds.snoring.play();
+                    this.playAnimation(this.IMGAES_IDLE_LONG);
+                } else if (this.checkTimer(this.lastKeyboardEvent) > 0.1) {
+                    this.playAnimation(this.IMGAES_IDLE_SHORT);
+                } else {
+                    this.sounds.snoring.pause();
+                }
             }
         }, 150);
 
         this.setStoppableInterval(() => {
+            //check if dead
             if (this.healthPoints <= 0 && this.isDead) {
+                this.sounds.dying.play();
                 this.playAnimation(this.IMGAES_DEAD);
                 this.stopGame();
                 return;
+                // check if hurt
             } else if (this.isHurt()) {
+                this.sounds.hurting.play();
                 this.playAnimation(this.IMGAES_HURT);
             }
+            //jump
             else if (this.world.keyboard.UP && !this.isAboveGround()) {
+                this.sounds.jumping.play();
                 this.jump();
+                //walking animation; prevent walking animtion in air
             } else if ((this.world.keyboard.LEFT || this.world.keyboard.RIGHT) && !this.isAboveGround()) {
                 this.playAnimation(this.IMAGES_WALKING);
             };
@@ -154,12 +176,28 @@ class Character extends MovableObject {
         // Jump
         this.setStoppableInterval(() => {
             if (this.isAboveGround()) {
-                this.playAnimation(this.IMAGES_JUMPING);
+                if (this.speedY > 5 && !this.animationAlreadyPlayed) {
+                    this.playAnimation(this.IMAGES_JUMPING.slice(0, 2));
+                    this.animationAlreadyPlayed = true;
+                } else if (this.speedY > 0 && this.speedY <= 5) {
+                    this.img = this.imageCache[this.IMAGES_JUMPING[3]];
+                } else if (this.speedY <= 0 && this.speedY > -10) {
+                    this.img = this.imageCache[this.IMAGES_JUMPING[4]];
+                } else if (this.speedY <= -10) {
+                    this.img = this.imageCache[this.IMAGES_JUMPING[5]];
+                }
+            } else {
+                this.animationAlreadyPlayed = false;
             }
-        }, 80);
+        }, 1000 / 60);
     }
-
-
 
 }
 
+
+// playAnimation(images) {
+//     let i = this.currentImage % images.length;
+//     let path = images[i];
+//     this.img = this.imageCache[path];
+//     this.currentImage++;
+// }

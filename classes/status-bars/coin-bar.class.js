@@ -1,5 +1,5 @@
 class CoinBar extends DrawableObject {
-
+    sound;
     world;
 
     IMAGES_COINBAR = [
@@ -22,7 +22,7 @@ class CoinBar extends DrawableObject {
         this.height = 40;
         this.width = this.height * 3.8;
         this.percentageCoin = 0;
-        this.amountOfCoins = 0;
+        this.sound = {pickupCoin: SoundManager.register(new Audio('../audio/coin-recieved.mp3'), 0.5)};
     }
 
     setPercentageCoin(percentage) {
@@ -34,15 +34,5 @@ class CoinBar extends DrawableObject {
         let index = this.resolveImgIndex(this.percentageCoin);
         let path = this.IMAGES_COINBAR[index];
         this.img = this.imageCache[path];
-    }
-
-    resetPercentage() {
-        this.percentageCoin = 0;
-        this.setPercentageCoin(0);
-    }
-
-    handleCoinCollection() {
-        this.amountOfCoins++;
-        this.setPercentageCoin(10);
     }
 }

@@ -1,10 +1,10 @@
 - bottle throw animation + physik
 - chicken collision dmg
 - loosing screen + animation fixed
+- sprung animation
 - welcome screen
 - musik und sounds
 - endboss attack + animations
-- character walk till end of lvl, camera fix
 - fullscreen (canvas toggle fullscreen)
 
 - Es gibt einen Button, der das Spiel startet.
@@ -36,6 +36,7 @@ Creative Commons - Attribution 3.0 Unported | Attribution 4.0 International
 
 https://pixabay.com/
 
+Sound Effect by <a href="https://pixabay.com/users/homemade_sfx-47000485/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=262616">Homemade_SFX</a> from <a href="https://pixabay.com/sound-effects//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=262616">Pixabay</a>
 Sound Effect by <a href="https://pixabay.com/users/freesound_community-46691455/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=29322">freesound_community</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=29322">Pixabay</a>
 Sound Effect by <a href="https://pixabay.com/users/floraphonic-38928062/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=198495">floraphonic</a> from <a href="https://pixabay.com/sound-effects//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=198495">Pixabay</a>
 Sound Effect by <a href="https://pixabay.com/users/the-vampires-monster-49503589/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=343103">The-Vampires-Monster Soundtrack</a> from <a href="https://pixabay.com/sound-effects//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=343103">Pixabay</a>
@@ -49,3 +50,8 @@ https://freesound.org/
 https://freesound.org/people/Benboncan/sounds/137874/
 https://freesound.org/people/pekena_larva/sounds/667292/
 https://freesound.org/people/Preacher13/sounds/673255/
+
+
+https://icon-icons.com/de/
+
+font-family     zabras

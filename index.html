@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="./style.css">
 
     <script src="./classes/world.class.js"></script>
+    <script src="./classes/soundmanager.class.js"></script>
     <script src="./classes/drawable-object.class.js"></script>
     <script src="./classes/status-bars/bottle-bar.class.js"></script>
     <script src="./classes/status-bars/coin-bar.class.js"></script>
@@ -16,6 +17,7 @@
     <script src="./classes/coin.class.js"></script>
     <script src="./classes/bottle.class.js"></script>
     <script src="./classes/movable-object.class.js"></script>
+    <script src="./classes/throwable-object.class.js"></script>
     <script src="./classes/character.class.js"></script>
     <script src="./classes/enemies/chicken.class.js"></script>
     <script src="./classes/enemies/endboss.class.js"></script>
@@ -39,8 +41,18 @@
         <h1>El Pollo Loco</h1>
     </header>
     <main>
-        <canvas width="700px" height="400px" id="canvas">
-        </canvas>
+        <div id="canvas-wrapper">
+            <div class="canvas-position">
+                <div class="icons">
+                    <img src="./imgs/icons/sound-on.svg" alt="icon of a keyboard">
+                    <img src="./imgs/icons/controller.svg" alt="icon of a keyboard">
+                    <img src="./imgs/icons/open-fullscreen.svg" alt="icon of a keyboard" onclick="fullscreen()">
+                </div>
+                <canvas width="700px" height="400px" id="canvas">
+                    div
+                </canvas>
+            </div>
+        </div>
     </main>
     <footer>
     </footer>

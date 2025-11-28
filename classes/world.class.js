@@ -6,18 +6,28 @@ class World {
     bottlebar = new BottleBar();
     gameOver = new GameOverScreen();
     youWon = new WinningScreen();
+    statusbars = [];
+    screens = [];
+    throwableObjects = [];
     canvas;
     ctx;
     keyboard;
     camera_x;
+    sounds;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard
+        this.sounds = {
+            backgroundMusic: SoundManager.register(new Audio('../audio/background-music.mp3')),
+            levelCompleted: SoundManager.register(new Audio('../audio/level-completed.mp3'))
+        };
+        this.sounds.backgroundMusic.loop = true;
         this.setWorld();
         this.draw();
         this.checkCollisions();
+        this.checkThrowObjects();
     }
 
     setWorld() {
@@ -27,6 +37,24 @@ class World {
         this.coinbar.world = this;
         this.bottlebar.world = this;
         this.gameOver.world = this;
+    }
+
+    lastThrow = 0;
+
+    checkThrowObjects() {
+        setInterval(() => {
+            if (this.keyboard.THROW && this.canThrow() && this.bottlebar.percentageBottle > 0) {
+                let bottle = new ThrowableObject(this.character.x, this.character.otherDirection);
+                this.throwableObjects.push(bottle);
+                this.bottlebar.setPercentageBottle(-20);
+                this.lastThrow = new Date().getTime();
+            }
+        }, 60);
+    }
+
+    canThrow() {
+        let timePassed = new Date().getTime() - this.lastThrow;
+        return timePassed > 500;
     }
 
     checkCollisions() {
@@ -39,23 +67,17 @@ class World {
             })
             this.level.coins.forEach((collectedCoin, index) => {
                 if (this.character.isColliding(collectedCoin)) {
-                    this.coinbar.handleCoinCollection();
-                    if (this.coinbar.amountOfCoins === 10) {
-                        this.bottlebar.increaseBottles();
-                        this.bottlebar.updateBottleStatusbar();
-                        this.coinbar.resetPercentage();
-                        this.coinbar.updateCoinStatusbar();
-                    }
+                    this.coinbar.sound.pickupCoin.currentTime = 0;
+                    this.coinbar.sound.pickupCoin.play();
                     this.level.coins.splice(index, 1);
-
+                    this.coinbar.setPercentageCoin(10);
                 }
             })
-
             this.level.bottles.forEach((bottle, index) => {
                 if (this.character.isColliding(bottle)) {
-                    this.bottlebar.increaseBottles();
+                    this.bottlebar.sound.collectBottle.play();
                     this.level.bottles.splice(index, 1);
-                    this.bottlebar.setPercentageBottle(100 / 3);
+                    this.bottlebar.setPercentageBottle(20);
                 }
             })
         }, 100);
@@ -97,8 +119,7 @@ class World {
     }
 
     draw() {
-        if (this.character.isDead) { this.drawGameOver(); return; }
-        if (this.endbossDefeated) { this.drawWinningScreen(); return; }
+
         this.ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         this.ctx.translate(this.camera_x, 0);
@@ -108,7 +129,7 @@ class World {
         this.addFixedObjectsToMap(this.level.coins);
         this.addFixedObjectsToMap(this.level.bottles);
 
-        // fixed object movement
+        // fixed object camera movement
         this.ctx.translate(-this.camera_x, 0);
         this.healthbar.drawFixedObject(this.ctx);
         this.coinbar.drawFixedObject(this.ctx);
@@ -118,8 +139,13 @@ class World {
 
         this.addObjectsToMap(this.level.enemies);
         this.addToMap(this.character);
+        this.addObjectsToMap(this.throwableObjects);
         this.ctx.translate(-this.camera_x, 0);
-
+        if (this.character.isDead) { this.drawGameOver(); return; }
+        if (this.endbossDefeated) { 
+            this.sounds.levelCompleted.play();
+            this.drawWinningScreen(); 
+            return; }
         let self = this;
         requestAnimationFrame(function () {
             self.draw();

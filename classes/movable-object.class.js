@@ -29,7 +29,6 @@ class MovableObject extends DrawableObject {
         return timePassed < 0.5
     }
 
-
     applyGravity() {
         setInterval(() => {
             if (this.isAboveGround() || this.speedY > 0)
@@ -39,7 +38,9 @@ class MovableObject extends DrawableObject {
     }
 
     isAboveGround() {
-        return this.y < 102;
+        if (this instanceof ThrowableObject) {
+            return true;
+        } else { return this.y < 102; }
     }
 
     jump() {
@@ -53,6 +54,5 @@ class MovableObject extends DrawableObject {
     moveLeft() {
         this.x -= this.speed;
     }
-
 
 }

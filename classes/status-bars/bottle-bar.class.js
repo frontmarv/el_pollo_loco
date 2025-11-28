@@ -1,5 +1,5 @@
 class BottleBar extends DrawableObject {
-
+    
     world;
 
     IMAGES_BOTTLEBAR = [
@@ -19,7 +19,7 @@ class BottleBar extends DrawableObject {
         this.height = 40;
         this.width = this.height * 3.8;
         this.percentageBottle = 0;
-        this.amountOfBottles = 0;
+        this.sound = {collectBottle: SoundManager.register(new Audio('../audio/item-collected.mp3'), 0.5)};
     }
 
     setPercentageBottle(percentage) {
@@ -31,9 +31,5 @@ class BottleBar extends DrawableObject {
         let index = this.resolveImgIndex(this.percentageBottle);
         let path = this.IMAGES_BOTTLEBAR[index];
         this.img = this.imageCache[path];
-    }
-
-    increaseBottles() {
-        this.amountOfBottles++;
     }
 }
