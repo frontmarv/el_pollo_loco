@@ -22,6 +22,7 @@ class SmallChicken extends MovableObject {
             width: 10,
             height: 10
         };
+        this.healthPoints = 5;
         this.animate();
 
     }

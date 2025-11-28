@@ -1,24 +1,21 @@
-- bottle throw animation + physik
+- bottle throw collision
+- bottle collision sound
+- small chickens movement
 - chicken collision dmg
 - loosing screen + animation fixed
 - sprung animation
-- welcome screen
+- welcome screen, not playing anything already
 - musik und sounds
 - endboss attack + animations
 - fullscreen (canvas toggle fullscreen)
 
-- Es gibt einen Button, der das Spiel startet.
-- Wenn das Spiel startet, sollte man nicht direkt von Gegnern überrannt werden.
-- Der Hintergrund des Spiels ist gleichmäßig und hat keine Lücken.
-- Das Spiel verfügt über Hintergrundmusik und zusätzliche Soundeffekte. Alle Sounds können jederzeit über einen Button stummgeschaltet werden. Der Status des Mute-Buttons wird dabei im Local Storage gespeichert.
-- Wenn das Spiel gewonnen oder verloren ist, wird mir ein Endscreen gezeigt. Es sollte die Möglichkeit zum Restart des Spiels sowie die Möglichkeit zum Verlassen des Spiels gegeben sein (zurück zum Home Screen).
 
+- Wenn das Spiel gewonnen oder verloren ist, wird mir ein Endscreen gezeigt. 
+  Es sollte die Möglichkeit zum Restart des Spiels sowie die Möglichkeit zum Verlassen des Spiels gegeben sein (zurück zum Home Screen).
 
 - Wenn der Charakter springt wird eine flüssige Sprunganimation ausgeführt
 - Die Animationen des Charakters sind grundsätzlich flüssig, auch wenn er verletzt wird oder springt.
 - Pollo Loco: Der Charakter kann Flaschen werfen, normale Gegner werden bei einem Treffer getötet und dem Endboss wird Schaden zugefügt, auch die Statusbar reduziert sich nach einem Wurf. 
-- Der Charakter hat zu seinen verschiedenen Animationen und Sounds, z.B. schnarcht er wenn er schläft etc..
-- Wenn der Charakter Schaden erleidet, dann sollte sich seine Statusbar anpassen, wenn diese leer ist, ist das Spiel verloren.
 
 
 - Es gibt mindestens 2 verschiedene Gegnertypen + den Endboss im Spiel (Größe, Geschwindigkeit, Angriffe sollten hier möglichst variieren)
@@ -35,7 +32,7 @@ Music provided by NCM [No Copyright Music].
 Creative Commons - Attribution 3.0 Unported | Attribution 4.0 International 
 
 https://pixabay.com/
-
+Image by <a href="https://pixabay.com/users/ai_solution-731298/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=5396906">AI_Solution</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=5396906">Pixabay</a>
 Sound Effect by <a href="https://pixabay.com/users/homemade_sfx-47000485/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=262616">Homemade_SFX</a> from <a href="https://pixabay.com/sound-effects//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=262616">Pixabay</a>
 Sound Effect by <a href="https://pixabay.com/users/freesound_community-46691455/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=29322">freesound_community</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=29322">Pixabay</a>
 Sound Effect by <a href="https://pixabay.com/users/floraphonic-38928062/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=198495">floraphonic</a> from <a href="https://pixabay.com/sound-effects//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=198495">Pixabay</a>

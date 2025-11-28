@@ -6,6 +6,8 @@ class World {
     bottlebar = new BottleBar();
     gameOver = new GameOverScreen();
     youWon = new WinningScreen();
+    welcome = new WelcomeScreen();
+    _showWelcomeScreen = true;
     statusbars = [];
     screens = [];
     throwableObjects = [];
@@ -14,6 +16,19 @@ class World {
     keyboard;
     camera_x;
     sounds;
+    lastThrow = 0;
+
+    get showWelcomeScreen() {
+        return this._showWelcomeScreen;
+    }
+
+    set showWelcomeScreen(value) {
+        this._showWelcomeScreen = value;
+        if (!value) {
+            this.startGame();
+            this.playMusic();
+        }
+    }
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -24,10 +39,22 @@ class World {
             levelCompleted: SoundManager.register(new Audio('../audio/level-completed.mp3'))
         };
         this.sounds.backgroundMusic.loop = true;
-        this.setWorld();
         this.draw();
+    }
+
+
+    startGame() {
+        this.setWorld();
+        this.character.animate();
         this.checkCollisions();
         this.checkThrowObjects();
+    }
+
+
+    playMusic() {
+        if (!this.showWelcomeScreen) {
+            this.sounds.backgroundMusic.play();
+        }
     }
 
     setWorld() {
@@ -39,7 +66,7 @@ class World {
         this.gameOver.world = this;
     }
 
-    lastThrow = 0;
+
 
     checkThrowObjects() {
         setInterval(() => {
@@ -59,8 +86,19 @@ class World {
 
     checkCollisions() {
         setInterval(() => {
-            this.level.enemies.forEach((enemy) => {
-                if (this.character.isColliding(enemy)) {
+            this.level.enemies.forEach((enemy, index) => {
+                if (this.character.isCollidingFromAbove(enemy)) {
+                    console.log('hit from above');
+                    enemy.isHit();
+                    if (enemy.wasKilled()) {
+                        setTimeout(() => {
+                            this.level.enemies.splice(index, 1);
+                        }, 1000);
+                    }
+
+                    this.character.bounce();
+                } else if (this.character.isColliding(enemy)) {
+                    console.log('hit from side');
                     this.character.isHit();
                     this.healthbar.setPercentageHealth(this.character.healthPoints)
                 }
@@ -119,65 +157,61 @@ class World {
     }
 
     draw() {
+        if (this.showWelcomeScreen) { this.drawWelcomeScreen(); }
+        else {
+            this.ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        this.ctx.clearRect(0, 0, canvas.width, canvas.height);
+            this.ctx.translate(this.camera_x, 0);
 
-        this.ctx.translate(this.camera_x, 0);
+            this.addObjectsToMap(this.level.background);
+            this.addObjectsToMap(this.level.clouds);
+            this.addFixedObjectsToMap(this.level.coins);
+            this.addFixedObjectsToMap(this.level.bottles);
 
-        this.addObjectsToMap(this.level.background);
-        this.addObjectsToMap(this.level.clouds);
-        this.addFixedObjectsToMap(this.level.coins);
-        this.addFixedObjectsToMap(this.level.bottles);
+            // fixed object camera movement
+            this.ctx.translate(-this.camera_x, 0);
+            this.healthbar.drawFixedObject(this.ctx);
+            this.coinbar.drawFixedObject(this.ctx);
+            this.bottlebar.drawFixedObject(this.ctx);
+            this.ctx.translate(this.camera_x, 0);
+            // until here
 
-        // fixed object camera movement
-        this.ctx.translate(-this.camera_x, 0);
-        this.healthbar.drawFixedObject(this.ctx);
-        this.coinbar.drawFixedObject(this.ctx);
-        this.bottlebar.drawFixedObject(this.ctx);
-        this.ctx.translate(this.camera_x, 0);
-        // until here
+            this.addObjectsToMap(this.level.enemies);
+            this.addToMap(this.character);
+            this.addObjectsToMap(this.throwableObjects);
+            this.ctx.translate(-this.camera_x, 0);
+        }
 
-        this.addObjectsToMap(this.level.enemies);
-        this.addToMap(this.character);
-        this.addObjectsToMap(this.throwableObjects);
-        this.ctx.translate(-this.camera_x, 0);
-        if (this.character.isDead) { this.drawGameOver(); return; }
-        if (this.endbossDefeated) { 
+        if (this.character.isDead) { this.drawScreenWithoutEnemies(this.gameOver); return; }
+        if (this.endbossDefeated) {
             this.sounds.levelCompleted.play();
-            this.drawWinningScreen(); 
-            return; }
+            this.drawScreenWithoutEnemies(this.youWon);
+            return;
+        }
         let self = this;
         requestAnimationFrame(function () {
             self.draw();
         });
     }
 
-    drawGameOver() {
 
-        setTimeout(() => {
-            this.ctx.clearRect(0, 0, canvas.width, canvas.height);
-            this.ctx.translate(this.camera_x, 0);
-            this.addObjectsToMap(this.level.background);
-            this.addObjectsToMap(this.level.clouds);
-            this.addToMap(this.character);
-            this.ctx.translate(-this.camera_x, 0);
-            this.gameOver.drawFixedObject(this.ctx);
-            this.ctx.translate(this.camera_x, 0);
-            this.ctx.translate(-this.camera_x, 0);
-
-        }, 500);
-
-    }
-
-    drawWinningScreen() {
+    drawScreenWithoutEnemies(fixedObject) {
         this.ctx.clearRect(0, 0, canvas.width, canvas.height);
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.level.background);
         this.addObjectsToMap(this.level.clouds);
         this.addToMap(this.character);
         this.ctx.translate(-this.camera_x, 0);
-        this.youWon.drawFixedObject(this.ctx);
+        fixedObject.drawFixedObject(this.ctx);
         this.ctx.translate(this.camera_x, 0);
+        this.ctx.translate(-this.camera_x, 0);
+    }
+
+
+    drawWelcomeScreen() {
+        this.ctx.clearRect(0, 0, canvas.width, canvas.height);
+        this.ctx.translate(this.camera_x, 0);
+        this.welcome.drawFixedObject(this.ctx);
         this.ctx.translate(-this.camera_x, 0);
     }
 

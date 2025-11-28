@@ -2,7 +2,9 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 
+
 function init() {
+    initializeSoundState();
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
 }
@@ -30,9 +32,9 @@ window.addEventListener('keyup', (event) => {
 function openFullscreen(elem) {
     if (elem.requestFullscreen) {
         elem.requestFullscreen();
-    } else if (elem.webkitRequestFullscreen) { /* Safari */
+    } else if (elem.webkitRequestFullscreen) {
         elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) { /* IE11 */
+    } else if (elem.msRequestFullscreen) {
         elem.msRequestFullscreen();
     }
 }
@@ -41,14 +43,66 @@ function openFullscreen(elem) {
 function closeFullscreen() {
     if (document.exitFullscreen) {
         document.exitFullscreen();
-    } else if (document.webkitExitFullscreen) { /* Safari */
+    } else if (document.webkitExitFullscreen) {
         document.webkitExitFullscreen();
-    } else if (document.msExitFullscreen) { /* IE11 */
+    } else if (document.msExitFullscreen) {
         document.msExitFullscreen();
     }
 }
 
+
 function fullscreen() {
     var elem = document.getElementById("canvas-wrapper");
     openFullscreen(elem);
+}
+
+
+function setWelcomeFalse() {
+    if (world) {
+        world.showWelcomeScreen = false;
+        document.querySelector('.start-game').classList.add('hidden');
+    }
+}
+
+
+function initializeSoundState() {
+    const gameMuted = localStorage.getItem("gameMuted") === 'true';
+    if (gameMuted) {
+        muteAllSounds();
+    } else {
+        unmuteAllSounds();
+    }
+}
+
+
+function toggleSound() {
+    localStorage.getItem("gameMuted") === 'true' ? unmuteAllSounds() : muteAllSounds();
+}
+
+
+function muteAllSounds() {
+    SoundManager.muteAll();
+    localStorage.setItem("gameMuted", 'true');
+    document.getElementById('game-volume').src = './imgs/icons/sound-off.svg';
+}
+
+
+function unmuteAllSounds() {
+    SoundManager.unmuteAll();
+    localStorage.setItem("gameMuted", 'false');
+    document.getElementById('game-volume').src = './imgs/icons/sound-on.svg';
+}
+
+function toggleInstructions() {
+    document.getElementById('instructions').style.display === 'block' ? hideInstructions() : showInstructions();
+}
+
+function showInstructions() {
+    document.getElementById('instructions').style.display = 'block';
+    document.getElementById('instructions-icon').style.backgroundColor = '#FFAB00';
+}
+
+function hideInstructions() {
+    document.getElementById('instructions').style.display = 'none';
+    document.getElementById('instructions-icon').style.backgroundColor = 'transparent';
 }

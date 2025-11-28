@@ -79,16 +79,15 @@ class Character extends MovableObject {
             x: 32,
             y: 95,
             width: 65,
-            height: 107
+            height: 100
         };
         super.applyGravity();
         this.lastKeyboardEvent = new Date().getTime();
-        this.animate();
         this.sounds = {
             snoring: SoundManager.register(new Audio('../audio/character/character-snoring.mp3')),
             jumping: SoundManager.register(new Audio('../audio/character/character-jumping.mp3')),
             walking: SoundManager.register(new Audio('../audio/character/character-walking.mp3')),
-            hurting: SoundManager.register(new Audio('../audio/character/character-hurt.mp3')), 
+            hurting: SoundManager.register(new Audio('../audio/character/character-hurt.mp3')),
             dying: SoundManager.register(new Audio('../audio/character/character-dying.mp3'))
         };
         this.sounds.walking.loop = true;
@@ -189,15 +188,12 @@ class Character extends MovableObject {
             } else {
                 this.animationAlreadyPlayed = false;
             }
-        }, 1000 / 60);
+        }, 1000 / 30);
+    }
+
+    bounce() {
+        this.speedY = 15; 
     }
 
 }
 
-
-// playAnimation(images) {
-//     let i = this.currentImage % images.length;
-//     let path = images[i];
-//     this.img = this.imageCache[path];
-//     this.currentImage++;
-// }

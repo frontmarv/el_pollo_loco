@@ -41,12 +41,27 @@
         <h1>El Pollo Loco</h1>
     </header>
     <main>
+        <section>
+                <p>Here you can play the hero "Pepe" and fight some crazy chickens in the desert.</p>
+                <p>How to win the game:</p>
+                <p>Easy! Defeat all chickens in the level. How do you do that? I guess you have to find out on your own...</p>
+                <p>Tipp: For 10 collected coins you get 1 extra bottle of salsa</p>
+        </section>
         <div id="canvas-wrapper">
             <div class="canvas-position">
                 <div class="icons">
-                    <img src="./imgs/icons/sound-on.svg" alt="icon of a keyboard">
-                    <img src="./imgs/icons/controller.svg" alt="icon of a keyboard">
+                    <img id="game-volume" src="./imgs/icons/sound-on.svg" alt="icon of a keyboard"
+                        onclick="toggleSound()">
+                    <img id="instructions-icon" src="./imgs/icons/controller.svg" alt="icon of a keyboard"
+                        onclick="toggleInstructions()">
                     <img src="./imgs/icons/open-fullscreen.svg" alt="icon of a keyboard" onclick="fullscreen()">
+                </div>
+                <button class="start-game" onclick="setWelcomeFalse()">Start Game</button>
+                <div id="instructions" class="instructions">
+                    <p>Move Left = Arrow Left / A</p>
+                    <p>Move Right = Arrow Right / D</p>
+                    <p>Jump = Arrow Up / W / Space </p>
+                    <p>Throw Bottle = J</p>
                 </div>
                 <canvas width="700px" height="400px" id="canvas">
                     div

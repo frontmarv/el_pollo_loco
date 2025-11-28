@@ -43,9 +43,9 @@ class DrawableObject {
         else { return 0 }
     }
 
-    
+
     drawOffsetFrame(ctx) {
-        if (this instanceof Character || this instanceof Chicken ||  this instanceof SmallChicken) {
+        if (this instanceof Character || this instanceof Chicken || this instanceof SmallChicken) {
             ctx.lineWidth = "2";
             ctx.strokeStyle = "green";
             ctx.beginPath();
@@ -54,11 +54,17 @@ class DrawableObject {
         }
     }
 
-        isColliding(object) {
+    isColliding(object) {
         return this.x + this.offset.x + this.width - this.offset.width > object.x + object.offset.x &&
             this.y + this.offset.y + this.height - this.offset.height > object.y + object.offset.y &&
             this.x + this.offset.x < object.x + object.offset.x + object.width - object.offset.width &&
             this.y + this.offset.y < object.y + object.offset.y + object.height - object.offset.height;
     }
-    
+
+    isCollidingFromAbove(object) {
+        return this.isColliding(object) &&
+            this.speedY < 0 &&
+            this.y + this.offset.y + this.height - this.offset.height < object.y + object.offset.y + (object.height * 0.7)
+    }
+
 }
