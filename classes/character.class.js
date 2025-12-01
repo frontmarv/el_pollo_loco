@@ -94,12 +94,7 @@ class Character extends MovableObject {
         this.sounds.snoring.loop = true;
     }
 
-    intervalIds = [];
 
-    setStoppableInterval(fn, time) {
-        let id = setInterval(fn, time);
-        this.intervalIds.push(id);
-    }
 
     stopGame() {
         this.intervalIds.forEach(clearInterval);
@@ -134,11 +129,11 @@ class Character extends MovableObject {
 
         this.setStoppableInterval(() => {
             // idle timer
-            if (this.world.keyboard.LEFT || this.world.keyboard.RIGHT || this.world.keyboard.UP || this.world.keyboard.SPACE) {
+            if (this.world.keyboard.LEFT || this.world.keyboard.RIGHT || this.world.keyboard.UP || this.world.keyboard.SPACE || this.world.keyboard.THROW) {
                 this.lastKeyboardEvent = new Date().getTime();
             }
             if (!this.isAboveGround()) {
-                if (this.checkTimer(this.lastKeyboardEvent) > 5) {
+                if (this.checkTimer(this.lastKeyboardEvent) > 6) {
                     this.sounds.snoring.play();
                     this.playAnimation(this.IMGAES_IDLE_LONG);
                 } else if (this.checkTimer(this.lastKeyboardEvent) > 0.1) {
@@ -172,8 +167,11 @@ class Character extends MovableObject {
         }, 60);
 
 
-        // Jump
-        this.setStoppableInterval(() => {
+        const intervalId = this.setStoppableInterval(() => {
+            if (this.isHurt() && this.isAboveGround()) {
+                clearInterval(intervalId);
+                return;
+            }
             if (this.isAboveGround()) {
                 if (this.speedY > 5 && !this.animationAlreadyPlayed) {
                     this.playAnimation(this.IMAGES_JUMPING.slice(0, 2));

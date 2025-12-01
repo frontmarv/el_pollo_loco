@@ -1,6 +1,6 @@
 class World {
     character = new Character();
-    level = level1;
+    level = createLvl1();
     healthbar = new HealthBar();
     coinbar = new CoinBar();
     bottlebar = new BottleBar();
@@ -66,61 +66,107 @@ class World {
         this.gameOver.world = this;
     }
 
-
-
     checkThrowObjects() {
         setInterval(() => {
             if (this.keyboard.THROW && this.canThrow() && this.bottlebar.percentageBottle > 0) {
                 let bottle = new ThrowableObject(this.character.x, this.character.otherDirection);
                 this.throwableObjects.push(bottle);
+                console.log(this.throwableObjects);
+
                 this.bottlebar.setPercentageBottle(-20);
                 this.lastThrow = new Date().getTime();
+
+
             }
         }, 60);
     }
 
     canThrow() {
         let timePassed = new Date().getTime() - this.lastThrow;
-        return timePassed > 500;
+        return timePassed > 1000;
     }
 
     checkCollisions() {
         setInterval(() => {
             this.level.enemies.forEach((enemy, index) => {
-                if (this.character.isCollidingFromAbove(enemy)) {
-                    console.log('hit from above');
-                    enemy.isHit();
-                    if (enemy.wasKilled()) {
-                        setTimeout(() => {
-                            this.level.enemies.splice(index, 1);
-                        }, 1000);
-                    }
+                this.hasCollisionWithCharacter(enemy, index);
+                this.hasCollisionWithThrowableObject(enemy, index);
+            })
+            this.checkBottles();
+            this.checkCoins();
 
-                    this.character.bounce();
-                } else if (this.character.isColliding(enemy)) {
-                    console.log('hit from side');
-                    this.character.isHit();
-                    this.healthbar.setPercentageHealth(this.character.healthPoints)
-                }
-            })
-            this.level.coins.forEach((collectedCoin, index) => {
-                if (this.character.isColliding(collectedCoin)) {
-                    this.coinbar.sound.pickupCoin.currentTime = 0;
-                    this.coinbar.sound.pickupCoin.play();
-                    this.level.coins.splice(index, 1);
-                    this.coinbar.setPercentageCoin(10);
-                }
-            })
-            this.level.bottles.forEach((bottle, index) => {
-                if (this.character.isColliding(bottle)) {
-                    this.bottlebar.sound.collectBottle.play();
-                    this.level.bottles.splice(index, 1);
-                    this.bottlebar.setPercentageBottle(20);
-                }
-            })
         }, 100);
     }
 
+    hasCollisionWithCharacter(enemy, index) {
+        if (this.character.isCollidingFromAbove(enemy)) {
+            this.handleEnemyHit(enemy, index)
+            this.character.bounce();
+        } else if (this.character.isColliding(enemy)) {
+            this.character.isHit();
+            this.healthbar.setPercentageHealth(this.character.healthPoints)
+        }
+    }
+
+    hasCollisionWithThrowableObject(enemy, index) {
+        this.throwableObjects.forEach((projectile, projectileIndex) => {
+            if (enemy.isColliding(projectile) && !(enemy instanceof Chicken)) {
+                this.throwableObjects[projectileIndex].isDead = true;
+                this.handleEnemyHit(enemy, index);
+                setTimeout(() => {
+                    this.throwableObjects = this.throwableObjects.filter(obj => !obj.isDead);
+                }, 500);
+            }
+        });
+    }
+
+    handleEnemyHit(enemy, index) {
+        if (!enemy.isHurt())
+            enemy.isHit();
+        if (enemy.wasKilled()) {
+            setTimeout(() => {
+                this.level.enemies.splice(index, 1);
+            }, 1000);
+        }
+    }
+
+    checkBottles() {
+        this.level.bottles.forEach((bottle, index) => {
+            if (this.characterCollectsBottle(bottle)) {
+                this.handleBottleCollection(index);
+            }
+        })
+    }
+
+    checkCoins() {
+        this.level.coins.forEach((collectedCoin, index) => {
+            if (this.characterCollectsCoin(collectedCoin)) {
+                this.handleCoinCollection(index);
+            }
+        })
+    }
+
+    characterCollectsCoin(collectedCoin) {
+        return this.character.isColliding(collectedCoin);
+    }
+
+    handleCoinCollection(index) {
+        this.coinbar.sound.pickupCoin.currentTime = 0;
+        this.coinbar.sound.pickupCoin.play();
+        this.level.coins.splice(index, 1);
+        this.coinbar.setPercentageCoin(10);
+    }
+
+    characterCollectsBottle(bottle) {
+        return this.character.isColliding(bottle)
+    }
+
+    handleBottleCollection(index) {
+        this.bottlebar.sound.collectBottle.currentTime = 0;
+        this.bottlebar.sound.collectBottle.play();
+        this.level.bottles.splice(index, 1);
+        this.bottlebar.setPercentageBottle(20);
+    }
 
     addToMap(mo) {
         if (mo.otherDirection) {
@@ -182,10 +228,20 @@ class World {
             this.ctx.translate(-this.camera_x, 0);
         }
 
-        if (this.character.isDead) { this.drawScreenWithoutEnemies(this.gameOver); return; }
-        if (this.endbossDefeated) {
+        if (this.character.isDead) {
+            this.drawScreenWithoutEnemies(this.gameOver);
+            setTimeout(() => {
+                document.querySelector('.game-over-menu').style.display = 'flex';
+            }, 800);
+            return;
+        }
+        if (this.level.enemies.length < 1) {
+            this.character.stopGame();
             this.sounds.levelCompleted.play();
             this.drawScreenWithoutEnemies(this.youWon);
+            setTimeout(() => {
+                document.querySelector('.game-over-menu').style.display = 'flex';
+            }, 800);
             return;
         }
         let self = this;

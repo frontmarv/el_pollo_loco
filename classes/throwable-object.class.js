@@ -18,6 +18,7 @@ class ThrowableObject extends MovableObject {
     constructor(characterPosition, characterDirection) {
         super().loadImage(this.BOTTLE_ROTATION[0]);
         super.loadImages(this.BOTTLE_ROTATION);
+        super.loadImages(this.BOTTLE_SPLASH);
         this.x = characterPosition + 40;
         this.y = 240;
         this.speed = 25;
@@ -25,26 +26,55 @@ class ThrowableObject extends MovableObject {
         this.height = 50;
         this.width = 50;
         this.speedY = 25;
+        this.isDead = false;
         this.offset = {
             x: 8,
             y: 0,
             width: 10,
             height: 0
-        }; 
-        this.sound = { throwBottle: SoundManager.register(new Audio('../audio/object-throw.mp3')) };
+        };
+        this.sounds = {
+            throwBottle: SoundManager.register(new Audio('../audio/object-throw.mp3')),
+            splash: SoundManager.register(new Audio('../audio/bottle-hit.mp3')),
+        };
+        this.animateBottle();
+
+    }
+
+    animateBottle() {
         this.throwBottle();
+        this.checkIfSplashed();
     }
 
     throwBottle() {
-        setInterval(() => {
+        this.throwingInterval = setInterval(() => {
             if (this.otherDirection) { this.x -= this.speed; }
             else {
                 this.x += this.speed;
             }
             this.playAnimation(this.BOTTLE_ROTATION);
-
         }, 60);
-        this.sound.throwBottle.play();
+        this.sounds.throwBottle.play();
         this.applyGravity();
+    }
+
+    checkIfSplashed() {
+        setInterval(() => {
+            if (this.isDead && this.y < 500) {
+                clearInterval(this.throwingInterval);
+                this.sounds.splash.play();
+                this.playSplashAnimation();
+            }
+        }, 1000 / 60);
+    }
+
+    playSplashAnimation() {
+        this.playAnimationOnce(this.BOTTLE_SPLASH, 6);
+    }
+
+    setBottleDead() {
+        if (this.y > 1000) {
+            this.isDead = true;
+        }
     }
 }

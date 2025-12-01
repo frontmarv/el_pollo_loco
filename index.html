@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Title</title>
-    <!-- <link rel="icon" href="/favicon.ico" type="image/x-icon"> -->
+    <title>El Pollo Loco</title>
+    <link rel="icon" href="./imgs/icons/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="./style.css">
 
     <script src="./classes/world.class.js"></script>
@@ -47,16 +47,19 @@
                 <p>Easy! Defeat all chickens in the level. How do you do that? I guess you have to find out on your own...</p>
                 <p>Tipp: For 10 collected coins you get 1 extra bottle of salsa</p>
         </section>
-        <div id="canvas-wrapper">
             <div class="canvas-position">
                 <div class="icons">
                     <img id="game-volume" src="./imgs/icons/sound-on.svg" alt="icon of a keyboard"
                         onclick="toggleSound()">
                     <img id="instructions-icon" src="./imgs/icons/controller.svg" alt="icon of a keyboard"
                         onclick="toggleInstructions()">
-                    <img src="./imgs/icons/open-fullscreen.svg" alt="icon of a keyboard" onclick="fullscreen()">
+                    <img src="./imgs/icons/open-fullscreen.svg" alt="icon of a keyboard" onclick="openFullscreen()">
                 </div>
-                <button class="start-game" onclick="setWelcomeFalse()">Start Game</button>
+                <button id="start-game" class="menu-btns start-game-btn" onclick="hideWelcomeScreen()">Start Game</button>
+                <div class="game-over-menu">
+                    <button class="menu-btns" onclick="tryAgain()">Try Again</button>
+                    <button class="menu-btns" onclick="showWelcomeScreen()">Home</button>
+                </div>
                 <div id="instructions" class="instructions">
                     <p>Move Left = Arrow Left / A</p>
                     <p>Move Right = Arrow Right / D</p>
@@ -67,7 +70,6 @@
                     div
                 </canvas>
             </div>
-        </div>
     </main>
     <footer>
     </footer>

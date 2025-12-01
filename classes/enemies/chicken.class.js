@@ -18,9 +18,12 @@ class Chicken extends MovableObject {
         this.healthPoints = 5;
         this.offset = {
             x: 0,
-            y: 0,
+            y: -5,
             width: 0,
-            height: 5
+            height: 0
+        };
+        this.sounds = {
+            dying: SoundManager.register(new Audio('../audio/enemies/chicken-dying.mp3'))
         };
         this.animate();
     }
@@ -58,6 +61,7 @@ class Chicken extends MovableObject {
     }
 
     chickenDeadAnimation() {
+        this.sounds.dying.play();
         this.playAnimation(this.IMAGE_DEAD);
         this.offset.y = 100;
     }

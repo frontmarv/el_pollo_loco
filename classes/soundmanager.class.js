@@ -18,4 +18,9 @@ class SoundManager {
         this.isMuted = false;
         this.allSounds.forEach(sound => sound.muted = false);
     }
+
+    static resetLoadedSongs() {
+        this.allSounds.forEach(sound => sound.pause());
+        this.allSounds = [];
+    }
 }

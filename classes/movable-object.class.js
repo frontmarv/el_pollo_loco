@@ -7,7 +7,12 @@ class MovableObject extends DrawableObject {
     isDead = false;
     lastHit = 0;
 
+    intervalIds = [];
 
+    setStoppableInterval(fn, time) {
+        let id = setInterval(fn, time);
+        this.intervalIds.push(id);
+    }
 
     drawMovableObject(ctx) {
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
@@ -26,7 +31,7 @@ class MovableObject extends DrawableObject {
     isHurt() {
         let timePassed = new Date().getTime() - this.lastHit;
         timePassed = timePassed / 1000;
-        return timePassed < 0.5
+        return timePassed < 0.4
     }
 
     wasKilled() {
@@ -38,6 +43,10 @@ class MovableObject extends DrawableObject {
             if (this.isAboveGround() || this.speedY > 0)
                 this.y -= this.speedY;
             this.speedY -= this.acceleration;
+            if (this.y >= 102 && this instanceof Character) {
+                this.y = 102;
+                this.speedY = 0;
+            }
         }, 1000 / 25);
     }
 

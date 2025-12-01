@@ -1,17 +1,12 @@
-- bottle throw collision
-- bottle collision sound
+
 - small chickens movement
-- chicken collision dmg
-- loosing screen + animation fixed
-- sprung animation
-- welcome screen, not playing anything already
-- musik und sounds
+- small chicken collision dmg
 - endboss attack + animations
+- endboss dying animation
 - fullscreen (canvas toggle fullscreen)
+- restart game / reset everything boss missing sometimes
 
 
-- Wenn das Spiel gewonnen oder verloren ist, wird mir ein Endscreen gezeigt. 
-  Es sollte die Möglichkeit zum Restart des Spiels sowie die Möglichkeit zum Verlassen des Spiels gegeben sein (zurück zum Home Screen).
 
 - Wenn der Charakter springt wird eine flüssige Sprunganimation ausgeführt
 - Die Animationen des Charakters sind grundsätzlich flüssig, auch wenn er verletzt wird oder springt.
@@ -42,13 +37,16 @@ Sound Effect by <a href="https://pixabay.com/users/ribhavagrawal-39286533/?utm_s
 Sound Effect by <a href="https://pixabay.com/users/ribhavagrawal-39286533/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=230517">Ribhav Agrawal</a> from <a href="https://pixabay.com/sound-effects//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=230517">Pixabay</a>
 Sound Effect by <a href="https://pixabay.com/users/alexis_gaming_cam-50011695/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=367087">ALEXIS_GAMING_CAM</a> from <a href="https://pixabay.com/sound-effects//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=367087">Pixabay</a>
 Sound Effect by <a href="https://pixabay.com/users/liecio-3298866/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=190035">LIECIO</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=190035">Pixabay</a>
+Sound Effect by <a href="https://pixabay.com/users/freesound_community-46691455/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=93075">freesound_community</a> from <a href="https://pixabay.com/sound-effects//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=93075">Pixabay</a>
+Sound Effect by <a href="https://pixabay.com/users/nikin-253338/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=171389">Nikin</a> from <a href="https://pixabay.com/sound-effects//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=171389">Pixabay</a>
+
 https://freesound.org/
 
 https://freesound.org/people/Benboncan/sounds/137874/
 https://freesound.org/people/pekena_larva/sounds/667292/
 https://freesound.org/people/Preacher13/sounds/673255/
 
-
+favicon: https://www.freepik.com/author/marzgallery/icons/2
 https://icon-icons.com/de/
 
 font-family     zabras

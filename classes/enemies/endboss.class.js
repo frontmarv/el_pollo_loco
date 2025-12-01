@@ -14,7 +14,7 @@ class Endboss extends MovableObject {
         '../imgs/4_enemie_boss_chicken/2_alert/G8.png',
         '../imgs/4_enemie_boss_chicken/2_alert/G9.png',
         '../imgs/4_enemie_boss_chicken/2_alert/G10.png',
-        '../imgs/4_enemie_boss_chicken/2_alert/G11png',
+        '../imgs/4_enemie_boss_chicken/2_alert/G11.png',
         '../imgs/4_enemie_boss_chicken/2_alert/G12.png'
     ];
     IMAGES_ATTACK = [
@@ -41,6 +41,10 @@ class Endboss extends MovableObject {
     constructor(lvlLength) {
         super().loadImage('../imgs/4_enemie_boss_chicken/1_walk/G1.png');
         super.loadImages(this.IMAGES_WALKING);
+        super.loadImages(this.IMAGES_ALERT);
+        super.loadImages(this.IMAGES_ATTACK);
+        super.loadImages(this.IMAGES_DEAD);
+        super.loadImages(this.IMAGES_HURT);
         this.height = 300;
         this.width = this.height * 0.86;
         this.y = 80;
@@ -52,18 +56,46 @@ class Endboss extends MovableObject {
             width: 30,
             height: 60
         };
+        this.healthPoints = 25;
+        this.sounds = {
+            hurt: SoundManager.register(new Audio('../audio/enemies/endboss-hurt.mp3')),
+            attack: SoundManager.register(new Audio('../audio/enemies/endboss-attack.mp3')),
+            dying: SoundManager.register(new Audio('../audio/enemies/chicken-dying.mp3'))
+        };
         this.animate();
     }
 
     animate() {
-        this.animateWalking();
+        this.endbossAnimateInterval = setInterval(() => {
+            if (this.isDead) {
+                this.animateDead();
+                clearInterval(this.endbossAnimateInterval);
+            } else if (this.isHurt()) {
+                this.animateHurt();
+            }
+            else {
+                this.animateWalking();
+            }
+        }, 200);
     }
 
-
     animateWalking() {
-        setInterval(() => {
-            this.playAnimation(this.IMAGES_WALKING);
-        }, 100);
+        this.playAnimation(this.IMAGES_WALKING);
+    }
+
+    animateHurt() {
+        this.sounds.hurt.play();
+        this.playAnimation(this.IMAGES_HURT);
+    }
+
+    animateDead() {
+        this.sounds.dying.play();
+        this.playAnimation(this.IMAGES_DEAD);
+        this.endbossDefeated = true;
+    }
+
+    endbossIsDefeated() {
+        return this.endbossDefeated
     }
 
 }

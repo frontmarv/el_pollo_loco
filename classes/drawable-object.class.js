@@ -30,6 +30,15 @@ class DrawableObject {
         this.currentImage++;
     }
 
+    playAnimationOnce(images, amountOfImgs) {
+        for (let index = 0; index < amountOfImgs; index++) {
+            let i = this.currentImage % images.length;
+            let path = images[i];
+            this.img = this.imageCache[path];
+            this.currentImage++;
+        }
+    }
+
     drawFixedObject(ctx) {
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
     }
@@ -43,9 +52,8 @@ class DrawableObject {
         else { return 0 }
     }
 
-
     drawOffsetFrame(ctx) {
-        if (this instanceof Character || this instanceof Chicken || this instanceof SmallChicken) {
+        if (this instanceof SmallChicken || this instanceof ThrowableObject || this instanceof Chicken) {
             ctx.lineWidth = "2";
             ctx.strokeStyle = "green";
             ctx.beginPath();
@@ -62,9 +70,12 @@ class DrawableObject {
     }
 
     isCollidingFromAbove(object) {
+        if (object instanceof Endboss) {
+            return false;
+        }
         return this.isColliding(object) &&
             this.speedY < 0 &&
-            this.y + this.offset.y + this.height - this.offset.height < object.y + object.offset.y + (object.height * 0.7)
+            this.y + this.offset.y + this.height - this.offset.height < object.y + object.offset.y + (object.height * 0.8);
     }
 
 }

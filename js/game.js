@@ -29,7 +29,8 @@ window.addEventListener('keyup', (event) => {
 });
 
 
-function openFullscreen(elem) {
+function openFullscreen() {
+    let elem = document.querySelector('canvas');
     if (elem.requestFullscreen) {
         elem.requestFullscreen();
     } else if (elem.webkitRequestFullscreen) {
@@ -51,17 +52,20 @@ function closeFullscreen() {
 }
 
 
-function fullscreen() {
-    var elem = document.getElementById("canvas-wrapper");
-    openFullscreen(elem);
-}
-
-
-function setWelcomeFalse() {
+function hideWelcomeScreen() {
     if (world) {
         world.showWelcomeScreen = false;
-        document.querySelector('.start-game').classList.add('hidden');
+        document.getElementById('start-game').classList.add('hidden');
     }
+}
+
+function showWelcomeScreen() {
+    init();
+    if (world) {
+        world.showWelcomeScreen = true;
+        document.getElementById('start-game').classList.remove('hidden');
+    }
+    hideGameOverMenu();
 }
 
 
@@ -93,6 +97,7 @@ function unmuteAllSounds() {
     document.getElementById('game-volume').src = './imgs/icons/sound-on.svg';
 }
 
+
 function toggleInstructions() {
     document.getElementById('instructions').style.display === 'block' ? hideInstructions() : showInstructions();
 }
@@ -105,4 +110,15 @@ function showInstructions() {
 function hideInstructions() {
     document.getElementById('instructions').style.display = 'none';
     document.getElementById('instructions-icon').style.backgroundColor = 'transparent';
+}
+
+function tryAgain() {
+    SoundManager.resetLoadedSongs();
+    init();
+    hideWelcomeScreen();
+    hideGameOverMenu();
+}
+
+function hideGameOverMenu() {
+    document.querySelector('.game-over-menu').style.display = 'none';
 }
