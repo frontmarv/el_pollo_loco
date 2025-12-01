@@ -73,7 +73,6 @@ class Character extends MovableObject {
         this.y = 102;
         this.x = 10;
         this.speed = 5;
-        this.currentPosition;
         this.healthPoints = 100;
         this.offset = {
             x: 32,
@@ -84,7 +83,7 @@ class Character extends MovableObject {
         super.applyGravity();
         this.lastKeyboardEvent = new Date().getTime();
         this.sounds = {
-            snoring: SoundManager.register(new Audio('../audio/character/character-snoring.mp3')),
+            snoring: SoundManager.register(new Audio('../audio/character/character-snoring.mp3'), 0.5),
             jumping: SoundManager.register(new Audio('../audio/character/character-jumping.mp3')),
             walking: SoundManager.register(new Audio('../audio/character/character-walking.mp3')),
             hurting: SoundManager.register(new Audio('../audio/character/character-hurt.mp3')),
@@ -98,6 +97,7 @@ class Character extends MovableObject {
 
     stopGame() {
         this.intervalIds.forEach(clearInterval);
+        this.sounds.walking.pause();
     }
 
     checkTimer(timeToCheck) {
@@ -190,7 +190,7 @@ class Character extends MovableObject {
     }
 
     bounce() {
-        this.speedY = 15; 
+        this.speedY = 15;
     }
 
 }

@@ -1,6 +1,6 @@
 class Endboss extends MovableObject {
     endbossDefeated = false;
-
+    world;
     IMAGES_WALKING = [
         '../imgs/4_enemie_boss_chicken/1_walk/G1.png',
         '../imgs/4_enemie_boss_chicken/1_walk/G2.png',
@@ -39,7 +39,7 @@ class Endboss extends MovableObject {
     ];
 
     constructor(lvlLength) {
-        super().loadImage('../imgs/4_enemie_boss_chicken/1_walk/G1.png');
+        super().loadImage('../imgs/4_enemie_boss_chicken/2_alert/G5.png');
         super.loadImages(this.IMAGES_WALKING);
         super.loadImages(this.IMAGES_ALERT);
         super.loadImages(this.IMAGES_ATTACK);
@@ -48,6 +48,7 @@ class Endboss extends MovableObject {
         this.height = 300;
         this.width = this.height * 0.86;
         this.y = 80;
+        // this.x = 200;
         this.x = lvlLength - 200;
         this.speed = 0.15;
         this.offset = {
@@ -66,36 +67,64 @@ class Endboss extends MovableObject {
     }
 
     animate() {
+
+
+        // wenn character x - 500 entfernt ist, dann alert
+        // auf character zubewegen
+        // solange zubewegen bis charakter noch 150 entfernt ist
+        // playAttack
+        // 2 sec in andere richtung laufen
+        // loop von vorne
         this.endbossAnimateInterval = setInterval(() => {
-            if (this.isDead) {
-                this.animateDead();
-                clearInterval(this.endbossAnimateInterval);
-            } else if (this.isHurt()) {
-                this.animateHurt();
-            }
-            else {
-                this.animateWalking();
-            }
-        }, 200);
+            this.animateAlert();
+            // if (this.isDead) {
+            //     this.playDead();
+            //     clearInterval(this.endbossAnimateInterval);
+            // } else if (this.isHurt()) {
+            //     this.playHurt();
+            // }
+            // else {
+            //     this.animateWalking();
+            // }
+        }, 250);
     }
 
     animateWalking() {
         this.playAnimation(this.IMAGES_WALKING);
     }
 
-    animateHurt() {
+    animateAlert() {
+        this.playAnimation(this.IMAGES_ALERT);
+    }
+
+    playHurt() {
         this.sounds.hurt.play();
         this.playAnimation(this.IMAGES_HURT);
     }
 
-    animateDead() {
+    playAttack() {
+        this.sounds.attack.play();
+        setTimeout(() => {
+            this.playAnimation(this.IMAGES_ATTACK);
+        }, 500);
+    }
+
+    playDead() {
+
         this.sounds.dying.play();
         this.playAnimation(this.IMAGES_DEAD);
         this.endbossDefeated = true;
+
+
     }
 
-    endbossIsDefeated() {
-        return this.endbossDefeated
-    }
 
+
+    // getXCoordinatesEndboss() {
+    //     return this.x
+    // }
+
+    // getYCoordinatesEndboss() {
+    //     return this.y
+    // }
 }

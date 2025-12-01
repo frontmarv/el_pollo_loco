@@ -6,7 +6,6 @@ class MovableObject extends DrawableObject {
     otherDirection = false;
     isDead = false;
     lastHit = 0;
-
     intervalIds = [];
 
     setStoppableInterval(fn, time) {
@@ -53,11 +52,18 @@ class MovableObject extends DrawableObject {
     isAboveGround() {
         if (this instanceof ThrowableObject) {
             return true;
-        } else { return this.y < 102; }
+        } if (this instanceof SmallChicken) {
+            return this.y < 295
+        }
+        else { return this.y < 102; }
     }
 
     jump() {
         this.speedY = 25;
+    }
+
+    smallJump() {
+        this.speedY = 15;
     }
 
     moveRight() {

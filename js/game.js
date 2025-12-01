@@ -60,6 +60,7 @@ function hideWelcomeScreen() {
 }
 
 function showWelcomeScreen() {
+    SoundManager.resetLoadedSongs();
     init();
     if (world) {
         world.showWelcomeScreen = true;

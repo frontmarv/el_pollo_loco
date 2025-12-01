@@ -6,9 +6,9 @@ function createLvl1() {
             new Chicken(lvlLength),
             new Chicken(lvlLength),
             new Endboss(lvlLength),
-            // new SmallChicken(lvlLength),
-            // new SmallChicken(lvlLength),
-            // new SmallChicken(lvlLength)
+            new SmallChicken(lvlLength),
+            new SmallChicken(lvlLength),
+            new SmallChicken(lvlLength)
         ],
         [
             new Cloud('../imgs/5_background/layers/4_clouds/1.png', 300, lvlLength),

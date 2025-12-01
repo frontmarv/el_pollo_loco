@@ -15,7 +15,8 @@ class SmallChicken extends MovableObject {
         this.width = this.height * 1.02;
         this.y = 295;
         this.x = 200 + Math.random() * lvlLength;
-        this.speed = 0.15 + Math.random() * 0.5;
+        this.speed = 2 + Math.random() * 0.5;
+        this.speedY = 0;
         this.offset = {
             x: 5,
             y: 5,
@@ -23,12 +24,18 @@ class SmallChicken extends MovableObject {
             height: 10
         };
         this.healthPoints = 5;
+        this.sounds = {
+            dying: SoundManager.register(new Audio('../audio/enemies/small-chicken-dead.mp3'))
+        };
+        super.applyGravity();
         this.animate();
+
 
     }
 
     animate() {
-        setInterval(() => {
+        this.movingInterval = setInterval(() => {
+            if (!this.isDead) { }
             if (this.x <= 200) {
                 this.otherDirection = true;
             }
@@ -37,14 +44,38 @@ class SmallChicken extends MovableObject {
             }
             if (this.otherDirection == false) {
                 this.moveLeft();
-            } else { this.moveRight(); }
+            } else {
+                this.moveRight();
+            }
         }, 1000 / 60);
+
+        this.jumpingInterval = setInterval(() => {
+            if (!this.isAboveGround()) {
+                super.smallJump();
+            }
+        }, 2000);
+
         this.animateWalking();
+        this.playIsDead();
     }
 
     animateWalking() {
-        setInterval(() => {
+        this.walkingInterval = setInterval(() => {
             this.playAnimation(this.IMAGES_WALKING);
         }, 200);
+    }
+
+    playIsDead() {
+        setInterval(() => {
+            if (this.isDead && !this.deathSoundPlayed) {
+                clearInterval(this.movingInterval);
+                clearInterval(this.jumpingInterval);
+                clearInterval(this.walkingInterval);
+                this.sounds.dying.play();
+                this.deathSoundPlayed = true;
+                this.playAnimation(this.IMAGE_DEAD);
+                this.offset.y = 100;
+            }
+        }, 100);
     }
 }

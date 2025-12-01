@@ -4,6 +4,7 @@ class World {
     healthbar = new HealthBar();
     coinbar = new CoinBar();
     bottlebar = new BottleBar();
+    endbossHealthbar = new HealthBarEndboss();
     gameOver = new GameOverScreen();
     youWon = new WinningScreen();
     welcome = new WelcomeScreen();
@@ -62,6 +63,7 @@ class World {
         this.character.world = this;
         this.healthbar.world = this;
         this.coinbar.world = this;
+        this.endbossHealthbar.world = this;
         this.bottlebar.world = this;
         this.gameOver.world = this;
     }
@@ -216,12 +218,12 @@ class World {
 
             // fixed object camera movement
             this.ctx.translate(-this.camera_x, 0);
+            this.endbossHealthbar.drawFixedObject(this.ctx);
             this.healthbar.drawFixedObject(this.ctx);
             this.coinbar.drawFixedObject(this.ctx);
             this.bottlebar.drawFixedObject(this.ctx);
             this.ctx.translate(this.camera_x, 0);
             // until here
-
             this.addObjectsToMap(this.level.enemies);
             this.addToMap(this.character);
             this.addObjectsToMap(this.throwableObjects);

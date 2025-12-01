@@ -6,7 +6,6 @@ class DrawableObject {
     width;
     imageCache = {};
     currentImage = 0;
-    currentPosition;
     healthPoints;
     offset;
 
@@ -53,7 +52,7 @@ class DrawableObject {
     }
 
     drawOffsetFrame(ctx) {
-        if (this instanceof SmallChicken || this instanceof ThrowableObject || this instanceof Chicken) {
+        if (this instanceof SmallChicken || this instanceof Endboss) {
             ctx.lineWidth = "2";
             ctx.strokeStyle = "green";
             ctx.beginPath();

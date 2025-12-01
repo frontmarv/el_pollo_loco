@@ -1,10 +1,8 @@
-
-- small chickens movement
-- small chicken collision dmg
 - endboss attack + animations
 - endboss dying animation
 - fullscreen (canvas toggle fullscreen)
-- restart game / reset everything boss missing sometimes
+- restart game / audio reset reset everything; boss missing sometimes
+- endboss healthbar implementation
 
 
 
@@ -45,6 +43,7 @@ https://freesound.org/
 https://freesound.org/people/Benboncan/sounds/137874/
 https://freesound.org/people/pekena_larva/sounds/667292/
 https://freesound.org/people/Preacher13/sounds/673255/
+https://freesound.org/people/SieuAmThanh/sounds/639774/
 
 favicon: https://www.freepik.com/author/marzgallery/icons/2
 https://icon-icons.com/de/
