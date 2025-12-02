@@ -1,6 +1,4 @@
 class Endboss extends MovableObject {
-    endbossDefeated = false;
-    world;
     IMAGES_WALKING = [
         '../imgs/4_enemie_boss_chicken/1_walk/G1.png',
         '../imgs/4_enemie_boss_chicken/1_walk/G2.png',
@@ -47,9 +45,9 @@ class Endboss extends MovableObject {
         super.loadImages(this.IMAGES_HURT);
         this.height = 300;
         this.width = this.height * 0.86;
-        this.y = 80;
-        // this.x = 200;
-        this.x = lvlLength - 200;
+        this.y = 65;
+        this.x = 400;
+        // this.x = lvlLength - 200;
         this.speed = 0.15;
         this.offset = {
             x: 20,
@@ -77,15 +75,14 @@ class Endboss extends MovableObject {
         // loop von vorne
         this.endbossAnimateInterval = setInterval(() => {
             this.animateAlert();
-            // if (this.isDead) {
-            //     this.playDead();
-            //     clearInterval(this.endbossAnimateInterval);
-            // } else if (this.isHurt()) {
-            //     this.playHurt();
-            // }
-            // else {
-            //     this.animateWalking();
-            // }
+            if (this.isDead) {
+                this.playDead();
+            } else if (this.isHurt()) {
+                this.playHurt();
+            }
+            else {
+                this.animateWalking();
+            }
         }, 250);
     }
 
@@ -110,21 +107,17 @@ class Endboss extends MovableObject {
     }
 
     playDead() {
-
-        this.sounds.dying.play();
-        this.playAnimation(this.IMAGES_DEAD);
-        this.endbossDefeated = true;
-
-
+        if (!this.deathAnimationPlayed) {
+            this.deathAnimationPlayed = true;
+            this.sounds.dying.play();
+            let currentImageIndex = 0;
+            if (currentImageIndex < this.IMAGES_DEAD.length) {
+                this.img = this.imageCache[this.IMAGES_DEAD[currentImageIndex]];
+                currentImageIndex++;
+            } else {
+                clearInterval(endbossAnimateInterval);
+            }
+        }
     }
 
-
-
-    // getXCoordinatesEndboss() {
-    //     return this.x
-    // }
-
-    // getYCoordinatesEndboss() {
-    //     return this.y
-    // }
 }

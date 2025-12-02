@@ -9,8 +9,7 @@ class World {
     youWon = new WinningScreen();
     welcome = new WelcomeScreen();
     _showWelcomeScreen = true;
-    statusbars = [];
-    screens = [];
+    statusbars = [this.healthbar, this.coinbar, this.bottlebar, this.endbossHealthbar];
     throwableObjects = [];
     canvas;
     ctx;
@@ -44,11 +43,26 @@ class World {
     }
 
 
+    getPositionXEndboss() {
+        this.endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
+        return this.endboss.x
+    }
+
+    getDistanceCharacterEndboss() {
+        setInterval(() => {
+            this.distance = this.getPositionXEndboss() - this.character.x;
+            return this.distance
+        }, 300);
+    }
+
     startGame() {
         this.setWorld();
         this.character.animate();
         this.checkCollisions();
-        this.checkThrowObjects();
+        this.checkBottleThrow();
+        this.getPositionXEndboss();
+        this.getDistanceCharacterEndboss();
+        this.endbossHealthbar.setHealthbarPosition();
     }
 
 
@@ -68,17 +82,13 @@ class World {
         this.gameOver.world = this;
     }
 
-    checkThrowObjects() {
+    checkBottleThrow() {
         setInterval(() => {
             if (this.keyboard.THROW && this.canThrow() && this.bottlebar.percentageBottle > 0) {
                 let bottle = new ThrowableObject(this.character.x, this.character.otherDirection);
                 this.throwableObjects.push(bottle);
-                console.log(this.throwableObjects);
-
                 this.bottlebar.setPercentageBottle(-20);
                 this.lastThrow = new Date().getTime();
-
-
             }
         }, 60);
     }
@@ -91,16 +101,16 @@ class World {
     checkCollisions() {
         setInterval(() => {
             this.level.enemies.forEach((enemy, index) => {
-                this.hasCollisionWithCharacter(enemy, index);
-                this.hasCollisionWithThrowableObject(enemy, index);
+                this.hasCollisionCharacter(enemy, index);
+                this.hasCollisionThrowableObject(enemy, index);
             })
-            this.checkBottles();
-            this.checkCoins();
+            this.hasCollisionBottle();
+            this.hasCollisionCoin();
 
         }, 100);
     }
 
-    hasCollisionWithCharacter(enemy, index) {
+    hasCollisionCharacter(enemy, index) {
         if (this.character.isCollidingFromAbove(enemy)) {
             this.handleEnemyHit(enemy, index)
             this.character.bounce();
@@ -110,7 +120,7 @@ class World {
         }
     }
 
-    hasCollisionWithThrowableObject(enemy, index) {
+    hasCollisionThrowableObject(enemy, index) {
         this.throwableObjects.forEach((projectile, projectileIndex) => {
             if (enemy.isColliding(projectile) && !(enemy instanceof Chicken)) {
                 this.throwableObjects[projectileIndex].isDead = true;
@@ -132,7 +142,7 @@ class World {
         }
     }
 
-    checkBottles() {
+    hasCollisionBottle() {
         this.level.bottles.forEach((bottle, index) => {
             if (this.characterCollectsBottle(bottle)) {
                 this.handleBottleCollection(index);
@@ -140,7 +150,7 @@ class World {
         })
     }
 
-    checkCoins() {
+    hasCollisionCoin() {
         this.level.coins.forEach((collectedCoin, index) => {
             if (this.characterCollectsCoin(collectedCoin)) {
                 this.handleCoinCollection(index);
@@ -218,12 +228,10 @@ class World {
 
             // fixed object camera movement
             this.ctx.translate(-this.camera_x, 0);
-            this.endbossHealthbar.drawFixedObject(this.ctx);
-            this.healthbar.drawFixedObject(this.ctx);
-            this.coinbar.drawFixedObject(this.ctx);
-            this.bottlebar.drawFixedObject(this.ctx);
+            this.addFixedObjectsToMap(this.statusbars);
             this.ctx.translate(this.camera_x, 0);
             // until here
+
             this.addObjectsToMap(this.level.enemies);
             this.addToMap(this.character);
             this.addObjectsToMap(this.throwableObjects);
@@ -231,20 +239,10 @@ class World {
         }
 
         if (this.character.isDead) {
-            this.drawScreenWithoutEnemies(this.gameOver);
-            setTimeout(() => {
-                document.querySelector('.game-over-menu').style.display = 'flex';
-            }, 800);
-            return;
+            this.showGameOverScreen();
         }
-        if (this.level.enemies.length < 1) {
-            this.character.stopGame();
-            this.sounds.levelCompleted.play();
-            this.drawScreenWithoutEnemies(this.youWon);
-            setTimeout(() => {
-                document.querySelector('.game-over-menu').style.display = 'flex';
-            }, 800);
-            return;
+        if (this.allEnemiesDead()) {
+            this.showWinningScreen();
         }
         let self = this;
         requestAnimationFrame(function () {
@@ -252,6 +250,28 @@ class World {
         });
     }
 
+
+    showWinningScreen() {
+        this.character.stopGame();
+        this.sounds.levelCompleted.play();
+        this.drawScreenWithoutEnemies(this.youWon);
+        setTimeout(() => {
+            document.querySelector('.game-over-menu').style.display = 'flex';
+        }, 800);
+        return;
+    }
+
+    showGameOverScreen() {
+        this.drawScreenWithoutEnemies(this.gameOver);
+        setTimeout(() => {
+            document.querySelector('.game-over-menu').style.display = 'flex';
+        }, 800);
+        return;
+    }
+
+    allEnemiesDead() {
+        return this.level.enemies.length < 1
+    }
 
     drawScreenWithoutEnemies(fixedObject) {
         this.ctx.clearRect(0, 0, canvas.width, canvas.height);

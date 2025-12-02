@@ -1,51 +1,14 @@
 - endboss attack + animations
 - endboss dying animation
 - fullscreen (canvas toggle fullscreen)
-- restart game / audio reset reset everything; boss missing sometimes
+
 - endboss healthbar implementation
 
 
 
 - Wenn der Charakter springt wird eine flüssige Sprunganimation ausgeführt
 - Die Animationen des Charakters sind grundsätzlich flüssig, auch wenn er verletzt wird oder springt.
-- Pollo Loco: Der Charakter kann Flaschen werfen, normale Gegner werden bei einem Treffer getötet und dem Endboss wird Schaden zugefügt, auch die Statusbar reduziert sich nach einem Wurf. 
+- Pollo Loco: Der Charakter kann Flaschen werfen, 
+    normale Gegner werden bei einem Treffer getötet und dem Endboss wird Schaden zugefügt, 
+    auch die Statusbar reduziert sich nach einem Wurf. 
 
-
-- Es gibt mindestens 2 verschiedene Gegnertypen + den Endboss im Spiel (Größe, Geschwindigkeit, Angriffe sollten hier möglichst variieren)
-- Es gibt einen Endboss, der stärker ist als die normalen Gegner.
-- Die Animationen der Gegner sind flüssig, auch wenn sie verletzt und getötet werden.
-- Gegner, die man z.B. durch Springen besiegen kann, sollten nur sterben, wenn man von oben auf sie springt.
-- Die Gegner haben zu ihren verschiedenen Animationen auch Sounds, z.B. könnte der Endboss in EPL laut gackern, wenn er getroffen wird und Schaden erleidet.
-
-
-➤ Licence: https://creativecommons.org/licenses/by/4.0/
-
-Song: Cumbia Mexican Banda (No Copyright Sounds)
-Music provided by NCM [No Copyright Music].
-Creative Commons - Attribution 3.0 Unported | Attribution 4.0 International 
-
-https://pixabay.com/
-Image by <a href="https://pixabay.com/users/ai_solution-731298/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=5396906">AI_Solution</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=5396906">Pixabay</a>
-Sound Effect by <a href="https://pixabay.com/users/homemade_sfx-47000485/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=262616">Homemade_SFX</a> from <a href="https://pixabay.com/sound-effects//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=262616">Pixabay</a>
-Sound Effect by <a href="https://pixabay.com/users/freesound_community-46691455/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=29322">freesound_community</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=29322">Pixabay</a>
-Sound Effect by <a href="https://pixabay.com/users/floraphonic-38928062/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=198495">floraphonic</a> from <a href="https://pixabay.com/sound-effects//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=198495">Pixabay</a>
-Sound Effect by <a href="https://pixabay.com/users/the-vampires-monster-49503589/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=343103">The-Vampires-Monster Soundtrack</a> from <a href="https://pixabay.com/sound-effects//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=343103">Pixabay</a>
-Sound Effect by <a href="https://pixabay.com/users/u_r7cny11q7r-41888232/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=186763">u_r7cny11q7r</a> from <a href="https://pixabay.com/sound-effects//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=186763">Pixabay</a>
-Sound Effect by <a href="https://pixabay.com/users/ribhavagrawal-39286533/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=293320">Ribhav Agrawal</a> from <a href="https://pixabay.com/sound-effects//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=293320">Pixabay</a>
-Sound Effect by <a href="https://pixabay.com/users/ribhavagrawal-39286533/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=230517">Ribhav Agrawal</a> from <a href="https://pixabay.com/sound-effects//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=230517">Pixabay</a>
-Sound Effect by <a href="https://pixabay.com/users/alexis_gaming_cam-50011695/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=367087">ALEXIS_GAMING_CAM</a> from <a href="https://pixabay.com/sound-effects//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=367087">Pixabay</a>
-Sound Effect by <a href="https://pixabay.com/users/liecio-3298866/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=190035">LIECIO</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=190035">Pixabay</a>
-Sound Effect by <a href="https://pixabay.com/users/freesound_community-46691455/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=93075">freesound_community</a> from <a href="https://pixabay.com/sound-effects//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=93075">Pixabay</a>
-Sound Effect by <a href="https://pixabay.com/users/nikin-253338/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=171389">Nikin</a> from <a href="https://pixabay.com/sound-effects//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=171389">Pixabay</a>
-
-https://freesound.org/
-
-https://freesound.org/people/Benboncan/sounds/137874/
-https://freesound.org/people/pekena_larva/sounds/667292/
-https://freesound.org/people/Preacher13/sounds/673255/
-https://freesound.org/people/SieuAmThanh/sounds/639774/
-
-favicon: https://www.freepik.com/author/marzgallery/icons/2
-https://icon-icons.com/de/
-
-font-family     zabras

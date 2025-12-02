@@ -19,7 +19,7 @@ class SmallChicken extends MovableObject {
         this.speedY = 0;
         this.offset = {
             x: 5,
-            y: 5,
+            y: 0,
             width: 10,
             height: 10
         };
@@ -53,7 +53,7 @@ class SmallChicken extends MovableObject {
             if (!this.isAboveGround()) {
                 super.smallJump();
             }
-        }, 2000);
+        }, 1500 + Math.random() * 1000);
 
         this.animateWalking();
         this.playIsDead();
@@ -67,11 +67,13 @@ class SmallChicken extends MovableObject {
 
     playIsDead() {
         setInterval(() => {
-            if (this.isDead && !this.deathSoundPlayed) {
+            if (this.isDead) {
                 clearInterval(this.movingInterval);
                 clearInterval(this.jumpingInterval);
                 clearInterval(this.walkingInterval);
-                this.sounds.dying.play();
+                if (!this.deathSoundPlayed) {
+                    this.sounds.dying.play();
+                }
                 this.deathSoundPlayed = true;
                 this.playAnimation(this.IMAGE_DEAD);
                 this.offset.y = 100;

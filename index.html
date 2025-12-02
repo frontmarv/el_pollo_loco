@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -43,36 +43,40 @@
     </header>
     <main>
         <section>
-                <p>Here you can play the hero "Pepe" and fight some crazy chickens in the desert.</p>
-                <p>How to win the game:</p>
-                <p>Easy! Defeat all chickens in the level. How do you do that? I guess you have to find out on your own...</p>
-                <p>Tipp: For 10 collected coins you get 1 extra bottle of salsa</p>
+            <p>Here you can play the hero "Pepe" and fight some crazy chickens in the desert.</p>
+            <p>How to win the game:</p>
+            <p>Easy! Defeat all chickens in the level. How do you do that? I guess you have to find out on your own...
+            </p>
+            <p>Tipp: Collect all coins to get 1 extra bottle of salsa</p>
         </section>
-            <div class="canvas-position">
-                <div class="icons">
-                    <img id="game-volume" src="./imgs/icons/sound-on.svg" alt="icon of a keyboard"
-                        onclick="toggleSound()">
-                    <img id="instructions-icon" src="./imgs/icons/controller.svg" alt="icon of a keyboard"
-                        onclick="toggleInstructions()">
-                    <img src="./imgs/icons/open-fullscreen.svg" alt="icon of a keyboard" onclick="openFullscreen()">
-                </div>
-                <button id="start-game" class="menu-btns start-game-btn" onclick="hideWelcomeScreen()">Start Game</button>
-                <div class="game-over-menu">
-                    <button class="menu-btns" onclick="tryAgain()">Try Again</button>
-                    <button class="menu-btns" onclick="showWelcomeScreen()">Home</button>
-                </div>
-                <div id="instructions" class="instructions">
-                    <p>Move Left = Arrow Left / A</p>
-                    <p>Move Right = Arrow Right / D</p>
-                    <p>Jump = Arrow Up / W / Space </p>
-                    <p>Throw Bottle = J</p>
-                </div>
-                <canvas width="700px" height="400px" id="canvas">
-                    div
-                </canvas>
+        <div class="canvas-position">
+            <div class="icons">
+                <img id="game-volume" src="./imgs/icons/sound-on.svg" alt="icon of a keyboard" onclick="toggleSound()">
+                <img id="instructions-icon" src="./imgs/icons/controller.svg" alt="icon of a keyboard"
+                    onclick="toggleInstructions()">
+                <img src="./imgs/icons/open-fullscreen.svg" alt="icon of a keyboard" onclick="openFullscreen()">
             </div>
+            <button id="start-game" class="menu-btns start-game-btn" onclick="hideWelcomeScreen()">Start Game</button>
+            <div class="game-over-menu">
+                <button class="menu-btns" onclick="tryAgain()">Try Again</button>
+                <button class="menu-btns" onclick="showWelcomeScreen()">Home</button>
+            </div>
+            <div id="instructions" class="instructions">
+                <p>Move Left = Arrow Left / A</p>
+                <p>Move Right = Arrow Right / D</p>
+                <p>Jump = Arrow Up / W / Space </p>
+                <p>Throw Bottle = J</p>
+            </div>
+            <canvas width="700px" height="400px" id="canvas">
+                div
+            </canvas>
+        </div>
     </main>
     <footer>
+        <div class="link-wrapper">
+            <a href="./pages/impressum.html"><span>Impressum</span></a>
+            <a href="./pages/copyright.html"><span>Copyright</span></a>
+        </div>
     </footer>
 
 </body>

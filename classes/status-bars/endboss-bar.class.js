@@ -14,8 +14,8 @@ class HealthBarEndboss extends DrawableObject {
     constructor() {
         super().loadImage('../imgs/7_statusbars/2_statusbar_endboss/blue/blue100.png');
         super.loadImages(this.IMAGES_HEALTH);
-        this.x = 300;
-        this.y = 20;
+        this.x = lvlLength - 200;
+        this.y = 50;
         this.height = 40;
         this.width = this.height * 3.8;
         this.percentageHealth = 100;
@@ -28,6 +28,11 @@ class HealthBarEndboss extends DrawableObject {
         this.img = this.imageCache[path];
     }
 
-
-
+    setHealthbarPosition() {
+        setInterval(() => {
+            this.x = this.world.getPositionXEndboss() + 60;
+        }, 300);
+    }
 }
+
+

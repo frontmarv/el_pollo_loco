@@ -62,7 +62,10 @@ class ThrowableObject extends MovableObject {
         setInterval(() => {
             if (this.isDead && this.y < 500) {
                 clearInterval(this.throwingInterval);
-                this.sounds.splash.play();
+                if (!this.splashhSoundPlayed) {
+                    this.sounds.splash.play();
+                }
+                this.splashhSoundPlayed = true;
                 this.playSplashAnimation();
             }
         }, 1000 / 60);

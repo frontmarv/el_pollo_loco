@@ -19,6 +19,7 @@ class HealthBar extends DrawableObject {
         this.height = 40;
         this.width = this.height * 3.8;
         this.percentageHealth = 100;
+
     }
 
     setPercentageHealth(percentage) {
@@ -27,4 +28,5 @@ class HealthBar extends DrawableObject {
         let path = this.IMAGES_HEALTH[index];
         this.img = this.imageCache[path];
     }
+
 }
