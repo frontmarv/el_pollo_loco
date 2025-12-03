@@ -46,44 +46,62 @@ class Endboss extends MovableObject {
         this.height = 300;
         this.width = this.height * 0.86;
         this.y = 65;
-        this.x = 400;
+        this.x = 1000;
         // this.x = lvlLength - 200;
-        this.speed = 0.15;
+        this.speed = 6;
         this.offset = {
             x: 20,
             y: 50,
             width: 30,
             height: 60
         };
-        this.healthPoints = 25;
+        this.dyingSoundPlayed;
+        this.healthPoints = 35;
+        this.firstContactWithCharacter = true;
+        this.lastAttack = 0;
+        this.attackFramesPlayed = 0;
+        this.alertFramesPlayed = 0;
         this.sounds = {
             hurt: SoundManager.register(new Audio('../audio/enemies/endboss-hurt.mp3')),
             attack: SoundManager.register(new Audio('../audio/enemies/endboss-attack.mp3')),
             dying: SoundManager.register(new Audio('../audio/enemies/chicken-dying.mp3'))
         };
-        this.animate();
+        super.applyGravity();
     }
 
+
+
     animate() {
+        setInterval(() => {
+            console.log(
+                this.isAboveGround());
 
+        }, 400);
 
-        // wenn character x - 500 entfernt ist, dann alert
-        // auf character zubewegen
-        // solange zubewegen bis charakter noch 150 entfernt ist
-        // playAttack
-        // 2 sec in andere richtung laufen
-        // loop von vorne
-        this.endbossAnimateInterval = setInterval(() => {
-            this.animateAlert();
-            if (this.isDead) {
-                this.playDead();
-            } else if (this.isHurt()) {
-                this.playHurt();
+        setInterval(() => {
+            if (this.world.getDistanceCharacterEndboss() < 520 && this.firstContactWithCharacter) {
+                this.animateAlert();
+                this.alertFramesPlayed++;
+                if (this.alertFramesPlayed >= 16) {
+                    this.firstContactWithCharacter = false;
+                }
             }
-            else {
-                this.animateWalking();
+            if (!this.isAboveGround()) { this.speed = 6 }
+            if (!this.firstContactWithCharacter) {
+                if (this.characterIsInRange() && this.readyForNextAttack()) {
+                    this.playAttack();
+                }
+                else if (this.world.getDistanceCharacterEndboss() > 0) {
+                    this.moveLeft();
+                    this.otherDirection = false;
+                    this.animateWalking();
+                } else {
+                    this.moveRight();
+                    this.otherDirection = true;
+                    this.animateWalking();
+                }
             }
-        }, 250);
+        }, 80);
     }
 
     animateWalking() {
@@ -101,23 +119,30 @@ class Endboss extends MovableObject {
 
     playAttack() {
         this.sounds.attack.play();
-        setTimeout(() => {
-            this.playAnimation(this.IMAGES_ATTACK);
-        }, 500);
-    }
-
-    playDead() {
-        if (!this.deathAnimationPlayed) {
-            this.deathAnimationPlayed = true;
-            this.sounds.dying.play();
-            let currentImageIndex = 0;
-            if (currentImageIndex < this.IMAGES_DEAD.length) {
-                this.img = this.imageCache[this.IMAGES_DEAD[currentImageIndex]];
-                currentImageIndex++;
-            } else {
-                clearInterval(endbossAnimateInterval);
-            }
+        this.playAnimation(this.IMAGES_ATTACK);
+        this.attackFramesPlayed++;
+        if (this.attackFramesPlayed >= 8) {
+            this.speed = this.speed * 3; 
+            this.jump();
+            this.lastAttack = new Date().getTime();
+            this.attackFramesPlayed = 0;
         }
     }
 
+    playDead() {
+        if (!this.dyingSoundPlayed) {
+            this.sounds.dying.play();
+            this.dyingSoundPlayed = true;
+        }
+        this.playAnimationOnce(this.IMAGES_DEAD, 3);
+    }
+
+    readyForNextAttack() {
+        let timePassed = new Date().getTime() - this.lastAttack;
+        return timePassed > 2500;
+    }
+
+    characterIsInRange() {
+        return Math.abs(this.world.getDistanceCharacterEndboss()) <= 250
+    }
 }

@@ -1,14 +1,19 @@
 - endboss attack + animations
-- endboss dying animation
+
 - fullscreen (canvas toggle fullscreen)
 
-- endboss healthbar implementation
-
+- dying animation endboss -> flag einbauen dass erst animation beenden, dann winning screen;
+- dying animation character -> flag einbauen dass erst animation beenden, dann winning screen;
 
 
 - Wenn der Charakter springt wird eine flüssige Sprunganimation ausgeführt
-- Die Animationen des Charakters sind grundsätzlich flüssig, auch wenn er verletzt wird oder springt.
-- Pollo Loco: Der Charakter kann Flaschen werfen, 
-    normale Gegner werden bei einem Treffer getötet und dem Endboss wird Schaden zugefügt, 
-    auch die Statusbar reduziert sich nach einem Wurf. 
 
+
+
+Es gibt die Möglichkeit, im Querformat auf einem Mobilgerät zu spielen.
+Es gibt nur in der Mobilansicht extra Buttons, um auf dem Mobilgerät (Smartphone  / Tablet) zu spielen.
+Das Kontextmenü (Rechtsklick / Touch-and-Hold) ist bei den Mobile-Touch-Buttons deaktiviert.
+Wenn das Gerät hochkant gehalten wird, sollte eine Meldung anzeigen, dass das Gerät gedreht werden muss, um spielen zu können.
+
+- timer
+- schwierigkeitsgrad

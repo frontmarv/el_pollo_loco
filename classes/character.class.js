@@ -54,9 +54,7 @@ class Character extends MovableObject {
         '../imgs/2_character_pepe/5_dead/D-56.png',
         '../imgs/2_character_pepe/5_dead/D-57.png',
     ];
-    sounds;
-    world;
-    isDead = false;
+
     lastKeyboardEvent = 0;
     animationAlreadyPlayed = false;
 

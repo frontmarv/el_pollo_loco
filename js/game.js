@@ -60,6 +60,7 @@ function hideWelcomeScreen() {
 }
 
 function showWelcomeScreen() {
+    world = null;
     SoundManager.resetLoadedSongs();
     init();
     if (world) {
@@ -98,6 +99,14 @@ function unmuteAllSounds() {
     document.getElementById('game-volume').src = './imgs/icons/sound-on.svg';
 }
 
+document.addEventListener('click', (event) => {
+
+    if (document.getElementById('instructions').style.display === 'block' &&
+        !document.getElementById('instructions').contains(event.target) &&
+        !document.getElementById('instructions-icon').contains(event.target)) {
+        hideInstructions();
+    }
+});
 
 function toggleInstructions() {
     document.getElementById('instructions').style.display === 'block' ? hideInstructions() : showInstructions();
@@ -114,6 +123,7 @@ function hideInstructions() {
 }
 
 function tryAgain() {
+    world = null;
     SoundManager.resetLoadedSongs();
     init();
     hideWelcomeScreen();

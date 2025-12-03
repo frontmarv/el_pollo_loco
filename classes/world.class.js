@@ -8,9 +8,13 @@ class World {
     gameOver = new GameOverScreen();
     youWon = new WinningScreen();
     welcome = new WelcomeScreen();
-    _showWelcomeScreen = true;
-    statusbars = [this.healthbar, this.coinbar, this.bottlebar, this.endbossHealthbar];
+    statusbars = [this.healthbar, this.coinbar, this.bottlebar];
+    endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
     throwableObjects = [];
+    _isRunning = true;
+    _showWelcomeScreen = true;
+    winningSoundPlayed = false;
+
     canvas;
     ctx;
     keyboard;
@@ -44,24 +48,21 @@ class World {
 
 
     getPositionXEndboss() {
-        this.endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
         return this.endboss.x
     }
 
     getDistanceCharacterEndboss() {
-        setInterval(() => {
-            this.distance = this.getPositionXEndboss() - this.character.x;
-            return this.distance
-        }, 300);
+        this.distance = this.getPositionXEndboss() + 114 - this.character.x;
+        return this.distance
+
     }
 
     startGame() {
         this.setWorld();
         this.character.animate();
+        this.endboss.animate();
         this.checkCollisions();
         this.checkBottleThrow();
-        this.getPositionXEndboss();
-        this.getDistanceCharacterEndboss();
         this.endbossHealthbar.setHealthbarPosition();
     }
 
@@ -74,11 +75,10 @@ class World {
 
     setWorld() {
         this.level.world = this;
+        this.level.enemies.forEach(enemy => enemy.world = this);
         this.character.world = this;
-        this.healthbar.world = this;
-        this.coinbar.world = this;
+        this.statusbars.forEach(bar => bar.world = this);
         this.endbossHealthbar.world = this;
-        this.bottlebar.world = this;
         this.gameOver.world = this;
     }
 
@@ -127,14 +127,18 @@ class World {
                 this.handleEnemyHit(enemy, index);
                 setTimeout(() => {
                     this.throwableObjects = this.throwableObjects.filter(obj => !obj.isDead);
-                }, 500);
+                }, 300);
             }
         });
     }
 
     handleEnemyHit(enemy, index) {
-        if (!enemy.isHurt())
+        if (!enemy.isHurt()) {
             enemy.isHit();
+            if (enemy instanceof Endboss) {
+                this.endbossHealthbar.deductPercentageHealth(16);
+            }
+        }
         if (enemy.wasKilled()) {
             setTimeout(() => {
                 this.level.enemies.splice(index, 1);
@@ -145,7 +149,7 @@ class World {
     hasCollisionBottle() {
         this.level.bottles.forEach((bottle, index) => {
             if (this.characterCollectsBottle(bottle)) {
-                this.handleBottleCollection(index);
+                this.bottlebar.handleBottleCollection(index);
             }
         })
     }
@@ -153,7 +157,7 @@ class World {
     hasCollisionCoin() {
         this.level.coins.forEach((collectedCoin, index) => {
             if (this.characterCollectsCoin(collectedCoin)) {
-                this.handleCoinCollection(index);
+                this.coinbar.handleCoinCollection(index);
             }
         })
     }
@@ -162,22 +166,8 @@ class World {
         return this.character.isColliding(collectedCoin);
     }
 
-    handleCoinCollection(index) {
-        this.coinbar.sound.pickupCoin.currentTime = 0;
-        this.coinbar.sound.pickupCoin.play();
-        this.level.coins.splice(index, 1);
-        this.coinbar.setPercentageCoin(10);
-    }
-
     characterCollectsBottle(bottle) {
         return this.character.isColliding(bottle)
-    }
-
-    handleBottleCollection(index) {
-        this.bottlebar.sound.collectBottle.currentTime = 0;
-        this.bottlebar.sound.collectBottle.play();
-        this.level.bottles.splice(index, 1);
-        this.bottlebar.setPercentageBottle(20);
     }
 
     addToMap(mo) {
@@ -215,12 +205,11 @@ class World {
     }
 
     draw() {
+        if (!this._isRunning) return;
         if (this.showWelcomeScreen) { this.drawWelcomeScreen(); }
         else {
             this.ctx.clearRect(0, 0, canvas.width, canvas.height);
-
             this.ctx.translate(this.camera_x, 0);
-
             this.addObjectsToMap(this.level.background);
             this.addObjectsToMap(this.level.clouds);
             this.addFixedObjectsToMap(this.level.coins);
@@ -233,16 +222,17 @@ class World {
             // until here
 
             this.addObjectsToMap(this.level.enemies);
+            if (!(this.endboss.isDead)) { this.endbossHealthbar.drawFixedObject(this.ctx); }
             this.addToMap(this.character);
             this.addObjectsToMap(this.throwableObjects);
             this.ctx.translate(-this.camera_x, 0);
-        }
 
-        if (this.character.isDead) {
-            this.showGameOverScreen();
-        }
-        if (this.allEnemiesDead()) {
-            this.showWinningScreen();
+            if (this.character.isDead) {
+                this.showGameOverScreen();
+            }
+            if (this.allEnemiesDead()) {
+                this.showWinningScreen();
+            }
         }
         let self = this;
         requestAnimationFrame(function () {
@@ -253,20 +243,25 @@ class World {
 
     showWinningScreen() {
         this.character.stopGame();
-        this.sounds.levelCompleted.play();
+        if (!this.winningSoundPlayed) {
+            this.sounds.levelCompleted.play();
+            setTimeout(() => {
+                document.querySelector('.game-over-menu').style.display = 'flex';
+            }, 800);
+            this.winningSoundPlayed = true;
+        }
         this.drawScreenWithoutEnemies(this.youWon);
-        setTimeout(() => {
-            document.querySelector('.game-over-menu').style.display = 'flex';
-        }, 800);
-        return;
+
     }
 
     showGameOverScreen() {
         this.drawScreenWithoutEnemies(this.gameOver);
-        setTimeout(() => {
-            document.querySelector('.game-over-menu').style.display = 'flex';
-        }, 800);
-        return;
+        if (!this.gameOverShown) {
+            this.gameOverShown = true;
+            setTimeout(() => {
+                document.querySelector('.game-over-menu').style.display = 'flex';
+            }, 800);
+        }
     }
 
     allEnemiesDead() {

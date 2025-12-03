@@ -21,11 +21,12 @@ class HealthBarEndboss extends DrawableObject {
         this.percentageHealth = 100;
     }
 
-    setPercentageHealth(percentage) {
-        this.percentageHealth = percentage;
-        let index = this.resolveImgIndex(percentage);
+    deductPercentageHealth(percentage) {
+        this.percentageHealth -= percentage;
+        let index = this.resolveImgIndex(this.percentageHealth);
         let path = this.IMAGES_HEALTH[index];
         this.img = this.imageCache[path];
+        console.log(this.percentageHealth);
     }
 
     setHealthbarPosition() {

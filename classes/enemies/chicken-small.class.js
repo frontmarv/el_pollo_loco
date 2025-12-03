@@ -24,6 +24,7 @@ class SmallChicken extends MovableObject {
             height: 10
         };
         this.healthPoints = 5;
+        deathSoundPlayed;
         this.sounds = {
             dying: SoundManager.register(new Audio('../audio/enemies/small-chicken-dead.mp3'))
         };
