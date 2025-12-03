@@ -41,7 +41,6 @@ class BottleBar extends DrawableObject {
     }
 
     canThrow() {
-        let timePassed = new Date().getTime() - this.lastThrow;
-        return timePassed > 1000;
+        return this.checkTimer(this.lastThrow, 1);
     }
 }

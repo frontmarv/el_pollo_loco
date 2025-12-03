@@ -60,7 +60,7 @@ function hideWelcomeScreen() {
 }
 
 function showWelcomeScreen() {
-    world = null;
+    world.stopGame();
     SoundManager.resetLoadedSongs();
     init();
     if (world) {
@@ -70,6 +70,13 @@ function showWelcomeScreen() {
     hideGameOverMenu();
 }
 
+function tryAgain() {
+    world.stopGame();
+    SoundManager.resetLoadedSongs();
+    init();
+    hideWelcomeScreen();
+    hideGameOverMenu();
+}
 
 function initializeSoundState() {
     const gameMuted = localStorage.getItem("gameMuted") === 'true';
@@ -120,14 +127,6 @@ function showInstructions() {
 function hideInstructions() {
     document.getElementById('instructions').style.display = 'none';
     document.getElementById('instructions-icon').style.backgroundColor = 'transparent';
-}
-
-function tryAgain() {
-    world = null;
-    SoundManager.resetLoadedSongs();
-    init();
-    hideWelcomeScreen();
-    hideGameOverMenu();
 }
 
 function hideGameOverMenu() {

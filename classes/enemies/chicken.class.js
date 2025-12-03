@@ -31,7 +31,7 @@ class Chicken extends MovableObject {
     animate() {
         this.moveInterval = setInterval(() => {
             if (this.healthPoints <= 0) {
-                this.stopAnimation();
+                this.clearIntervalsChicken();
                 this.chickenDeadAnimation();
                 return;
             }
@@ -55,7 +55,7 @@ class Chicken extends MovableObject {
         }, 200);
     }
 
-    stopAnimation() {
+    clearIntervalsChicken() {
         clearInterval(this.moveInterval);
         clearInterval(this.walkingInterval);
     }

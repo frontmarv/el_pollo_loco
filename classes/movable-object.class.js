@@ -38,7 +38,7 @@ class MovableObject extends DrawableObject {
     }
 
     applyGravity() {
-        setInterval(() => {
+        this.applyGravityInterVal = setInterval(() => {
             if (this.isAboveGround() || this.speedY > 0)
                 this.y -= this.speedY;
             this.speedY -= this.acceleration;
@@ -54,7 +54,7 @@ class MovableObject extends DrawableObject {
             return true;
         } if (this instanceof SmallChicken) {
             return this.y < 295
-        } if (this instanceof Endboss){
+        } if (this instanceof Endboss) {
             return this.y < 65
         }
         else { return this.y < 102; }
@@ -74,6 +74,12 @@ class MovableObject extends DrawableObject {
 
     moveLeft() {
         this.x -= this.speed;
+    }
+
+    checkTimer(timeToCheck, valueToCheckAgainst) {
+        let timePassed = new Date().getTime() - timeToCheck;
+        timePassed = timePassed / 1000;
+        return timePassed > valueToCheckAgainst
     }
 
 }

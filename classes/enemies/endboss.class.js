@@ -46,8 +46,8 @@ class Endboss extends MovableObject {
         this.height = 300;
         this.width = this.height * 0.86;
         this.y = 65;
-        this.x = 1000;
-        // this.x = lvlLength - 200;
+        // this.x = 1000;
+        this.x = lvlLength - 200;
         this.speed = 6;
         this.offset = {
             x: 20,
@@ -56,7 +56,7 @@ class Endboss extends MovableObject {
             height: 60
         };
         this.dyingSoundPlayed;
-        this.healthPoints = 35;
+        this.healthPoints = 15;
         this.firstContactWithCharacter = true;
         this.lastAttack = 0;
         this.attackFramesPlayed = 0;
@@ -69,22 +69,14 @@ class Endboss extends MovableObject {
         super.applyGravity();
     }
 
-
+    stopEndbossIntervals() {
+        clearInterval(this.EndbossAnimationInterval);
+    }
 
     animate() {
-        setInterval(() => {
-            console.log(
-                this.isAboveGround());
-
-        }, 400);
-
-        setInterval(() => {
-            if (this.world.getDistanceCharacterEndboss() < 520 && this.firstContactWithCharacter) {
-                this.animateAlert();
-                this.alertFramesPlayed++;
-                if (this.alertFramesPlayed >= 16) {
-                    this.firstContactWithCharacter = false;
-                }
+        this.EndbossAnimationInterval = setInterval(() => {
+            if (this.isFirstContactWithCharacter()) {
+                this.handleFirstContact();
             }
             if (!this.isAboveGround()) { this.speed = 6 }
             if (!this.firstContactWithCharacter) {
@@ -92,16 +84,24 @@ class Endboss extends MovableObject {
                     this.playAttack();
                 }
                 else if (this.world.getDistanceCharacterEndboss() > 0) {
-                    this.moveLeft();
-                    this.otherDirection = false;
-                    this.animateWalking();
+                    this.walkLeft();
                 } else {
-                    this.moveRight();
-                    this.otherDirection = true;
-                    this.animateWalking();
+                    this.walkRight();
                 }
             }
         }, 80);
+    }
+
+    isFirstContactWithCharacter() {
+        return this.world.getDistanceCharacterEndboss() < 520 && this.firstContactWithCharacter
+    }
+
+    handleFirstContact() {
+        this.animateAlert();
+        this.alertFramesPlayed++;
+        if (this.alertFramesPlayed >= 16) {
+            this.firstContactWithCharacter = false;
+        }
     }
 
     animateWalking() {
@@ -110,6 +110,18 @@ class Endboss extends MovableObject {
 
     animateAlert() {
         this.playAnimation(this.IMAGES_ALERT);
+    }
+
+    walkLeft() {
+        this.moveLeft();
+        this.otherDirection = false;
+        this.animateWalking();
+    }
+
+    walkRight() {
+        this.moveRight();
+        this.otherDirection = true;
+        this.animateWalking();
     }
 
     playHurt() {
@@ -122,7 +134,7 @@ class Endboss extends MovableObject {
         this.playAnimation(this.IMAGES_ATTACK);
         this.attackFramesPlayed++;
         if (this.attackFramesPlayed >= 8) {
-            this.speed = this.speed * 3; 
+            this.speed = this.speed * 3;
             this.jump();
             this.lastAttack = new Date().getTime();
             this.attackFramesPlayed = 0;
@@ -138,8 +150,7 @@ class Endboss extends MovableObject {
     }
 
     readyForNextAttack() {
-        let timePassed = new Date().getTime() - this.lastAttack;
-        return timePassed > 2500;
+        return this.checkTimer(this.lastAttack, 2.5);
     }
 
     characterIsInRange() {

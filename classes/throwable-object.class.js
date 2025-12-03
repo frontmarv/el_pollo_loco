@@ -46,6 +46,11 @@ class ThrowableObject extends MovableObject {
         this.checkIfSplashed();
     }
 
+    stopBottleIntervals(){
+        clearInterval(this.throwingInterval);
+        clearInterval(this.splashingInverval);
+    }
+
     throwBottle() {
         this.throwingInterval = setInterval(() => {
             if (this.otherDirection) { this.x -= this.speed; }
@@ -59,7 +64,7 @@ class ThrowableObject extends MovableObject {
     }
 
     checkIfSplashed() {
-        setInterval(() => {
+        this.splashingInverval = setInterval(() => {
             if (this.isDead && this.y < 500) {
                 clearInterval(this.throwingInterval);
                 if (!this.splashhSoundPlayed) {

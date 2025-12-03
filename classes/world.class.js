@@ -14,7 +14,6 @@ class World {
     _isRunning = true;
     _showWelcomeScreen = true;
     winningSoundPlayed = false;
-
     canvas;
     ctx;
     keyboard;
@@ -47,12 +46,13 @@ class World {
     }
 
 
-    getPositionXEndboss() {
-        return this.endboss.x
+    getPositionEndboss() {
+        return { x: this.endboss.x, y: this.endboss.y };
     }
 
     getDistanceCharacterEndboss() {
-        this.distance = this.getPositionXEndboss() + 114 - this.character.x;
+        this.position = this.getPositionEndboss();
+        this.distance = this.position.x + 114 - this.character.x;
         return this.distance
 
     }
@@ -64,6 +64,19 @@ class World {
         this.checkCollisions();
         this.checkBottleThrow();
         this.endbossHealthbar.setHealthbarPosition();
+    }
+
+    stopGame() {
+        this._isRunning = false;
+        this.level.enemies.forEach((enemy) => {
+            if (!enemy instanceof Chicken) {
+                enemy.clearInterval(this.applyGravityInterVal)
+            }
+        });
+        this.character.stopCharacterIntervals();
+        clearInterval(this.endbossHealthbar.endbossHealthbarInterval);
+        this.endboss.stopEndbossIntervals();
+
     }
 
 
@@ -126,6 +139,7 @@ class World {
                 this.throwableObjects[projectileIndex].isDead = true;
                 this.handleEnemyHit(enemy, index);
                 setTimeout(() => {
+                    projectile.stopBottleIntervals();
                     this.throwableObjects = this.throwableObjects.filter(obj => !obj.isDead);
                 }, 300);
             }
@@ -205,7 +219,7 @@ class World {
     }
 
     draw() {
-        if (!this._isRunning) return;
+        if (!this._isRunning) { cancelAnimationFrame(this.animationloop) };
         if (this.showWelcomeScreen) { this.drawWelcomeScreen(); }
         else {
             this.ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -235,14 +249,14 @@ class World {
             }
         }
         let self = this;
-        requestAnimationFrame(function () {
+        this.animationloop = requestAnimationFrame(function () {
             self.draw();
         });
     }
 
 
     showWinningScreen() {
-        this.character.stopGame();
+        this.character.stopCharacterIntervals();
         if (!this.winningSoundPlayed) {
             this.sounds.levelCompleted.play();
             setTimeout(() => {

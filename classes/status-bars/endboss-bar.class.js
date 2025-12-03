@@ -26,13 +26,14 @@ class HealthBarEndboss extends DrawableObject {
         let index = this.resolveImgIndex(this.percentageHealth);
         let path = this.IMAGES_HEALTH[index];
         this.img = this.imageCache[path];
-        console.log(this.percentageHealth);
     }
 
     setHealthbarPosition() {
-        setInterval(() => {
-            this.x = this.world.getPositionXEndboss() + 60;
-        }, 300);
+        this.endbossHealthbarInterval = setInterval(() => {
+            this.position = this.world.getPositionEndboss();
+            this.x = this.position.x + 60;
+            this.y = this.position.y - 15;
+        }, 80);
     }
 }
 

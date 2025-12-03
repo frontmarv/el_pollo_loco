@@ -24,19 +24,23 @@ class SmallChicken extends MovableObject {
             height: 10
         };
         this.healthPoints = 5;
-        deathSoundPlayed;
+        this.deathSoundPlayed;
         this.sounds = {
             dying: SoundManager.register(new Audio('../audio/enemies/small-chicken-dead.mp3'))
         };
         super.applyGravity();
         this.animate();
-
-
     }
 
     animate() {
+        this.handleChickenMovement();
+        this.letChickenJump();
+        this.animateWalking();
+        this.playIsDead();
+    }
+
+    handleChickenMovement() {
         this.movingInterval = setInterval(() => {
-            if (!this.isDead) { }
             if (this.x <= 200) {
                 this.otherDirection = true;
             }
@@ -48,16 +52,7 @@ class SmallChicken extends MovableObject {
             } else {
                 this.moveRight();
             }
-        }, 1000 / 60);
-
-        this.jumpingInterval = setInterval(() => {
-            if (!this.isAboveGround()) {
-                super.smallJump();
-            }
-        }, 1500 + Math.random() * 1000);
-
-        this.animateWalking();
-        this.playIsDead();
+        }, 30);
     }
 
     animateWalking() {
@@ -66,12 +61,20 @@ class SmallChicken extends MovableObject {
         }, 200);
     }
 
+    letChickenJump() {
+        this.jumpingInterval = setInterval(() => {
+            if (!this.isAboveGround()) {
+                super.smallJump();
+            }
+        }, 1500 + Math.random() * 1000);
+    }
+
+
+
     playIsDead() {
-        setInterval(() => {
+        this.dyingInterval = setInterval(() => {
             if (this.isDead) {
-                clearInterval(this.movingInterval);
-                clearInterval(this.jumpingInterval);
-                clearInterval(this.walkingInterval);
+                this.stopSmallChickenIntervals();
                 if (!this.deathSoundPlayed) {
                     this.sounds.dying.play();
                 }
@@ -80,5 +83,10 @@ class SmallChicken extends MovableObject {
                 this.offset.y = 100;
             }
         }, 100);
+    }
+
+    stopSmallChickenIntervals() {
+        clearInterval(this.movingInterval);
+        clearInterval(this.jumpingInterval);
     }
 }
