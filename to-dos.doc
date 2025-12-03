@@ -8,12 +8,8 @@
 
 - Wenn der Charakter springt wird eine flüssige Sprunganimation ausgeführt
 
+- Das Kontextmenü (Rechtsklick / Touch-and-Hold) ist bei den Mobile-Touch-Buttons deaktiviert.
 
-
-Es gibt die Möglichkeit, im Querformat auf einem Mobilgerät zu spielen.
-Es gibt nur in der Mobilansicht extra Buttons, um auf dem Mobilgerät (Smartphone  / Tablet) zu spielen.
-Das Kontextmenü (Rechtsklick / Touch-and-Hold) ist bei den Mobile-Touch-Buttons deaktiviert.
-Wenn das Gerät hochkant gehalten wird, sollte eine Meldung anzeigen, dass das Gerät gedreht werden muss, um spielen zu können.
 
 - timer
 - schwierigkeitsgrad

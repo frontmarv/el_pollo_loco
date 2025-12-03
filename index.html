@@ -32,9 +32,7 @@
     <script src="./classes/level.class.js"></script>
     <script src="./levels/level1.js"></script>
 
-
-
-    <script src="./js/game.js"></script>
+    <script src="./js/game.js" defer></script>
 </head>
 
 <body onload="init()">
@@ -42,12 +40,20 @@
         <h1>El Pollo Loco</h1>
     </header>
     <main>
-        <section>
+        <section class="game-introduction">
             <p>Here you can play the hero "Pepe" and fight some crazy chickens in the desert.</p>
             <p>How to win the game:</p>
             <p>Easy! Defeat all chickens in the level. How do you do that? I guess you have to find out on your own...
             </p>
             <p>Tipp: Collect all coins to get 1 extra bottle of salsa</p>
+        </section>
+        <section class="turn-phone">
+            To play the game please turn your device
+            <div class="img-wrapper">
+                <img class="phone-portrait" src="./imgs/icons/phone-portrait.png" alt="a black phone in portrait mode">
+                <img class="arrow-right" src="./imgs/icons/right-arrow.png" alt="Arrow pointing right ">
+                <img class="phone-landscape" src="./imgs/icons/phone-landscape.png" alt="a black phone in landscape mode">
+            </div>
         </section>
         <div class="canvas-position">
             <div class="icons">
@@ -70,6 +76,16 @@
             <canvas width="700px" height="400px" id="canvas">
                 div
             </canvas>
+            <div id="mobile-play-btns" class="mobile-play-btns">
+                <div>
+                    <img id="move-left-mobile" src="./imgs/icons/left-arrow.png" alt="Arrow pointing left">
+                    <img id="move-right-mobile" src="./imgs/icons/right-arrow.png" alt="Arrow pointing right ">
+                </div>
+                <div>
+                    <img id="attack-mobile" src="./imgs/icons/lightning-bolt.png" alt="Lightning">
+                    <img id="jump-mobile" src="./imgs/icons/up-arrow.png" alt="Arrow pointing up">
+                </div>
+            </div>
         </div>
     </main>
     <footer>

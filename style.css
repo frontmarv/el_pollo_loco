@@ -58,10 +58,11 @@ section a {
 }
 
 .canvas-position {
+    display: flex;
     position: relative;
 }
 
-img {
+.icons img {
     width: 25px;
     aspect-ratio: 1/1;
     padding: 5px 5px;
@@ -69,6 +70,26 @@ img {
 
 img:hover {
     cursor: pointer;
+}
+
+.img-wrapper {
+    padding-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.phone-portrait {
+    width: 100px;
+}
+
+.arrow-right {
+    width: 50px;
+}
+
+.phone-landscape {
+    width: 200px;
 }
 
 .instructions {
@@ -171,8 +192,30 @@ li a {
     overflow-wrap: break-word;
 }
 
+.mobile-play-btns {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
 
-@media only screen and (max-width: 720px) {
+.mobile-play-btns img {
+    width: 50px;
+}
+
+.mobile-play-btns div {
+    padding: 0 2rem;
+}
+
+.game-introduction {
+    display: flex;
+}
+
+
+@media only screen and (orientation: portrait) and (max-width: 1024px) {
     section {
         font-size: 16px;
     }
@@ -181,17 +224,58 @@ li a {
         font-size: 5rem;
     }
 
-    canvas {
-        width: 100%;
+    .canvas-position {
+        display: none;
     }
 }
 
-@media only screen and (max-height: 480px) {
+
+
+@media only screen and (max-height: 400px) and (orientation: landscape) {
+    canvas {
+        height: 100vh;
+    }
+}
+
+@media (orientation: landscape) and (max-width: 1024px) {
     header {
         display: none;
     }
 
-    canvas {
-        height: 100vh;
+    main {
+        justify-content: center;
     }
+
+    .game-introduction {
+        display: none;
+    }
+
+    footer {
+        display: none;
+    }
+
+    .canvas-position {
+        display: block;
+    }
+
+    .turn-phone{display: none;}
+}
+
+@media only screen and (max-width: 500px) {
+    .phone-portrait {
+        width: 70px;
+    }
+
+    .arrow-right {
+        width: 30px;
+    }
+
+    .phone-landscape {
+        width: 140px;
+    }
+
+    section {
+        margin: 1rem;
+    }
+
 }

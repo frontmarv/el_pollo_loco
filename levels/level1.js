@@ -2,9 +2,9 @@ const lvlLength = 2000;
 function createLvl1() {
     return new Level(
         [
-            new Chicken(lvlLength),
-            new Chicken(lvlLength),
-            new Chicken(lvlLength),
+            // new Chicken(lvlLength),
+            // new Chicken(lvlLength),
+            // new Chicken(lvlLength),
             new Endboss(lvlLength),
             new SmallChicken(lvlLength),
             new SmallChicken(lvlLength),

@@ -18,9 +18,9 @@ class SmallChicken extends MovableObject {
         this.speed = 2 + Math.random() * 0.5;
         this.speedY = 0;
         this.offset = {
-            x: 5,
+            x: 2,
             y: 0,
-            width: 10,
+            width: 6,
             height: 10
         };
         this.healthPoints = 5;
@@ -44,7 +44,7 @@ class SmallChicken extends MovableObject {
             if (this.x <= 200) {
                 this.otherDirection = true;
             }
-            if (this.x >= 1000) {
+            if (this.x >= lvlLength) {
                 this.otherDirection = false;
             }
             if (this.otherDirection == false) {
@@ -52,7 +52,7 @@ class SmallChicken extends MovableObject {
             } else {
                 this.moveRight();
             }
-        }, 30);
+        }, 1000/60);
     }
 
     animateWalking() {

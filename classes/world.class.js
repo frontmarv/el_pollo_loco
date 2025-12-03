@@ -156,6 +156,7 @@ class World {
         if (enemy.wasKilled()) {
             setTimeout(() => {
                 this.level.enemies.splice(index, 1);
+                this.level.enemies = this.level.enemies.filter(enemy => !enemy.isDead);
             }, 1000);
         }
     }

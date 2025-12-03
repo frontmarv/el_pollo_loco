@@ -28,6 +28,43 @@ window.addEventListener('keyup', (event) => {
     if (KEYS[event.code]) keyboard[KEYS[event.code]] = false;
 });
 
+// Mobile touch controls
+document.getElementById('move-left-mobile').addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    keyboard.LEFT = true;
+});
+document.getElementById('move-left-mobile').addEventListener('touchend', (e) => {
+    e.preventDefault();
+    keyboard.LEFT = false;
+});
+
+document.getElementById('move-right-mobile').addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    keyboard.RIGHT = true;
+});
+document.getElementById('move-right-mobile').addEventListener('touchend', (e) => {
+    e.preventDefault();
+    keyboard.RIGHT = false;
+});
+
+document.getElementById('jump-mobile').addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    keyboard.UP = true;
+});
+document.getElementById('jump-mobile').addEventListener('touchend', (e) => {
+    e.preventDefault();
+    keyboard.UP = false;
+});
+
+document.getElementById('attack-mobile').addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    keyboard.THROW = true;
+});
+
+document.getElementById('attack-mobile').addEventListener('touchend', (e) => {
+    e.preventDefault();
+    keyboard.THROW = false;
+});
 
 function openFullscreen() {
     let elem = document.querySelector('canvas');
