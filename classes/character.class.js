@@ -51,8 +51,7 @@ class Character extends MovableObject {
         '../imgs/2_character_pepe/5_dead/D-53.png',
         '../imgs/2_character_pepe/5_dead/D-54.png',
         '../imgs/2_character_pepe/5_dead/D-55.png',
-        '../imgs/2_character_pepe/5_dead/D-56.png',
-        '../imgs/2_character_pepe/5_dead/D-57.png',
+        '../imgs/2_character_pepe/5_dead/D-56.png'
     ];
 
     lastKeyboardEvent = 0;
@@ -72,6 +71,7 @@ class Character extends MovableObject {
         this.x = 10;
         this.speed = 5;
         this.healthPoints = 100;
+        this.dyingFramesPlayed = 0;
         this.offset = {
             x: 32,
             y: 95,
@@ -127,7 +127,7 @@ class Character extends MovableObject {
             if (this.isCharacterDead()) {
                 this.handleCharacterDeath();
                 return;
-            } else if (this.isHurt()) {
+            } else if (this.isHurt() && !this.isDead) {
                 this.handleCharacterHurt();
             }
             else if (this.isCharacterJumping()) {
@@ -138,9 +138,9 @@ class Character extends MovableObject {
             };
         }, 60);
 
-        const intervalId = this.setStoppableInterval(() => {
+        this.intervalId = this.setStoppableInterval(() => {
             if (this.isHurt() && this.isAboveGround()) {
-                clearInterval(intervalId);
+                clearInterval(this.intervalId);
                 return;
             }
             if (this.isAboveGround()) {
@@ -209,7 +209,9 @@ class Character extends MovableObject {
     handleCharacterDeath() {
         this.sounds.dying.play();
         this.playAnimation(this.IMGAES_DEAD);
-        this.stopCharacterIntervals();
+        this.dyingFramesPlayed++;
+        console.log(this.dyingFramesPlayed);
+
     }
 
     isCharacterWalkingOnGround() {
@@ -217,15 +219,17 @@ class Character extends MovableObject {
     }
 
     playJumpingAnimation() {
-        if (this.speedY > 5 && !this.animationAlreadyPlayed) {
-            this.playAnimation(this.IMAGES_JUMPING.slice(0, 2));
+        if (this.speedY > 24 && !this.animationAlreadyPlayed) {
+            this.playAnimation(this.IMAGES_JUMPING[0]);
             this.animationAlreadyPlayed = true;
-        } else if (this.speedY > 0 && this.speedY <= 5) {
-            this.img = this.imageCache[this.IMAGES_JUMPING[3]];
-        } else if (this.speedY <= 0 && this.speedY > -10) {
+        } else if (this.speedY > 3) {
+            this.img = this.imageCache[this.IMAGES_JUMPING[1]];
+        } else if (this.speedY <= 3 && this.speedY > -3) {
+            this.img = this.imageCache[this.IMAGES_JUMPING[2]];
+        } else if (this.speedY <= -20) {
             this.img = this.imageCache[this.IMAGES_JUMPING[4]];
-        } else if (this.speedY <= -10) {
-            this.img = this.imageCache[this.IMAGES_JUMPING[5]];
+        } else if (this.speedY <= -3) {
+            this.img = this.imageCache[this.IMAGES_JUMPING[3]];
         }
     }
 }

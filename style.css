@@ -63,7 +63,7 @@ section a {
 }
 
 .icons img {
-    width: 25px;
+    width: 35px;
     aspect-ratio: 1/1;
     padding: 5px 5px;
 }
@@ -140,7 +140,7 @@ p {
     position: absolute;
     gap: 20px;
     top: 20%;
-    left: 30%;
+    left: calc(50% - 130px);
 
 }
 
@@ -148,8 +148,8 @@ p {
     display: flex;
     flex-direction: row;
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 2%;
+    right: 2%;
 }
 
 .hidden {
@@ -197,17 +197,19 @@ li a {
     position: absolute;
     bottom: 0;
     left: 0;
-    display: flex;
+    display: none;
     flex-direction: row;
     justify-content: space-between;
 }
 
 .mobile-play-btns img {
-    width: 50px;
+    width: 55px;
 }
 
 .mobile-play-btns div {
-    padding: 0 2rem;
+    display: flex;
+    gap: 2rem;
+    padding: 0 0.5rem;
 }
 
 .game-introduction {
@@ -215,7 +217,12 @@ li a {
 }
 
 
-@media only screen and (orientation: portrait) and (max-width: 1024px) {
+.turn-phone {
+    display: none;
+}
+
+
+@media only screen and (orientation: portrait) and (max-width: 700px) {
     section {
         font-size: 16px;
     }
@@ -227,9 +234,17 @@ li a {
     .canvas-position {
         display: none;
     }
+
+    .turn-phone {
+        display: flex;
+    }
 }
 
-
+@media only screen and (min-width: 700px) and (max-width: 1024px) {
+    .mobile-play-btns {
+        display: flex;
+    }
+}
 
 @media only screen and (max-height: 400px) and (orientation: landscape) {
     canvas {
@@ -258,7 +273,15 @@ li a {
         display: block;
     }
 
-    .turn-phone{display: none;}
+    .mobile-play-btns {
+        display: flex;
+    }
+}
+
+@media (orientation: landscape) {
+    .turn-phone {
+        display: none;
+    }
 }
 
 @media only screen and (max-width: 500px) {

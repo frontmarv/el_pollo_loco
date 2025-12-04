@@ -60,6 +60,7 @@ class Endboss extends MovableObject {
         this.firstContactWithCharacter = true;
         this.lastAttack = 0;
         this.attackFramesPlayed = 0;
+        this.dyingFramesPlayed = 0;
         this.alertFramesPlayed = 0;
         this.sounds = {
             hurt: SoundManager.register(new Audio('../audio/enemies/endboss-hurt.mp3')),
@@ -89,6 +90,8 @@ class Endboss extends MovableObject {
                     this.walkRight();
                 }
             }
+            if (this.isHurt()) { this.playHurt() };
+            if (this.isDead) { this.playDead() };
         }, 80);
     }
 
@@ -147,6 +150,8 @@ class Endboss extends MovableObject {
             this.dyingSoundPlayed = true;
         }
         this.playAnimationOnce(this.IMAGES_DEAD, 3);
+        this.dyingFramesPlayed++;
+        if (this.dyingFramesPlayed > 2) { this.stopEndbossIntervals() }
     }
 
     readyForNextAttack() {

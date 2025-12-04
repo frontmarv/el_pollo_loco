@@ -150,12 +150,11 @@ class World {
         if (!enemy.isHurt()) {
             enemy.isHit();
             if (enemy instanceof Endboss) {
-                this.endbossHealthbar.deductPercentageHealth(16);
+                this.endbossHealthbar.deductPercentageHealth(33);
             }
         }
         if (enemy.wasKilled()) {
             setTimeout(() => {
-                this.level.enemies.splice(index, 1);
                 this.level.enemies = this.level.enemies.filter(enemy => !enemy.isDead);
             }, 1000);
         }
@@ -193,7 +192,7 @@ class World {
         if (mo.otherDirection) {
             this.flipImgBack(mo);
         }
-        mo.drawOffsetFrame(this.ctx);
+        // mo.drawOffsetFrame(this.ctx);
     }
 
     addObjectsToMap(objects) {
@@ -215,7 +214,7 @@ class World {
     addFixedObjectsToMap(objects) {
         objects.forEach(object => {
             object.drawFixedObject(this.ctx);
-            object.drawOffsetFrame(this.ctx);
+            // object.drawOffsetFrame(this.ctx);
         })
     }
 
@@ -242,7 +241,7 @@ class World {
             this.addObjectsToMap(this.throwableObjects);
             this.ctx.translate(-this.camera_x, 0);
 
-            if (this.character.isDead) {
+            if (this.character.isDead && this.character.dyingFramesPlayed > 4) {
                 this.showGameOverScreen();
             }
             if (this.allEnemiesDead()) {
@@ -270,6 +269,7 @@ class World {
     }
 
     showGameOverScreen() {
+        this.character.stopCharacterIntervals();
         this.drawScreenWithoutEnemies(this.gameOver);
         if (!this.gameOverShown) {
             this.gameOverShown = true;

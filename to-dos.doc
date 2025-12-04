@@ -1,14 +1,6 @@
-- endboss attack + animations
-
 - fullscreen (canvas toggle fullscreen)
-
+- 10 coins = 1 bottle einbauen
 - dying animation endboss -> flag einbauen dass erst animation beenden, dann winning screen;
-- dying animation character -> flag einbauen dass erst animation beenden, dann winning screen;
-
-
-- Wenn der Charakter springt wird eine flüssige Sprunganimation ausgeführt
-
-- Das Kontextmenü (Rechtsklick / Touch-and-Hold) ist bei den Mobile-Touch-Buttons deaktiviert.
 
 
 - timer

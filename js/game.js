@@ -66,8 +66,10 @@ document.getElementById('attack-mobile').addEventListener('touchend', (e) => {
     keyboard.THROW = false;
 });
 
+document.getElementById('mobile-play-btns').addEventListener("contextmenu", e => e.preventDefault());
+
 function openFullscreen() {
-    let elem = document.querySelector('canvas');
+    let elem = document.querySelector('.canvas-position');
     if (elem.requestFullscreen) {
         elem.requestFullscreen();
     } else if (elem.webkitRequestFullscreen) {
