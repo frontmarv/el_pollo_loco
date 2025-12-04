@@ -52,15 +52,18 @@
             <div class="img-wrapper">
                 <img class="phone-portrait" src="./imgs/icons/phone-portrait.png" alt="a black phone in portrait mode">
                 <img class="arrow-right" src="./imgs/icons/right-arrow.png" alt="Arrow pointing right ">
-                <img class="phone-landscape" src="./imgs/icons/phone-landscape.png" alt="a black phone in landscape mode">
+                <img class="phone-landscape" src="./imgs/icons/phone-landscape.png"
+                    alt="a black phone in landscape mode">
             </div>
         </section>
         <div class="canvas-position">
             <div class="icons">
-                <img id="game-volume" src="./imgs/icons/sound-on.svg" alt="icon of a  music-speaker" onclick="toggleSound()">
-                <img id="instructions-icon" src="./imgs/icons/controller.svg" alt="icon of a pice of paper with writings on it"
-                    onclick="toggleInstructions()">
-                <img src="./imgs/icons/open-fullscreen.svg" alt="icon of a keyboard" onclick="openFullscreen()">
+                <img id="game-volume" src="./imgs/icons/sound-on.svg" alt="icon of a  music-speaker"
+                    onclick="toggleSound()">
+                <img id="instructions-icon" src="./imgs/icons/controller.svg"
+                    alt="icon of a pice of paper with writings on it" onclick="toggleInstructions()">
+                <img id="fullscreen" src="./imgs/icons/open-fullscreen.svg" alt="icon of a keyboard"
+                    onclick="toggleFullscreen()">
             </div>
             <button id="start-game" class="menu-btns start-game-btn" onclick="hideWelcomeScreen()">Start Game</button>
             <div class="game-over-menu">
@@ -68,10 +71,26 @@
                 <button class="menu-btns" onclick="showWelcomeScreen()">Home</button>
             </div>
             <div id="instructions" class="instructions">
-                <p>Move Left = Arrow Left / A</p>
-                <p>Move Right = Arrow Right / D</p>
-                <p>Jump = Arrow Up / W / Space </p>
-                <p>Throw Bottle = J</p>
+                <p>
+                    <span>Move Left =</span>
+                    <img src="./imgs/icons/left-arrow.png" alt="Arrow pointing left">
+                    <span class="desktop-instructions">Arrow Left / A</span>
+                </p>
+                <p>
+                    <span>Move Right =</span>
+                    <img src="./imgs/icons/right-arrow.png" alt="Arrow pointing right ">
+                    <span class="desktop-instructions">Arrow Right / D</span>
+                </p>
+                <p>
+                    <span>Jump =</span>
+                    <img src="./imgs/icons/up-arrow.png" alt="Arrow pointing up">
+                    <span class="desktop-instructions">Arrow Up / W / Space</span>
+                </p>
+                <p>
+                    <span>Throw Bottle =</span>
+                    <img src="./imgs/icons/lightning-bolt.png" alt="Lightning">
+                    <span class="desktop-instructions">J</span>
+                </p>
             </div>
             <canvas width="700px" height="400px" id="canvas">
                 div

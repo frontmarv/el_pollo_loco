@@ -1,6 +1,7 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
+let fullscreen;
 
 
 function init() {
@@ -68,6 +69,13 @@ document.getElementById('attack-mobile').addEventListener('touchend', (e) => {
 
 document.getElementById('mobile-play-btns').addEventListener("contextmenu", e => e.preventDefault());
 
+function toggleFullscreen() {
+    if (fullscreen) {
+        closeFullscreen();
+    } else { openFullscreen(); }
+}
+
+
 function openFullscreen() {
     let elem = document.querySelector('.canvas-position');
     if (elem.requestFullscreen) {
@@ -77,6 +85,8 @@ function openFullscreen() {
     } else if (elem.msRequestFullscreen) {
         elem.msRequestFullscreen();
     }
+    document.getElementById('fullscreen').src = "../imgs/icons/exit-fullscreen.svg";
+    fullscreen = true;
 }
 
 
@@ -88,6 +98,8 @@ function closeFullscreen() {
     } else if (document.msExitFullscreen) {
         document.msExitFullscreen();
     }
+    document.getElementById('fullscreen').src = "../imgs/icons/open-fullscreen.svg";
+    fullscreen = false;
 }
 
 
@@ -160,7 +172,7 @@ function toggleInstructions() {
 
 function showInstructions() {
     document.getElementById('instructions').style.display = 'block';
-    document.getElementById('instructions-icon').style.backgroundColor = '#FFAB00';
+    document.getElementById('instructions-icon').style.backgroundColor = '#489ef3';
 }
 
 function hideInstructions() {

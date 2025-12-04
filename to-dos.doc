@@ -1,7 +1,6 @@
-- fullscreen (canvas toggle fullscreen)
-- 10 coins = 1 bottle einbauen
-- dying animation endboss -> flag einbauen dass erst animation beenden, dann winning screen;
 
+- dying animation endboss -> flag einbauen dass erst animation beenden, dann winning screen;
+- bottle throw sound + clap
 
 - timer
 - schwierigkeitsgrad

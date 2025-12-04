@@ -172,6 +172,11 @@ class World {
         this.level.coins.forEach((collectedCoin, index) => {
             if (this.characterCollectsCoin(collectedCoin)) {
                 this.coinbar.handleCoinCollection(index);
+                if (this.coinbar.percentageCoin === 100) {
+                    this.coinbar.setPercentageCoin(-100);
+                    this.coinbar.sound.allCoinsCollected.play();
+                    this.bottlebar.setPercentageBottle(20);
+                }
             }
         })
     }

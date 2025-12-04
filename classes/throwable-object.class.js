@@ -38,7 +38,6 @@ class ThrowableObject extends MovableObject {
             splash: SoundManager.register(new Audio('../audio/bottle-hit.mp3')),
         };
         this.animateBottle();
-
     }
 
     animateBottle() {
