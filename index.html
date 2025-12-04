@@ -65,7 +65,10 @@
                 <img id="fullscreen" src="./imgs/icons/open-fullscreen.svg" alt="icon of a keyboard"
                     onclick="toggleFullscreen()">
             </div>
-            <button id="start-game" class="menu-btns start-game-btn" onclick="hideWelcomeScreen()">Start Game</button>
+            <div class="select-difficulty">
+                <button class="menu-btns" onclick="hideWelcomeScreen()">Start easy game</button>
+                <button class="menu-btns" onclick="hideWelcomeScreen('hard')">Start hard game</button>
+            </div>
             <div class="game-over-menu">
                 <button class="menu-btns" onclick="tryAgain()">Try Again</button>
                 <button class="menu-btns" onclick="showWelcomeScreen()">Home</button>

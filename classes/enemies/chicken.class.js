@@ -6,7 +6,7 @@ class Chicken extends MovableObject {
     ];
     IMAGE_DEAD = ['../imgs/3_enemies_chicken/chicken_normal/2_dead/dead.png'];
     isDead;
-    constructor(lvlLength) {
+    constructor(lvlLength, difficulty) {
         super().loadImage('../imgs/3_enemies_chicken/chicken_normal/1_walk/1_w.png');
         super.loadImages(this.IMAGES_WALKING);
         super.loadImages(this.IMAGE_DEAD);
@@ -25,6 +25,7 @@ class Chicken extends MovableObject {
         this.sounds = {
             dying: SoundManager.register(new Audio('../audio/enemies/chicken-dying.mp3'))
         };
+        if (difficulty === 'hard') { this.speed = 1 + Math.random() * 0.5;; }
         this.animate();
     }
 

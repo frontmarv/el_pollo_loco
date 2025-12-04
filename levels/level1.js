@@ -1,14 +1,14 @@
 const lvlLength = 2000;
-function createLvl1() {
+function createLvl1(difficulty) {
     return new Level(
         [
-            // new Chicken(lvlLength),
-            // new Chicken(lvlLength),
-            // new Chicken(lvlLength),
-            new Endboss(lvlLength),
-            new SmallChicken(lvlLength),
-            new SmallChicken(lvlLength),
-            new SmallChicken(lvlLength)
+            new Chicken(lvlLength, difficulty),
+            new Chicken(lvlLength, difficulty),
+            new Chicken(lvlLength, difficulty),
+            new Endboss(lvlLength, difficulty),
+            new SmallChicken(lvlLength, difficulty),
+            new SmallChicken(lvlLength, difficulty),
+            new SmallChicken(lvlLength, difficulty)
         ],
         [
             new Cloud('../imgs/5_background/layers/4_clouds/1.png', 300, lvlLength),

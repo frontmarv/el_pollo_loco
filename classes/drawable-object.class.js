@@ -51,16 +51,6 @@ class DrawableObject {
         else { return 0 }
     }
 
-    drawOffsetFrame(ctx) {
-        if (this instanceof SmallChicken || this instanceof Endboss) {
-            ctx.lineWidth = "2";
-            ctx.strokeStyle = "green";
-            ctx.beginPath();
-            ctx.rect(this.x + this.offset.x, this.y + this.offset.y, this.width - this.offset.width, this.height - this.offset.height);
-            ctx.stroke();
-        }
-    }
-
     isColliding(object) {
         return this.x + this.offset.x + this.width - this.offset.width > object.x + object.offset.x &&
             this.y + this.offset.y + this.height - this.offset.height > object.y + object.offset.y &&

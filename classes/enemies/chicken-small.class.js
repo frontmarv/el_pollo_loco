@@ -7,7 +7,7 @@ class SmallChicken extends MovableObject {
     ];
     IMAGE_DEAD = ['../imgs/3_enemies_chicken/chicken_small/2_dead/dead.png'];
 
-    constructor(lvlLength) {
+    constructor(lvlLength, difficulty) {
         super().loadImage('../imgs/3_enemies_chicken/chicken_small/1_walk/1_w.png');
         super.loadImages(this.IMAGES_WALKING);
         super.loadImages(this.IMAGE_DEAD);
@@ -28,6 +28,7 @@ class SmallChicken extends MovableObject {
         this.sounds = {
             dying: SoundManager.register(new Audio('../audio/enemies/small-chicken-dead.mp3'))
         };
+        if (difficulty === 'hard') { this.speed = 3.5 + Math.random() * 0.5; }
         super.applyGravity();
         this.animate();
     }
@@ -52,7 +53,7 @@ class SmallChicken extends MovableObject {
             } else {
                 this.moveRight();
             }
-        }, 1000/60);
+        }, 1000 / 60);
     }
 
     animateWalking() {
@@ -66,10 +67,8 @@ class SmallChicken extends MovableObject {
             if (!this.isAboveGround()) {
                 super.smallJump();
             }
-        }, 1500 + Math.random() * 1000);
+        }, 500 + Math.random() * 2000);
     }
-
-
 
     playIsDead() {
         this.dyingInterval = setInterval(() => {

@@ -98,7 +98,7 @@ img:hover {
     position: absolute;
     top: 50px;
     right: 5%;
-    background-color: #489ef3;
+    background-color: #007cf8;
     z-index: 2;
     padding: 0.5rem 1rem;
     border-radius: 10px;
@@ -126,26 +126,28 @@ p {
     gap: 10px;
 }
 
-.start-game-btn {
-    display: flex;
-    position: absolute;
-    top: 10%;
-    left: 40%;
-}
-
 .menu-btns {
     color: white;
     font-family: 'zabars';
     font-size: 2.5rem;
-    background-color: #2492FF;
+    background-color: #007cf8;
     border-radius: 10px;
     padding: 5px 10px;
     border: none;
 }
 
 .menu-btns:hover {
-    background-color: #007cf8;
+    background-color: #2492FF;
     cursor: pointer;
+}
+
+.select-difficulty {
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    gap: 20px;
+    top: 11%;
+    left: calc(50% - 220px);
 }
 
 .game-over-menu {

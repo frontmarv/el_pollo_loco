@@ -36,7 +36,7 @@ class Endboss extends MovableObject {
         '../imgs/4_enemie_boss_chicken/5_dead/G26.png'
     ];
 
-    constructor(lvlLength) {
+    constructor(lvlLength, difficulty) {
         super().loadImage('../imgs/4_enemie_boss_chicken/2_alert/G5.png');
         super.loadImages(this.IMAGES_WALKING);
         super.loadImages(this.IMAGES_ALERT);
@@ -46,9 +46,8 @@ class Endboss extends MovableObject {
         this.height = 300;
         this.width = this.height * 0.86;
         this.y = 65;
-        // this.x = 1000;
         this.x = lvlLength - 200;
-        this.speed = 6;
+        this.speed = 8;
         this.offset = {
             x: 20,
             y: 50,
@@ -67,6 +66,7 @@ class Endboss extends MovableObject {
             attack: SoundManager.register(new Audio('../audio/enemies/endboss-attack.mp3')),
             dying: SoundManager.register(new Audio('../audio/enemies/chicken-dying.mp3'))
         };
+        if (difficulty === 'hard') { this.speed = 10; this.healthPoints = 30; }
         super.applyGravity();
     }
 
@@ -79,7 +79,7 @@ class Endboss extends MovableObject {
             if (this.isFirstContactWithCharacter()) {
                 this.handleFirstContact();
             }
-            if (!this.isAboveGround()) { this.speed = 6 }
+            if (!this.isAboveGround()) { this.speed = 8 }
             if (!this.firstContactWithCharacter) {
                 if (this.characterIsInRange() && this.readyForNextAttack()) {
                     this.playAttack();
@@ -151,7 +151,8 @@ class Endboss extends MovableObject {
         }
         this.playAnimationOnce(this.IMAGES_DEAD, 3);
         this.dyingFramesPlayed++;
-        if (this.dyingFramesPlayed > 2) { this.stopEndbossIntervals() }
+        this.y = 85;
+        if (this.dyingFramesPlayed > 1) { this.stopEndbossIntervals(); }
     }
 
     readyForNextAttack() {

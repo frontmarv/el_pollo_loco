@@ -2,12 +2,13 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 let fullscreen;
+let timeLevelComplete;
 
-
-function init() {
+function init(difficulty) {
     initializeSoundState();
     canvas = document.getElementById('canvas');
-    world = new World(canvas, keyboard);
+    world = new World(canvas, keyboard, difficulty);
+    timeLevelComplete = new Date().getTime();
 }
 
 const KEYS = {
@@ -103,10 +104,13 @@ function closeFullscreen() {
 }
 
 
-function hideWelcomeScreen() {
+function hideWelcomeScreen(mode) {
     if (world) {
+        if (mode === 'hard') {
+            init(mode);
+        }
         world.showWelcomeScreen = false;
-        document.getElementById('start-game').classList.add('hidden');
+        document.querySelector('.select-difficulty').classList.add('hidden');
     }
 }
 
@@ -116,7 +120,7 @@ function showWelcomeScreen() {
     init();
     if (world) {
         world.showWelcomeScreen = true;
-        document.getElementById('start-game').classList.remove('hidden');
+        document.querySelector('.select-difficulty').classList.remove('hidden');
     }
     hideGameOverMenu();
 }
@@ -172,7 +176,7 @@ function toggleInstructions() {
 
 function showInstructions() {
     document.getElementById('instructions').style.display = 'block';
-    document.getElementById('instructions-icon').style.backgroundColor = '#489ef3';
+    document.getElementById('instructions-icon').style.backgroundColor = '#007cf8';
 }
 
 function hideInstructions() {

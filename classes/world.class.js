@@ -1,6 +1,7 @@
 class World {
+    difficulty;
     character = new Character();
-    level = createLvl1();
+    level;
     healthbar = new HealthBar();
     coinbar = new CoinBar();
     bottlebar = new BottleBar();
@@ -9,11 +10,12 @@ class World {
     youWon = new WinningScreen();
     welcome = new WelcomeScreen();
     statusbars = [this.healthbar, this.coinbar, this.bottlebar];
-    endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
+    endboss;
     throwableObjects = [];
     _isRunning = true;
     _showWelcomeScreen = true;
     winningSoundPlayed = false;
+
     canvas;
     ctx;
     keyboard;
@@ -33,8 +35,11 @@ class World {
         }
     }
 
-    constructor(canvas, keyboard) {
+    constructor(canvas, keyboard, difficulty) {
         this.ctx = canvas.getContext('2d');
+        this.difficulty = difficulty;
+        this.level = createLvl1(this.difficulty);
+        this.endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
         this.canvas = canvas;
         this.keyboard = keyboard
         this.sounds = {
@@ -150,7 +155,7 @@ class World {
         if (!enemy.isHurt()) {
             enemy.isHit();
             if (enemy instanceof Endboss) {
-                this.endbossHealthbar.deductPercentageHealth(33);
+                this.endbossHealthbar.deductPercentageHealth(this.difficulty === 'hard' ? 17 : 34);
             }
         }
         if (enemy.wasKilled()) {
@@ -197,7 +202,6 @@ class World {
         if (mo.otherDirection) {
             this.flipImgBack(mo);
         }
-        // mo.drawOffsetFrame(this.ctx);
     }
 
     addObjectsToMap(objects) {
@@ -219,7 +223,6 @@ class World {
     addFixedObjectsToMap(objects) {
         objects.forEach(object => {
             object.drawFixedObject(this.ctx);
-            // object.drawOffsetFrame(this.ctx);
         })
     }
 
