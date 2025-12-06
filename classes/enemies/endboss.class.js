@@ -76,23 +76,17 @@ class Endboss extends MovableObject {
 
     animate() {
         this.EndbossAnimationInterval = setInterval(() => {
-            if (this.isFirstContactWithCharacter()) {
-                this.handleFirstContact();
-            }
-            if (!this.isAboveGround()) { this.speed = 8 }
-            if (!this.firstContactWithCharacter) {
-                if (this.characterIsInRange() && this.readyForNextAttack()) {
-                    this.playAttack();
-                }
-                else if (this.world.getDistanceCharacterEndboss() > 0) {
-                    this.walkLeft();
-                } else {
-                    this.walkRight();
-                }
-            }
-            if (this.isHurt()) { this.playHurt() };
-            if (this.isDead) { this.playDead() };
+            if (this.isFirstContactWithCharacter()) { this.handleFirstContact(); }
+            if (!this.isAboveGround()) { this.speed = 8; }
+            if (!this.firstContactWithCharacter) { this.handleMovement(); }
+            if (this.isHurt()) { this.playHurt(); }
+            if (this.isDead) { this.playDead(); }
         }, 80);
+    }
+
+    handleMovement() {
+        if (this.characterIsInRange() && this.readyForNextAttack()) this.playAttack();
+        else this.world.getDistanceCharacterEndboss() > 0 ? this.walkLeft() : this.walkRight();
     }
 
     isFirstContactWithCharacter() {

@@ -36,34 +36,29 @@ class Chicken extends MovableObject {
                 this.chickenDeadAnimation();
                 return;
             }
-            if (this.x <= 200) {
-                this.otherDirection = true;
-            }
-            if (this.x >= 1000) {
-                this.otherDirection = false;
-            }
-            if (this.otherDirection == false) {
-                this.moveLeft();
-            } else { this.moveRight(); }
+            if (this.x <= 200) this.otherDirection = true;
+            if (this.x >= lvlLength - 400) this.otherDirection = false;
+            this.otherDirection ? this.moveRight() : this.moveLeft();
         }, 1000 / 60);
         this.animateWalking();
     }
 
-    animateWalking() {
-        this.walkingInterval = setInterval(() => {
-            if (this.healthPoints <= 0) return;
-            this.playAnimation(this.IMAGES_WALKING);
-        }, 200);
-    }
 
-    clearIntervalsChicken() {
-        clearInterval(this.moveInterval);
-        clearInterval(this.walkingInterval);
-    }
+animateWalking() {
+    this.walkingInterval = setInterval(() => {
+        if (this.healthPoints <= 0) return;
+        this.playAnimation(this.IMAGES_WALKING);
+    }, 200);
+}
 
-    chickenDeadAnimation() {
-        this.sounds.dying.play();
-        this.playAnimation(this.IMAGE_DEAD);
-        this.offset.y = 100;
-    }
+clearIntervalsChicken() {
+    clearInterval(this.moveInterval);
+    clearInterval(this.walkingInterval);
+}
+
+chickenDeadAnimation() {
+    this.sounds.dying.play();
+    this.playAnimation(this.IMAGE_DEAD);
+    this.offset.y = 100;
+}
 }

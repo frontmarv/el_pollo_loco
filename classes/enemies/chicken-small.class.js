@@ -42,17 +42,9 @@ class SmallChicken extends MovableObject {
 
     handleChickenMovement() {
         this.movingInterval = setInterval(() => {
-            if (this.x <= 200) {
-                this.otherDirection = true;
-            }
-            if (this.x >= lvlLength) {
-                this.otherDirection = false;
-            }
-            if (this.otherDirection == false) {
-                this.moveLeft();
-            } else {
-                this.moveRight();
-            }
+            if (this.x <= 200) this.otherDirection = true;
+            if (this.x >= lvlLength - 400) this.otherDirection = false;
+            this.otherDirection ? this.moveRight() : this.moveLeft();
         }, 1000 / 60);
     }
 

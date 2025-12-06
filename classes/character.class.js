@@ -98,57 +98,40 @@ class Character extends MovableObject {
     }
 
     animate() {
-        this.setStoppableInterval(() => {
-            if (this.isMovingLeft()) {
-                this.handleMovingLeft();
-            }
-            else if (this.isMovingRight()) {
-                this.handleMovingRight();
-            }
-            this.adjustCamera();
-        }, 1000 / 60);
+        this.setStoppableInterval(() => this.handleMovement(), 1000 / 60);
+        this.setStoppableInterval(() => this.handleIdleState(), 150);
+        this.setStoppableInterval(() => this.handleCharacterState(), 60);
+        this.intervalId = this.setStoppableInterval(() => this.handleJumpingAnimation(), 1000 / 30);
+    }
 
-        this.setStoppableInterval(() => {
-            if (this.isAnyKeyPressed()) {
-                this.lastKeyboardEvent = new Date().getTime();
-            }
-            if (!this.isAboveGround()) {
-                if (this.checkTimer(this.lastKeyboardEvent, 6)) {
-                    this.playIdleLong();
-                } else if (this.checkTimer(this.lastKeyboardEvent, 0.1)) {
-                    this.playIdleShort();
-                } else {
-                    this.sounds.snoring.pause();
-                }
-            }
-        }, 150);
+    handleMovement() {
+        if (this.isMovingLeft()) { this.handleMovingLeft(); }
+        else if (this.isMovingRight()) { this.handleMovingRight(); }
+        this.adjustCamera();
+    }
 
-        this.setStoppableInterval(() => {
-            if (this.isCharacterDead()) {
-                this.handleCharacterDeath();
-                return;
-            } else if (this.isHurt() && !this.isDead) {
-                this.handleCharacterHurt();
-            }
-            else if (this.isCharacterJumping()) {
-                this.sounds.jumping.play();
-                this.jump();
-            } else if (this.isCharacterWalkingOnGround()) {
-                this.playAnimation(this.IMAGES_WALKING);
-            };
-        }, 60);
+    handleIdleState() {
+        if (this.isAnyKeyPressed()) { this.lastKeyboardEvent = new Date().getTime(); }
+        if (!this.isAboveGround()) { this.playIdleAnimation(); }
+    }
 
-        this.intervalId = this.setStoppableInterval(() => {
-            if (this.isHurt() && this.isAboveGround()) {
-                clearInterval(this.intervalId);
-                return;
-            }
-            if (this.isAboveGround()) {
-                this.playJumpingAnimation();
-            } else {
-                this.animationAlreadyPlayed = false;
-            }
-        }, 1000 / 30);
+    playIdleAnimation() {
+        if (this.checkTimer(this.lastKeyboardEvent, 6)) { this.playIdleLong(); }
+        else if (this.checkTimer(this.lastKeyboardEvent, 0.1)) { this.playIdleShort(); }
+        else { this.sounds.snoring.pause(); }
+    }
+
+    handleCharacterState() {
+        if (this.isCharacterDead()) { this.handleCharacterDeath(); return; }
+        if (this.isHurt() && !this.isDead) { this.handleCharacterHurt(); return; }
+        if (this.isCharacterJumping()) { this.sounds.jumping.play(); this.jump(); return; }
+        if (this.isCharacterWalkingOnGround()) { this.playAnimation(this.IMAGES_WALKING); }
+    }
+
+    handleJumpingAnimation() {
+        if (this.isHurt() && this.isAboveGround()) { clearInterval(this.intervalId); return; }
+        if (this.isAboveGround()) { this.playJumpingAnimation(); }
+        else { this.animationAlreadyPlayed = false; }
     }
 
     isMovingLeft() {
@@ -210,8 +193,6 @@ class Character extends MovableObject {
         this.sounds.dying.play();
         this.playAnimation(this.IMGAES_DEAD);
         this.dyingFramesPlayed++;
-        console.log(this.dyingFramesPlayed);
-
     }
 
     isCharacterWalkingOnGround() {

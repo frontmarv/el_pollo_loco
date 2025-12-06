@@ -42,14 +42,17 @@ class World {
         this.endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
         this.canvas = canvas;
         this.keyboard = keyboard
+        this.initSounds();
+        this.draw();
+    }
+
+    initSounds() {
         this.sounds = {
             backgroundMusic: SoundManager.register(new Audio('../audio/background-music.mp3')),
             levelCompleted: SoundManager.register(new Audio('../audio/level-completed.mp3'))
         };
         this.sounds.backgroundMusic.loop = true;
-        this.draw();
     }
-
 
     getPositionEndboss() {
         return { x: this.endboss.x, y: this.endboss.y };
@@ -59,7 +62,6 @@ class World {
         this.position = this.getPositionEndboss();
         this.distance = this.position.x + 114 - this.character.x;
         return this.distance
-
     }
 
     startGame() {
@@ -81,9 +83,7 @@ class World {
         this.character.stopCharacterIntervals();
         clearInterval(this.endbossHealthbar.endbossHealthbarInterval);
         this.endboss.stopEndbossIntervals();
-
     }
-
 
     playMusic() {
         if (!this.showWelcomeScreen) {
@@ -124,7 +124,6 @@ class World {
             })
             this.hasCollisionBottle();
             this.hasCollisionCoin();
-
         }, 100);
     }
 
@@ -140,7 +139,7 @@ class World {
 
     hasCollisionThrowableObject(enemy, index) {
         this.throwableObjects.forEach((projectile, projectileIndex) => {
-            if (enemy.isColliding(projectile) && !(enemy instanceof Chicken)) {
+            if (enemy.isColliding(projectile)) {
                 this.throwableObjects[projectileIndex].isDead = true;
                 this.handleEnemyHit(enemy, index);
                 setTimeout(() => {
@@ -227,41 +226,46 @@ class World {
     }
 
     draw() {
-        if (!this._isRunning) { cancelAnimationFrame(this.animationloop) };
+        if (!this._isRunning) { cancelAnimationFrame(this.animationloop); return; }
         if (this.showWelcomeScreen) { this.drawWelcomeScreen(); }
-        else {
-            this.ctx.clearRect(0, 0, canvas.width, canvas.height);
-            this.ctx.translate(this.camera_x, 0);
-            this.addObjectsToMap(this.level.background);
-            this.addObjectsToMap(this.level.clouds);
-            this.addFixedObjectsToMap(this.level.coins);
-            this.addFixedObjectsToMap(this.level.bottles);
-
-            // fixed object camera movement
-            this.ctx.translate(-this.camera_x, 0);
-            this.addFixedObjectsToMap(this.statusbars);
-            this.ctx.translate(this.camera_x, 0);
-            // until here
-
-            this.addObjectsToMap(this.level.enemies);
-            if (!(this.endboss.isDead)) { this.endbossHealthbar.drawFixedObject(this.ctx); }
-            this.addToMap(this.character);
-            this.addObjectsToMap(this.throwableObjects);
-            this.ctx.translate(-this.camera_x, 0);
-
-            if (this.character.isDead && this.character.dyingFramesPlayed > 4) {
-                this.showGameOverScreen();
-            }
-            if (this.allEnemiesDead()) {
-                this.showWinningScreen();
-            }
-        }
-        let self = this;
-        this.animationloop = requestAnimationFrame(function () {
-            self.draw();
-        });
+        else { this.drawGameScreen(); }
+        this.animationloop = requestAnimationFrame(() => this.draw());
     }
 
+    drawGameScreen() {
+        this.ctx.clearRect(0, 0, canvas.width, canvas.height);
+        this.ctx.translate(this.camera_x, 0);
+        this.drawWorldObjects();
+        this.drawStatusBars();
+        this.drawEntities();
+        this.ctx.translate(-this.camera_x, 0);
+        this.checkEndConditions();
+    }
+
+    drawWorldObjects() {
+        this.addObjectsToMap(this.level.background);
+        this.addObjectsToMap(this.level.clouds);
+        this.addFixedObjectsToMap(this.level.coins);
+        this.addFixedObjectsToMap(this.level.bottles);
+    }
+
+    drawStatusBars() {
+        this.ctx.translate(-this.camera_x, 0);
+        this.addFixedObjectsToMap(this.statusbars);
+        this.ctx.translate(this.camera_x, 0);
+    }
+
+    drawEntities() {
+        this.addObjectsToMap(this.level.enemies);
+        if (!this.endboss.isDead) { this.endbossHealthbar.drawFixedObject(this.ctx); }
+        this.addToMap(this.character);
+        this.addObjectsToMap(this.throwableObjects);
+    }
+
+    checkEndConditions() {
+        if (this.character.isDead && this.character.dyingFramesPlayed > 4) { this.showGameOverScreen(); }
+        if (this.allEnemiesDead()) { this.showWinningScreen(); }
+    }
 
     showWinningScreen() {
         this.character.stopCharacterIntervals();
@@ -273,7 +277,6 @@ class World {
             this.winningSoundPlayed = true;
         }
         this.drawScreenWithoutEnemies(this.youWon);
-
     }
 
     showGameOverScreen() {
@@ -303,15 +306,12 @@ class World {
         this.ctx.translate(-this.camera_x, 0);
     }
 
-
     drawWelcomeScreen() {
         this.ctx.clearRect(0, 0, canvas.width, canvas.height);
         this.ctx.translate(this.camera_x, 0);
         this.welcome.drawFixedObject(this.ctx);
         this.ctx.translate(-this.camera_x, 0);
     }
-
-
 }
 
 
