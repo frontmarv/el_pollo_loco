@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: classes/enemies/chicken-small.class.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: classes/enemies/chicken-small.class.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>class SmallChicken extends MovableObject {
+
+    IMAGES_WALKING = [
+        '../imgs/3_enemies_chicken/chicken_small/1_walk/1_w.png',
+        '../imgs/3_enemies_chicken/chicken_small/1_walk/2_w.png',
+        '../imgs/3_enemies_chicken/chicken_small/1_walk/3_w.png'
+    ];
+    IMAGE_DEAD = ['../imgs/3_enemies_chicken/chicken_small/2_dead/dead.png'];
+
+    constructor(lvlLength, difficulty) {
+        super().loadImage('../imgs/3_enemies_chicken/chicken_small/1_walk/1_w.png');
+        super.loadImages(this.IMAGES_WALKING);
+        super.loadImages(this.IMAGE_DEAD);
+        this.height = 50;
+        this.width = this.height * 1.02;
+        this.y = 295;
+        this.x = 200 + Math.random() * lvlLength;
+        this.speed = 2 + Math.random() * 0.5;
+        this.speedY = 0;
+        this.offset = {
+            x: 2,
+            y: 0,
+            width: 6,
+            height: 10
+        };
+        this.healthPoints = 5;
+        this.deathSoundPlayed;
+        this.sounds = {
+            dying: SoundManager.register(new Audio('../audio/enemies/small-chicken-dead.mp3'))
+        };
+        if (difficulty === 'hard') { this.speed = 3.5 + Math.random() * 0.5; }
+        super.applyGravity();
+        this.animate();
+    }
+
+    /**
+    * Initialize and start all animation and behavior intervals for the small chicken.
+    * This method wires up movement, occasional jumping, walking animation, and death checking.
+    *
+    * @returns {void}
+    */
+    animate() {
+        this.handleChickenMovement();
+        this.letChickenJump();
+        this.animateWalking();
+        this.playIsDead();
+    }
+
+    /**
+     * Start the movement interval that moves the chicken left/right within level bounds.
+     *
+     * The method toggles `otherDirection` when reaching level edges and calls `moveLeft`
+     * or `moveRight` on the instance at ~60 FPS.
+     *
+     * @returns {void}
+     */
+    handleChickenMovement() {
+        this.movingInterval = setInterval(() => {
+            if (this.x &lt;= 200) this.otherDirection = true;
+            if (this.x >= lvlLength - 400) this.otherDirection = false;
+            this.otherDirection ? this.moveRight() : this.moveLeft();
+        }, 1000 / 60);
+    }
+
+    /**
+     * Start walking animation interval.
+     * Cycles through `IMAGES_WALKING` using `playAnimation` every 200ms.
+     *
+     * @returns {void}
+     */
+    animateWalking() {
+        this.walkingInterval = setInterval(() => {
+            this.playAnimation(this.IMAGES_WALKING);
+        }, 200);
+    }
+
+    /**
+     * Occasionally trigger a small jump when the chicken is on the ground.
+     *
+     * Runs on a randomized interval between 500ms and ~2500ms; calls `smallJump`
+     * from the superclass when the chicken is not above ground.
+     *
+     * @returns {void}
+     */
+    letChickenJump() {
+        this.jumpingInterval = setInterval(() => {
+            if (!this.isAboveGround()) {
+                super.smallJump();
+            }
+        }, 500 + Math.random() * 2000);
+    }
+
+    /**
+     * Monitor death state and play death animation/sound once.
+     *
+     * When `isDead` becomes true this method:
+     * - stops movement/jump intervals,
+     * - plays the dying sound once,
+     * - switches the displayed animation to `IMAGE_DEAD`,
+     * - adjusts the collision `offset.y` to 100 to reflect the dead sprite.
+     *
+     * This check runs every 100ms.
+     *
+     * @returns {void}
+     */
+    playIsDead() {
+        this.dyingInterval = setInterval(() => {
+            if (this.isDead) {
+                this.stopSmallChickenIntervals();
+                if (!this.deathSoundPlayed) {
+                    this.sounds.dying.play();
+                }
+                this.deathSoundPlayed = true;
+                this.playAnimation(this.IMAGE_DEAD);
+                this.offset.y = 100;
+            }
+        }, 100);
+    }
+
+    /**
+     * Clear intervals that control movement and jumping for this small chicken.
+     * This prevents further movement or jumps after the chicken dies.
+     *
+     * @returns {void}
+     */
+    stopSmallChickenIntervals() {
+        clearInterval(this.movingInterval);
+        clearInterval(this.jumpingInterval);
+    }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#closeFullscreen">closeFullscreen</a></li><li><a href="global.html#createLvl1">createLvl1</a></li><li><a href="global.html#formatDuration">formatDuration</a></li><li><a href="global.html#getPersonalBest">getPersonalBest</a></li><li><a href="global.html#getRun">getRun</a></li><li><a href="global.html#getRuns">getRuns</a></li><li><a href="global.html#getSessionBestTime">getSessionBestTime</a></li><li><a href="global.html#hideGameOverMenu">hideGameOverMenu</a></li><li><a href="global.html#hideInstructions">hideInstructions</a></li><li><a href="global.html#hidePlayerRunTimes">hidePlayerRunTimes</a></li><li><a href="global.html#hideWelcomeScreen">hideWelcomeScreen</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#initializeSoundState">initializeSoundState</a></li><li><a href="global.html#muteAllSounds">muteAllSounds</a></li><li><a href="global.html#openFullscreen">openFullscreen</a></li><li><a href="global.html#renderScoreBoard">renderScoreBoard</a></li><li><a href="global.html#saveLevelTime">saveLevelTime</a></li><li><a href="global.html#saveRun">saveRun</a></li><li><a href="global.html#showInstructions">showInstructions</a></li><li><a href="global.html#showPlayerRunTimes">showPlayerRunTimes</a></li><li><a href="global.html#showWelcomeScreen">showWelcomeScreen</a></li><li><a href="global.html#toggleFullscreen">toggleFullscreen</a></li><li><a href="global.html#toggleInstructions">toggleInstructions</a></li><li><a href="global.html#togglePlayerRunTimes">togglePlayerRunTimes</a></li><li><a href="global.html#toggleSound">toggleSound</a></li><li><a href="global.html#tryAgain">tryAgain</a></li><li><a href="global.html#unmuteAllSounds">unmuteAllSounds</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Mon Dec 08 2025 15:47:12 GMT+0100 (Mitteleuropäische Normalzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: classes/enemies/chicken.class.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: classes/enemies/chicken.class.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>class Chicken extends MovableObject {
+    IMAGES_WALKING = [
+        '../imgs/3_enemies_chicken/chicken_normal/1_walk/1_w.png',
+        '../imgs/3_enemies_chicken/chicken_normal/1_walk/2_w.png',
+        '../imgs/3_enemies_chicken/chicken_normal/1_walk/3_w.png',
+    ];
+    IMAGE_DEAD = ['../imgs/3_enemies_chicken/chicken_normal/2_dead/dead.png'];
+    isDead;
+
+    constructor(lvlLength, difficulty) {
+        super().loadImage('../imgs/3_enemies_chicken/chicken_normal/1_walk/1_w.png');
+        super.loadImages(this.IMAGES_WALKING);
+        super.loadImages(this.IMAGE_DEAD);
+        this.height = 65;
+        this.width = this.height * 1.02;
+        this.y = 280;
+        this.x = 200 + Math.random() * lvlLength;
+        this.speed = 0.25 + Math.random() * 0.5;
+        this.healthPoints = 5;
+        this.offset = {
+            x: 0,
+            y: -5,
+            width: 0,
+            height: 0
+        };
+        this.sounds = {
+            dying: SoundManager.register(new Audio('../audio/enemies/chicken-dying.mp3'))
+        };
+        if (difficulty === 'hard') { this.speed = 1 + Math.random() * 0.5;; }
+        this.animate();
+    }
+
+
+    /**
+ * Start the chicken's behavior: moves left/right and runs walking animation.
+ *
+ * Checks `healthPoints` each tick (~60 FPS); if health ≤ 0 it clears intervals
+ * and triggers the death animation.
+ *
+ * @returns {void}
+ */
+    animate() {
+        this.moveInterval = setInterval(() => {
+            if (this.healthPoints &lt;= 0) {
+                this.clearIntervalsChicken();
+                this.chickenDeadAnimation();
+                return;
+            }
+            if (this.x &lt;= 200) this.otherDirection = true;
+            if (this.x >= lvlLength - 400) this.otherDirection = false;
+            this.otherDirection ? this.moveRight() : this.moveLeft();
+        }, 1000 / 60);
+        this.animateWalking();
+    }
+
+/**
+ * Starts the walking animation if health is above 0.
+ * @returns {void}
+ */
+animateWalking() {
+    this.walkingInterval = setInterval(() => {
+        if (this.healthPoints &lt;= 0) return;
+        this.playAnimation(this.IMAGES_WALKING);
+    }, 200);
+}
+
+/**
+ * Stops movement and walking intervals.
+ * @returns {void}
+ */
+clearIntervalsChicken() {
+    clearInterval(this.moveInterval);
+    clearInterval(this.walkingInterval);
+}
+
+/**
+ * Plays dead animation and sound, sets y offset.
+ * @returns {void}
+ */
+chickenDeadAnimation() {
+    this.sounds.dying.play();
+    this.playAnimation(this.IMAGE_DEAD);
+    this.offset.y = 100;
+}
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#closeFullscreen">closeFullscreen</a></li><li><a href="global.html#createLvl1">createLvl1</a></li><li><a href="global.html#formatDuration">formatDuration</a></li><li><a href="global.html#getPersonalBest">getPersonalBest</a></li><li><a href="global.html#getRun">getRun</a></li><li><a href="global.html#getRuns">getRuns</a></li><li><a href="global.html#getSessionBestTime">getSessionBestTime</a></li><li><a href="global.html#hideGameOverMenu">hideGameOverMenu</a></li><li><a href="global.html#hideInstructions">hideInstructions</a></li><li><a href="global.html#hidePlayerRunTimes">hidePlayerRunTimes</a></li><li><a href="global.html#hideWelcomeScreen">hideWelcomeScreen</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#initializeSoundState">initializeSoundState</a></li><li><a href="global.html#muteAllSounds">muteAllSounds</a></li><li><a href="global.html#openFullscreen">openFullscreen</a></li><li><a href="global.html#renderScoreBoard">renderScoreBoard</a></li><li><a href="global.html#saveLevelTime">saveLevelTime</a></li><li><a href="global.html#saveRun">saveRun</a></li><li><a href="global.html#showInstructions">showInstructions</a></li><li><a href="global.html#showPlayerRunTimes">showPlayerRunTimes</a></li><li><a href="global.html#showWelcomeScreen">showWelcomeScreen</a></li><li><a href="global.html#toggleFullscreen">toggleFullscreen</a></li><li><a href="global.html#toggleInstructions">toggleInstructions</a></li><li><a href="global.html#togglePlayerRunTimes">togglePlayerRunTimes</a></li><li><a href="global.html#toggleSound">toggleSound</a></li><li><a href="global.html#tryAgain">tryAgain</a></li><li><a href="global.html#unmuteAllSounds">unmuteAllSounds</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Mon Dec 08 2025 15:47:12 GMT+0100 (Mitteleuropäische Normalzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
