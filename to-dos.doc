@@ -1,11 +1,6 @@
-
-- bottle throw sound + clap
-- endboss dying animation
-- sound volume in general
-
-
 - timer
-- js docs documentation
 
+showWinningScreen() &  showGameOverScreen() stop timer
+speicherung/abruf im session storage
 
 Bei Abgabe: Hinweis auf falsche height/width

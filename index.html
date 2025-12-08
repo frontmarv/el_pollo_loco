@@ -7,7 +7,7 @@
     <title>El Pollo Loco</title>
     <link rel="icon" href="./imgs/icons/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="./style.css">
-
+    <script src="./templates/leader-board.js"></script>
     <script src="./classes/world.class.js"></script>
     <script src="./classes/soundmanager.class.js"></script>
     <script src="./classes/drawable-object.class.js"></script>
@@ -31,7 +31,6 @@
     <script src="./classes/keyboard.class.js"></script>
     <script src="./classes/level.class.js"></script>
     <script src="./levels/level1.js"></script>
-
     <script src="./js/game.js" defer></script>
 </head>
 
@@ -62,6 +61,7 @@
                     onclick="toggleSound()">
                 <img id="instructions-icon" src="./imgs/icons/controller.svg"
                     alt="icon of a pice of paper with writings on it" onclick="toggleInstructions()">
+                <img id="trophy" src="./imgs/icons/trophy.svg" alt="trophy" onclick="togglePlayerRunTimes()">
                 <img id="fullscreen" src="./imgs/icons/open-fullscreen.svg" alt="icon of a keyboard"
                     onclick="toggleFullscreen()">
             </div>
@@ -107,6 +107,9 @@
                     <img id="attack-mobile" src="./imgs/icons/lightning-bolt.png" alt="Lightning">
                     <img id="jump-mobile" src="./imgs/icons/up-arrow.png" alt="Arrow pointing up">
                 </div>
+            </div>
+            <div id="personal-best-times" class="instructions personal-best-times">
+                No runs yet
             </div>
         </div>
     </main>

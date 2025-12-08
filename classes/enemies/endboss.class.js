@@ -143,9 +143,10 @@ class Endboss extends MovableObject {
             this.sounds.dying.play();
             this.dyingSoundPlayed = true;
         }
-        this.playAnimationOnce(this.IMAGES_DEAD, 3);
-        this.dyingFramesPlayed++;
         this.y = 85;
+        let path = this.IMAGES_DEAD[this.dyingFramesPlayed];
+        this.img = this.imageCache[path];
+        this.dyingFramesPlayed++;
         if (this.dyingFramesPlayed > 1) { this.stopEndbossIntervals(); }
     }
 

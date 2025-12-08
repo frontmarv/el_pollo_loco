@@ -15,6 +15,7 @@ class World {
     _isRunning = true;
     _showWelcomeScreen = true;
     winningSoundPlayed = false;
+    timeSaved = false;
 
     canvas;
     ctx;
@@ -176,13 +177,21 @@ class World {
         this.level.coins.forEach((collectedCoin, index) => {
             if (this.characterCollectsCoin(collectedCoin)) {
                 this.coinbar.handleCoinCollection(index);
-                if (this.coinbar.percentageCoin === 100) {
-                    this.coinbar.setPercentageCoin(-100);
-                    this.coinbar.sound.allCoinsCollected.play();
-                    this.bottlebar.setPercentageBottle(20);
+                if (this.isCoinbarFull()) {
+                    this.getExtraSalsaBottle();
                 }
             }
         })
+    }
+
+    isCoinbarFull() {
+        return this.coinbar.percentageCoin === 100
+    }
+
+    getExtraSalsaBottle() {
+        this.coinbar.setPercentageCoin(-100);
+        this.coinbar.sound.allCoinsCollected.play();
+        this.bottlebar.setPercentageBottle(20);
     }
 
     characterCollectsCoin(collectedCoin) {
@@ -277,6 +286,10 @@ class World {
             this.winningSoundPlayed = true;
         }
         this.drawScreenWithoutEnemies(this.youWon);
+        if (!this.timeSaved) {
+        saveRun(); 
+        this.timeSaved = true;
+    }
     }
 
     showGameOverScreen() {

@@ -2,13 +2,66 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 let fullscreen;
+let timeLevelStart;
 let timeLevelComplete;
 
 function init(difficulty) {
     initializeSoundState();
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard, difficulty);
-    timeLevelComplete = new Date().getTime();
+    timeLevelStart = new Date().getTime();
+}
+
+function getRuns() {
+    return JSON.parse(sessionStorage.getItem('runTimes'));
+}
+
+function saveRun() {
+    saveLevelTime();
+    let runs = getRuns();
+    if (runs !== null) {
+        runs.push(timeLevelComplete);
+        sessionStorage.setItem('runTimes', JSON.stringify(runs));
+    } else {
+        let runs = [timeLevelComplete];
+        sessionStorage.setItem('runTimes', JSON.stringify(runs));
+    }
+    renderScoreBoard();
+}
+
+function saveLevelTime() {
+    let endingTime = new Date().getTime();
+    timeLevelComplete = endingTime - timeLevelStart;
+}
+
+function getPersonalBest() {
+    let runs = getRuns();
+    if (!runs.length) return null;
+    let bestRun = runs[0];
+    for (let i = 1; i < runs.length; i++) {
+        if (runs[i] < bestRun) {
+            bestRun = runs[i];
+        }
+    }
+    return bestRun;
+}
+
+function renderScoreBoard() {
+    bestTime = formatDuration(getPersonalBest());
+    let htmlInsert = "";
+    htmlInsert += getSessionBestTime(bestTime);
+    let runs = getRuns();
+    for (let index = 0; index < runs.length; index++) {
+        htmlInsert += getRun(index + 1, formatDuration(runs[index]));
+    }
+    document.getElementById('personal-best-times').innerHTML = htmlInsert;
+}
+
+function formatDuration(ms) {
+    const minutes = Math.floor(ms / 60000);
+    const seconds = Math.floor((ms % 60000) / 1000);
+    const millis = Math.floor((ms % 1000) / 10);
+    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}:${String(millis).padStart(2, '0')}`;
 }
 
 const KEYS = {
@@ -104,10 +157,10 @@ function closeFullscreen() {
 }
 
 
-function hideWelcomeScreen(mode) {
+function hideWelcomeScreen(difficulty) {
     if (world) {
-        if (mode === 'hard') {
-            init(mode);
+        if (difficulty === 'hard') {
+            init(difficulty);
         }
         world.showWelcomeScreen = false;
         document.querySelector('.select-difficulty').classList.add('hidden');
@@ -126,9 +179,10 @@ function showWelcomeScreen() {
 }
 
 function tryAgain() {
+    difficulty = world.difficulty;
     world.stopGame();
     SoundManager.resetLoadedSongs();
-    init();
+    init(difficulty);
     hideWelcomeScreen();
     hideGameOverMenu();
 }
@@ -162,11 +216,18 @@ function unmuteAllSounds() {
 }
 
 document.addEventListener('click', (event) => {
-
     if (document.getElementById('instructions').style.display === 'block' &&
         !document.getElementById('instructions').contains(event.target) &&
         !document.getElementById('instructions-icon').contains(event.target)) {
         hideInstructions();
+    }
+});
+
+document.addEventListener('click', (event) => {
+    if (document.getElementById('personal-best-times').style.display === 'flex' &&
+        !document.getElementById('personal-best-times').contains(event.target) &&
+        !document.getElementById('trophy').contains(event.target)) {
+        hidePlayerRunTimes();
     }
 });
 
@@ -184,6 +245,21 @@ function hideInstructions() {
     document.getElementById('instructions-icon').style.backgroundColor = 'transparent';
 }
 
+function togglePlayerRunTimes() {
+    document.getElementById('personal-best-times').style.display === 'flex' ? hidePlayerRunTimes() : showPlayerRunTimes();
+}
+
+function showPlayerRunTimes() {
+    document.getElementById('personal-best-times').style.display = 'flex';
+    document.getElementById('trophy').style.backgroundColor = '#007cf8';
+}
+
+function hidePlayerRunTimes() {
+    document.getElementById('personal-best-times').style.display = 'none';
+    document.getElementById('trophy').style.backgroundColor = 'transparent';
+}
+
 function hideGameOverMenu() {
     document.querySelector('.game-over-menu').style.display = 'none';
 }
+
