@@ -1,6 +1,0 @@
-- timer
-
-showWinningScreen() &  showGameOverScreen() stop timer
-speicherung/abruf im session storage
-
-Bei Abgabe: Hinweis auf falsche height/width

@@ -6,6 +6,7 @@ class Chicken extends MovableObject {
     ];
     IMAGE_DEAD = ['../imgs/3_enemies_chicken/chicken_normal/2_dead/dead.png'];
     isDead;
+
     constructor(lvlLength, difficulty) {
         super().loadImage('../imgs/3_enemies_chicken/chicken_normal/1_walk/1_w.png');
         super.loadImages(this.IMAGES_WALKING);
@@ -29,6 +30,15 @@ class Chicken extends MovableObject {
         this.animate();
     }
 
+
+    /**
+ * Start the chicken's behavior: moves left/right and runs walking animation.
+ *
+ * Checks `healthPoints` each tick (~60 FPS); if health ≤ 0 it clears intervals
+ * and triggers the death animation.
+ *
+ * @returns {void}
+ */
     animate() {
         this.moveInterval = setInterval(() => {
             if (this.healthPoints <= 0) {
@@ -43,7 +53,10 @@ class Chicken extends MovableObject {
         this.animateWalking();
     }
 
-
+/**
+ * Starts the walking animation if health is above 0.
+ * @returns {void}
+ */
 animateWalking() {
     this.walkingInterval = setInterval(() => {
         if (this.healthPoints <= 0) return;
@@ -51,11 +64,19 @@ animateWalking() {
     }, 200);
 }
 
+/**
+ * Stops movement and walking intervals.
+ * @returns {void}
+ */
 clearIntervalsChicken() {
     clearInterval(this.moveInterval);
     clearInterval(this.walkingInterval);
 }
 
+/**
+ * Plays dead animation and sound, sets y offset.
+ * @returns {void}
+ */
 chickenDeadAnimation() {
     this.sounds.dying.play();
     this.playAnimation(this.IMAGE_DEAD);

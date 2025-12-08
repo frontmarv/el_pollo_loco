@@ -5,6 +5,11 @@ let fullscreen;
 let timeLevelStart;
 let timeLevelComplete;
 
+/**
+ * Initialize game with difficulty and start timer.
+ * @param {string} difficulty - Game difficulty level ('hard' or default).
+ * @returns {void}
+ */
 function init(difficulty) {
     initializeSoundState();
     canvas = document.getElementById('canvas');
@@ -12,10 +17,18 @@ function init(difficulty) {
     timeLevelStart = new Date().getTime();
 }
 
+/**
+ * Retrieve run times from session storage.
+ * @returns {array}
+ */
 function getRuns() {
     return JSON.parse(sessionStorage.getItem('runTimes'));
 }
 
+/**
+ * Save current level completion time to session storage.
+ * @returns {void}
+ */
 function saveRun() {
     saveLevelTime();
     let runs = getRuns();
@@ -29,11 +42,19 @@ function saveRun() {
     renderScoreBoard();
 }
 
+/**
+ * Calculate elapsed time since level start.
+ * @returns {void}
+ */
 function saveLevelTime() {
     let endingTime = new Date().getTime();
     timeLevelComplete = endingTime - timeLevelStart;
 }
 
+/**
+ * Find fastest run time from all recorded runs.
+ * @returns {number}
+ */
 function getPersonalBest() {
     let runs = getRuns();
     if (!runs.length) return null;
@@ -46,6 +67,10 @@ function getPersonalBest() {
     return bestRun;
 }
 
+/**
+ * Render score board with personal best and all run times.
+ * @returns {void}
+ */
 function renderScoreBoard() {
     bestTime = formatDuration(getPersonalBest());
     let htmlInsert = "";
@@ -57,6 +82,10 @@ function renderScoreBoard() {
     document.getElementById('personal-best-times').innerHTML = htmlInsert;
 }
 
+/**
+ * Format milliseconds to mm:ss:ms format.
+ * @returns {string}
+ */
 function formatDuration(ms) {
     const minutes = Math.floor(ms / 60000);
     const seconds = Math.floor((ms % 60000) / 1000);
@@ -123,13 +152,20 @@ document.getElementById('attack-mobile').addEventListener('touchend', (e) => {
 
 document.getElementById('mobile-play-btns').addEventListener("contextmenu", e => e.preventDefault());
 
+/**
+ * Toggles fullscreen mode on or off.
+ * @returns {void}
+ */
 function toggleFullscreen() {
     if (fullscreen) {
         closeFullscreen();
     } else { openFullscreen(); }
 }
 
-
+/**
+ * Opens fullscreen for the canvas element.
+ * @returns {void}
+ */
 function openFullscreen() {
     let elem = document.querySelector('.canvas-position');
     if (elem.requestFullscreen) {
@@ -143,7 +179,10 @@ function openFullscreen() {
     fullscreen = true;
 }
 
-
+/**
+ * Exits fullscreen mode.
+ * @returns {void}
+ */
 function closeFullscreen() {
     if (document.exitFullscreen) {
         document.exitFullscreen();
@@ -156,7 +195,11 @@ function closeFullscreen() {
     fullscreen = false;
 }
 
-
+/**
+ * Hide welcome screen and initialize game with difficulty.
+ * @param {string} difficulty - Game difficulty level ('hard' or default).
+ * @returns {void}
+ */
 function hideWelcomeScreen(difficulty) {
     if (world) {
         if (difficulty === 'hard') {
@@ -167,6 +210,10 @@ function hideWelcomeScreen(difficulty) {
     }
 }
 
+/**
+ * Return to welcome screen and reset game state.
+ * @returns {void}
+ */
 function showWelcomeScreen() {
     world.stopGame();
     SoundManager.resetLoadedSongs();
@@ -178,6 +225,10 @@ function showWelcomeScreen() {
     hideGameOverMenu();
 }
 
+/**
+ * Restart game with current difficulty.
+ * @returns {void}
+ */
 function tryAgain() {
     difficulty = world.difficulty;
     world.stopGame();
@@ -187,6 +238,10 @@ function tryAgain() {
     hideGameOverMenu();
 }
 
+/**
+ * Load and apply mute state from local storage.
+ * @returns {void}
+ */
 function initializeSoundState() {
     const gameMuted = localStorage.getItem("gameMuted") === 'true';
     if (gameMuted) {
@@ -196,69 +251,90 @@ function initializeSoundState() {
     }
 }
 
-
+/**
+ * Toggle sound mute state and update icon.
+ * @returns {void}
+ */
 function toggleSound() {
     localStorage.getItem("gameMuted") === 'true' ? unmuteAllSounds() : muteAllSounds();
 }
 
-
+/**
+ * Mute all sounds and save state to local storage.
+ * @returns {void}
+ */
 function muteAllSounds() {
     SoundManager.muteAll();
     localStorage.setItem("gameMuted", 'true');
     document.getElementById('game-volume').src = './imgs/icons/sound-off.svg';
 }
 
-
+/**
+ * Unmute all sounds and save state to local storage.
+ * @returns {void}
+ */
 function unmuteAllSounds() {
     SoundManager.unmuteAll();
     localStorage.setItem("gameMuted", 'false');
     document.getElementById('game-volume').src = './imgs/icons/sound-on.svg';
 }
 
-document.addEventListener('click', (event) => {
-    if (document.getElementById('instructions').style.display === 'block' &&
-        !document.getElementById('instructions').contains(event.target) &&
-        !document.getElementById('instructions-icon').contains(event.target)) {
-        hideInstructions();
-    }
-});
-
-document.addEventListener('click', (event) => {
-    if (document.getElementById('personal-best-times').style.display === 'flex' &&
-        !document.getElementById('personal-best-times').contains(event.target) &&
-        !document.getElementById('trophy').contains(event.target)) {
-        hidePlayerRunTimes();
-    }
-});
-
+/**
+ * Toggle instructions modal visibility.
+ * @returns {void}
+ */
 function toggleInstructions() {
     document.getElementById('instructions').style.display === 'block' ? hideInstructions() : showInstructions();
 }
 
+/**
+ * Show instructions modal and highlight icon.
+ * @returns {void}
+ */
 function showInstructions() {
     document.getElementById('instructions').style.display = 'block';
     document.getElementById('instructions-icon').style.backgroundColor = '#007cf8';
 }
 
+/**
+ * Hide instructions modal and reset icon.
+ * @returns {void}
+ */
 function hideInstructions() {
     document.getElementById('instructions').style.display = 'none';
     document.getElementById('instructions-icon').style.backgroundColor = 'transparent';
 }
 
+/**
+ * Toggle run times display visibility.
+ * @returns {void}
+ */
 function togglePlayerRunTimes() {
     document.getElementById('personal-best-times').style.display === 'flex' ? hidePlayerRunTimes() : showPlayerRunTimes();
 }
 
+/**
+ * Show run times modal and highlight icon.
+ * @returns {void}
+ */
 function showPlayerRunTimes() {
     document.getElementById('personal-best-times').style.display = 'flex';
     document.getElementById('trophy').style.backgroundColor = '#007cf8';
 }
 
+/**
+ * Hide run times modal and reset icon.
+ * @returns {void}
+ */
 function hidePlayerRunTimes() {
     document.getElementById('personal-best-times').style.display = 'none';
     document.getElementById('trophy').style.backgroundColor = 'transparent';
 }
 
+/**
+ * Hide game over menu.
+ * @returns {void}
+ */
 function hideGameOverMenu() {
     document.querySelector('.game-over-menu').style.display = 'none';
 }

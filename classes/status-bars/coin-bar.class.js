@@ -28,17 +28,31 @@ class CoinBar extends DrawableObject {
         };
     }
 
+    /**
+     * Increment coin percentage and update the status bar display.
+     * @param {number} percentage - Amount to add to coin percentage.
+     * @returns {void}
+     */
     setPercentageCoin(percentage) {
         this.percentageCoin += percentage;
         this.updateCoinStatusbar();
     }
 
+    /**
+     * Update the coin status bar image based on current percentage.
+     * @returns {void}
+     */
     updateCoinStatusbar() {
         let index = this.resolveImgIndex(this.percentageCoin);
         let path = this.IMAGES_COINBAR[index];
         this.img = this.imageCache[path];
     }
 
+    /**
+     * Play coin pickup sound, remove coin from level, and increment coin percentage.
+     * @param {number} index - Index of coin in level coins array.
+     * @returns {void}
+     */
     handleCoinCollection(index) {
         this.sound.pickupCoin.currentTime = 0;
         this.sound.pickupCoin.play();

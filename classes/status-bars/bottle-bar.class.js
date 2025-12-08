@@ -22,17 +22,31 @@ class BottleBar extends DrawableObject {
         this.sound = { collectBottle: SoundManager.register(new Audio('../audio/item-collected.mp3'), 0.5) };
     }
 
+    /**
+     * Increases the bottle percentage and updates status bar.
+     * @returns {void}
+     * @param {number} percentage - Amount to add to bottle percentage.
+     */
     setPercentageBottle(percentage) {
         this.percentageBottle += percentage;
         this.updateBottleStatusbar();
     }
 
+    /**
+     * Updates the bottle status bar image.
+     * @returns {void}
+     */
     updateBottleStatusbar() {
         let index = this.resolveImgIndex(this.percentageBottle);
         let path = this.IMAGES_BOTTLEBAR[index];
         this.img = this.imageCache[path];
     }
 
+    /**
+     * Handles logic when a bottle is collected.
+     * @param {number} index - Index of bottle in level bottles array.
+     * @returns {void}
+     */
     handleBottleCollection(index) {
         this.sound.collectBottle.currentTime = 0;
         this.sound.collectBottle.play();
@@ -40,6 +54,10 @@ class BottleBar extends DrawableObject {
         this.setPercentageBottle(20);
     }
 
+    /**
+     * Checks if bottle can be thrown.
+     * @returns {boolean}
+     */
     canThrow() {
         return this.checkTimer(this.lastThrow, 1);
     }

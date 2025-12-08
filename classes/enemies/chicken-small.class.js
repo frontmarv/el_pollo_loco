@@ -33,6 +33,12 @@ class SmallChicken extends MovableObject {
         this.animate();
     }
 
+    /**
+    * Initialize and start all animation and behavior intervals for the small chicken.
+    * This method wires up movement, occasional jumping, walking animation, and death checking.
+    *
+    * @returns {void}
+    */
     animate() {
         this.handleChickenMovement();
         this.letChickenJump();
@@ -40,6 +46,14 @@ class SmallChicken extends MovableObject {
         this.playIsDead();
     }
 
+    /**
+     * Start the movement interval that moves the chicken left/right within level bounds.
+     *
+     * The method toggles `otherDirection` when reaching level edges and calls `moveLeft`
+     * or `moveRight` on the instance at ~60 FPS.
+     *
+     * @returns {void}
+     */
     handleChickenMovement() {
         this.movingInterval = setInterval(() => {
             if (this.x <= 200) this.otherDirection = true;
@@ -48,12 +62,26 @@ class SmallChicken extends MovableObject {
         }, 1000 / 60);
     }
 
+    /**
+     * Start walking animation interval.
+     * Cycles through `IMAGES_WALKING` using `playAnimation` every 200ms.
+     *
+     * @returns {void}
+     */
     animateWalking() {
         this.walkingInterval = setInterval(() => {
             this.playAnimation(this.IMAGES_WALKING);
         }, 200);
     }
 
+    /**
+     * Occasionally trigger a small jump when the chicken is on the ground.
+     *
+     * Runs on a randomized interval between 500ms and ~2500ms; calls `smallJump`
+     * from the superclass when the chicken is not above ground.
+     *
+     * @returns {void}
+     */
     letChickenJump() {
         this.jumpingInterval = setInterval(() => {
             if (!this.isAboveGround()) {
@@ -62,6 +90,19 @@ class SmallChicken extends MovableObject {
         }, 500 + Math.random() * 2000);
     }
 
+    /**
+     * Monitor death state and play death animation/sound once.
+     *
+     * When `isDead` becomes true this method:
+     * - stops movement/jump intervals,
+     * - plays the dying sound once,
+     * - switches the displayed animation to `IMAGE_DEAD`,
+     * - adjusts the collision `offset.y` to 100 to reflect the dead sprite.
+     *
+     * This check runs every 100ms.
+     *
+     * @returns {void}
+     */
     playIsDead() {
         this.dyingInterval = setInterval(() => {
             if (this.isDead) {
@@ -76,6 +117,12 @@ class SmallChicken extends MovableObject {
         }, 100);
     }
 
+    /**
+     * Clear intervals that control movement and jumping for this small chicken.
+     * This prevents further movement or jumps after the chicken dies.
+     *
+     * @returns {void}
+     */
     stopSmallChickenIntervals() {
         clearInterval(this.movingInterval);
         clearInterval(this.jumpingInterval);

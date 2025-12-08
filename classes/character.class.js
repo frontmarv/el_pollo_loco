@@ -91,12 +91,20 @@ class Character extends MovableObject {
         this.sounds.snoring.loop = true;
     }
 
+    /**
+     * Clear all intervals and pause sounds.
+     * @returns {void}
+     */
     stopCharacterIntervals() {
         this.intervalIds.forEach(clearInterval);
         this.sounds.walking.pause();
         clearInterval(this.applyGravityInterVal);
     }
 
+    /**
+     * Initialize movement, idle, state, and jumping animation intervals.
+     * @returns {void}
+     */
     animate() {
         this.setStoppableInterval(() => this.handleMovement(), 1000 / 60);
         this.setStoppableInterval(() => this.handleIdleState(), 150);
@@ -104,23 +112,39 @@ class Character extends MovableObject {
         this.intervalId = this.setStoppableInterval(() => this.handleJumpingAnimation(), 1000 / 30);
     }
 
+    /**
+     * Check keyboard input and adjust camera position.
+     * @returns {void}
+     */
     handleMovement() {
         if (this.isMovingLeft()) { this.handleMovingLeft(); }
         else if (this.isMovingRight()) { this.handleMovingRight(); }
         this.adjustCamera();
     }
 
+    /**
+     * Track keyboard activity and play idle animations when character is on ground.
+     * @returns {void}
+     */
     handleIdleState() {
         if (this.isAnyKeyPressed()) { this.lastKeyboardEvent = new Date().getTime(); }
         if (!this.isAboveGround()) { this.playIdleAnimation(); }
     }
 
+    /**
+     * Play appropriate idle animation based on time elapsed since last key press.
+     * @returns {void}
+     */
     playIdleAnimation() {
         if (this.checkTimer(this.lastKeyboardEvent, 6)) { this.playIdleLong(); }
         else if (this.checkTimer(this.lastKeyboardEvent, 0.1)) { this.playIdleShort(); }
         else { this.sounds.snoring.pause(); }
     }
 
+    /**
+     * Handle character state: death, hurt, jumping, and walking animations.
+     * @returns {void}
+     */
     handleCharacterState() {
         if (this.isCharacterDead()) { this.handleCharacterDeath(); return; }
         if (this.isHurt() && !this.isDead) { this.handleCharacterHurt(); return; }
@@ -128,77 +152,141 @@ class Character extends MovableObject {
         if (this.isCharacterWalkingOnGround()) { this.playAnimation(this.IMAGES_WALKING); }
     }
 
+    /**
+     * Play jumping animation frames based on vertical speed.
+     * @returns {void}
+     */
     handleJumpingAnimation() {
         if (this.isHurt() && this.isAboveGround()) { clearInterval(this.intervalId); return; }
         if (this.isAboveGround()) { this.playJumpingAnimation(); }
         else { this.animationAlreadyPlayed = false; }
     }
 
+    /**
+     * Check if character is moving left within bounds.
+     * @returns {boolean}
+     */
     isMovingLeft() {
         return this.world.keyboard.LEFT && this.x > 0
     }
 
+    /**
+     * Move character left and play walking sound.
+     * @returns {void}
+     */
     handleMovingLeft() {
         this.otherDirection = true;
         this.sounds.walking.play();
         this.moveLeft();
     }
 
+    /**
+     * Check if character is moving right within bounds.
+     * @returns {boolean}
+     */
     isMovingRight() {
         return this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x
     }
 
+    /**
+     * Move character right and play walking sound.
+     * @returns {void}
+     */
     handleMovingRight() {
         this.otherDirection = false;
         this.sounds.walking.play();
         this.moveRight();
     }
 
+    /**
+     * Update camera position to follow character.
+     * @returns {void}
+     */
     adjustCamera() {
         this.world.camera_x = Math.min(0, Math.max(-(this.world.level.level_end_x - this.world.canvas.width + 100), -this.x + 100));
     }
 
+    /**
+     * Set upward velocity for bounce effect.
+     * @returns {void}
+     */
     bounce() {
         this.speedY = 15;
     }
 
+    /**
+     * Check if any keyboard key is pressed.
+     * @returns {boolean}
+     */
     isAnyKeyPressed() {
         return this.world.keyboard.LEFT || this.world.keyboard.RIGHT || this.world.keyboard.UP || this.world.keyboard.SPACE || this.world.keyboard.THROW
     }
 
+    /**
+     * Play long idle animation with snoring sound.
+     * @returns {void}
+     */
     playIdleLong() {
         this.sounds.snoring.play();
         this.playAnimation(this.IMGAES_IDLE_LONG);
     }
 
+    /**
+     * Play short idle animation and pause walking sound.
+     * @returns {void}
+     */
     playIdleShort() {
         this.sounds.walking.pause();
         this.playAnimation(this.IMGAES_IDLE_SHORT);
     }
 
+    /**
+     * Check if character is jumping.
+     * @returns {boolean}
+     */
     isCharacterJumping() {
         return this.world.keyboard.UP && !this.isAboveGround()
     }
 
+    /**
+     * Check if character is dead.
+     * @returns {boolean}
+     */
     isCharacterDead() {
         return this.healthPoints <= 0 && this.isDead
     }
 
+    /**
+     * Play hurt animation and sound.
+     * @returns {void}
+     */
     handleCharacterHurt() {
         this.sounds.hurting.play();
         this.playAnimation(this.IMGAES_HURT);
     }
 
+    /**
+     * Play death animation and sound.
+     * @returns {void}
+     */
     handleCharacterDeath() {
         this.sounds.dying.play();
         this.playAnimation(this.IMGAES_DEAD);
         this.dyingFramesPlayed++;
     }
 
+    /**
+     * Check if character is walking on ground.
+     * @returns {boolean}
+     */
     isCharacterWalkingOnGround() {
         return (this.world.keyboard.LEFT || this.world.keyboard.RIGHT) && !this.isAboveGround()
     }
 
+    /**
+     * Update image based on vertical speed during jump.
+     * @returns {void}
+     */
     playJumpingAnimation() {
         if (this.speedY > 24 && !this.animationAlreadyPlayed) {
             this.playAnimation(this.IMAGES_JUMPING[0]);

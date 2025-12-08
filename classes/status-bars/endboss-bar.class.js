@@ -21,6 +21,11 @@ class HealthBarEndboss extends DrawableObject {
         this.percentageHealth = 100;
     }
 
+    /**
+     * Reduce health percentage and update the health bar image.
+     * @param {number} percentage - Amount to subtract from health percentage.
+     * @returns {void}
+     */
     deductPercentageHealth(percentage) {
         this.percentageHealth -= percentage;
         let index = this.resolveImgIndex(this.percentageHealth);
@@ -28,6 +33,10 @@ class HealthBarEndboss extends DrawableObject {
         this.img = this.imageCache[path];
     }
 
+    /**
+     * Track the endboss position and update the health bar coordinates every 80ms.
+     * @returns {void}
+     */
     setHealthbarPosition() {
         this.endbossHealthbarInterval = setInterval(() => {
             this.position = this.world.getPositionEndboss();
@@ -36,5 +45,3 @@ class HealthBarEndboss extends DrawableObject {
         }, 80);
     }
 }
-
-

@@ -70,10 +70,18 @@ class Endboss extends MovableObject {
         super.applyGravity();
     }
 
+    /**
+  * Stops Endboss animation interval.
+  * @returns {void}
+  */
     stopEndbossIntervals() {
         clearInterval(this.EndbossAnimationInterval);
     }
 
+    /**
+     * Starts Endboss animation loop.
+     * @returns {void}
+     */
     animate() {
         this.EndbossAnimationInterval = setInterval(() => {
             if (this.isFirstContactWithCharacter()) { this.handleFirstContact(); }
@@ -84,15 +92,27 @@ class Endboss extends MovableObject {
         }, 80);
     }
 
+    /**
+     * Handles Endboss movement and attack logic.
+     * @returns {void}
+     */
     handleMovement() {
         if (this.characterIsInRange() && this.readyForNextAttack()) this.playAttack();
         else this.world.getDistanceCharacterEndboss() > 0 ? this.walkLeft() : this.walkRight();
     }
 
+    /**
+     * Checks if this is the first contact with the character.
+     * @returns {boolean}
+     */
     isFirstContactWithCharacter() {
         return this.world.getDistanceCharacterEndboss() < 520 && this.firstContactWithCharacter
     }
 
+    /**
+     * Handles first contact animation and state.
+     * @returns {void}
+     */
     handleFirstContact() {
         this.animateAlert();
         this.alertFramesPlayed++;
@@ -101,31 +121,55 @@ class Endboss extends MovableObject {
         }
     }
 
+    /**
+     * Plays walking animation.
+     * @returns {void}
+     */
     animateWalking() {
         this.playAnimation(this.IMAGES_WALKING);
     }
 
+    /**
+     * Plays alert animation.
+     * @returns {void}
+     */
     animateAlert() {
         this.playAnimation(this.IMAGES_ALERT);
     }
 
+    /**
+     * Moves Endboss left, updates direction and plays walking animation.
+     * @returns {void}
+     */
     walkLeft() {
         this.moveLeft();
         this.otherDirection = false;
         this.animateWalking();
     }
 
+    /**
+     * Moves Endboss right, updates direction and plays walking animation.
+     * @returns {void}
+     */
     walkRight() {
         this.moveRight();
         this.otherDirection = true;
         this.animateWalking();
     }
 
+    /**
+     * Plays hurt sound and animation.
+     * @returns {void}
+     */
     playHurt() {
         this.sounds.hurt.play();
         this.playAnimation(this.IMAGES_HURT);
     }
 
+    /**
+     * Plays attack sound and animation, manages attack logic.
+     * @returns {void}
+     */
     playAttack() {
         this.sounds.attack.play();
         this.playAnimation(this.IMAGES_ATTACK);
@@ -138,6 +182,10 @@ class Endboss extends MovableObject {
         }
     }
 
+    /**
+     * Plays dead sound and animation, stops intervals if finished.
+     * @returns {void}
+     */
     playDead() {
         if (!this.dyingSoundPlayed) {
             this.sounds.dying.play();
@@ -150,10 +198,18 @@ class Endboss extends MovableObject {
         if (this.dyingFramesPlayed > 1) { this.stopEndbossIntervals(); }
     }
 
+    /**
+     * Checks if Endboss can attack again.
+     * @returns {boolean}
+     */
     readyForNextAttack() {
         return this.checkTimer(this.lastAttack, 2.5);
     }
 
+    /**
+     * Checks if the character is in range for Endboss.
+     * @returns {boolean}
+     */
     characterIsInRange() {
         return Math.abs(this.world.getDistanceCharacterEndboss()) <= 250
     }

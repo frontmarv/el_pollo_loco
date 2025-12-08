@@ -24,10 +24,19 @@ class World {
     sounds;
     lastThrow = 0;
 
+    /**
+     * Get welcome screen visibility state.
+     * @returns {boolean}
+     */
     get showWelcomeScreen() {
         return this._showWelcomeScreen;
     }
 
+    /**
+     * Set welcome screen visibility and start game if value is false.
+     * @param {boolean} value - Whether to show the welcome screen.
+     * @returns {void}
+     */
     set showWelcomeScreen(value) {
         this._showWelcomeScreen = value;
         if (!value) {
@@ -47,6 +56,10 @@ class World {
         this.draw();
     }
 
+    /**
+     * Initialize sound effects and register with SoundManager.
+     * @returns {void}
+     */
     initSounds() {
         this.sounds = {
             backgroundMusic: SoundManager.register(new Audio('../audio/background-music.mp3')),
@@ -55,16 +68,28 @@ class World {
         this.sounds.backgroundMusic.loop = true;
     }
 
+    /**
+     * Get endboss position as object with x and y coordinates.
+     * @returns {object}
+     */
     getPositionEndboss() {
         return { x: this.endboss.x, y: this.endboss.y };
     }
 
+    /**
+     * Calculate distance between character and endboss.
+     * @returns {number}
+     */
     getDistanceCharacterEndboss() {
         this.position = this.getPositionEndboss();
         this.distance = this.position.x + 114 - this.character.x;
         return this.distance
     }
 
+    /**
+     * Start game loop and initialize all game systems.
+     * @returns {void}
+     */
     startGame() {
         this.setWorld();
         this.character.animate();
@@ -74,6 +99,10 @@ class World {
         this.endbossHealthbar.setHealthbarPosition();
     }
 
+    /**
+     * Stop game and clear all active intervals.
+     * @returns {void}
+     */
     stopGame() {
         this._isRunning = false;
         this.level.enemies.forEach((enemy) => {
@@ -86,12 +115,20 @@ class World {
         this.endboss.stopEndbossIntervals();
     }
 
+    /**
+     * Play background music if game is running.
+     * @returns {void}
+     */
     playMusic() {
         if (!this.showWelcomeScreen) {
             this.sounds.backgroundMusic.play();
         }
     }
 
+    /**
+     * Set world reference for all game entities.
+     * @returns {void}
+     */
     setWorld() {
         this.level.world = this;
         this.level.enemies.forEach(enemy => enemy.world = this);
@@ -101,6 +138,10 @@ class World {
         this.gameOver.world = this;
     }
 
+    /**
+     * Monitor keyboard input and create throwable objects.
+     * @returns {void}
+     */
     checkBottleThrow() {
         setInterval(() => {
             if (this.keyboard.THROW && this.canThrow() && this.bottlebar.percentageBottle > 0) {
@@ -112,11 +153,19 @@ class World {
         }, 60);
     }
 
+    /**
+     * Check if enough time passed since last throw.
+     * @returns {boolean}
+     */
     canThrow() {
         let timePassed = new Date().getTime() - this.lastThrow;
         return timePassed > 1000;
     }
 
+    /**
+     * Monitor collisions between character, enemies, coins, and bottles.
+     * @returns {void}
+     */
     checkCollisions() {
         setInterval(() => {
             this.level.enemies.forEach((enemy, index) => {
@@ -128,6 +177,12 @@ class World {
         }, 100);
     }
 
+    /**
+     * Check character collision with enemy and handle damage or bounce.
+     * @param {MovableObject} enemy - Enemy to check collision with.
+     * @param {number} index - Index of enemy in enemies array.
+     * @returns {void}
+     */
     hasCollisionCharacter(enemy, index) {
         if (this.character.isCollidingFromAbove(enemy)) {
             this.handleEnemyHit(enemy, index)
@@ -138,6 +193,12 @@ class World {
         }
     }
 
+    /**
+     * Check bottle collision with enemy and handle removal.
+     * @param {MovableObject} enemy - Enemy to check collision with.
+     * @param {number} index - Index of enemy in enemies array.
+     * @returns {void}
+     */
     hasCollisionThrowableObject(enemy, index) {
         this.throwableObjects.forEach((projectile, projectileIndex) => {
             if (enemy.isColliding(projectile)) {
@@ -151,6 +212,12 @@ class World {
         });
     }
 
+    /**
+     * Damage enemy and remove if dead.
+     * @param {MovableObject} enemy - Enemy to damage.
+     * @param {number} index - Index of enemy in enemies array.
+     * @returns {void}
+     */
     handleEnemyHit(enemy, index) {
         if (!enemy.isHurt()) {
             enemy.isHit();
@@ -165,6 +232,10 @@ class World {
         }
     }
 
+    /**
+     * Check character collision with bottles.
+     * @returns {void}
+     */
     hasCollisionBottle() {
         this.level.bottles.forEach((bottle, index) => {
             if (this.characterCollectsBottle(bottle)) {
@@ -173,6 +244,10 @@ class World {
         })
     }
 
+    /**
+     * Check character collision with coins.
+     * @returns {void}
+     */
     hasCollisionCoin() {
         this.level.coins.forEach((collectedCoin, index) => {
             if (this.characterCollectsCoin(collectedCoin)) {
@@ -184,24 +259,47 @@ class World {
         })
     }
 
+    /**
+     * Check if coin bar is full (100%).
+     * @returns {boolean}
+     */
     isCoinbarFull() {
         return this.coinbar.percentageCoin === 100
     }
 
+    /**
+     * Reset coin bar and grant extra bottle when full.
+     * @returns {void}
+     */
     getExtraSalsaBottle() {
         this.coinbar.setPercentageCoin(-100);
         this.coinbar.sound.allCoinsCollected.play();
         this.bottlebar.setPercentageBottle(20);
     }
 
+    /**
+     * Check if character collides with coin.
+     * @param {DrawableObject} collectedCoin - Coin to check collision with.
+     * @returns {boolean}
+     */
     characterCollectsCoin(collectedCoin) {
         return this.character.isColliding(collectedCoin);
     }
 
+    /**
+     * Check if character collides with bottle.
+     * @param {DrawableObject} bottle - Bottle to check collision with.
+     * @returns {boolean}
+     */
     characterCollectsBottle(bottle) {
         return this.character.isColliding(bottle)
     }
 
+    /**
+     * Draw object with horizontal flip if facing left.
+     * @param {MovableObject} mo - Object to draw.
+     * @returns {void}
+     */
     addToMap(mo) {
         if (mo.otherDirection) {
             this.flipImg(mo);
@@ -212,10 +310,20 @@ class World {
         }
     }
 
+    /**
+     * Draw array of objects to canvas.
+     * @param {array} objects - Objects to draw.
+     * @returns {void}
+     */
     addObjectsToMap(objects) {
         objects.forEach(o => { this.addToMap(o) });
     }
 
+    /**
+     * Flip canvas context for left-facing objects.
+     * @param {MovableObject} mo - Object to flip.
+     * @returns {void}
+     */
     flipImg(mo) {
         this.ctx.save();
         this.ctx.translate(mo.width, 0);
@@ -223,17 +331,31 @@ class World {
         mo.x = mo.x * -1;
     }
 
+    /**
+     * Restore canvas context after flipping.
+     * @param {MovableObject} mo - Object that was flipped.
+     * @returns {void}
+     */
     flipImgBack(mo) {
         mo.x = mo.x * -1;
         this.ctx.restore();
     }
 
+    /**
+     * Draw array of fixed objects without flipping.
+     * @param {array} objects - Objects to draw.
+     * @returns {void}
+     */
     addFixedObjectsToMap(objects) {
         objects.forEach(object => {
             object.drawFixedObject(this.ctx);
         })
     }
 
+    /**
+     * Main render loop for game or welcome screen.
+     * @returns {void}
+     */
     draw() {
         if (!this._isRunning) { cancelAnimationFrame(this.animationloop); return; }
         if (this.showWelcomeScreen) { this.drawWelcomeScreen(); }
@@ -241,6 +363,10 @@ class World {
         this.animationloop = requestAnimationFrame(() => this.draw());
     }
 
+    /**
+     * Render all game entities and check win/lose conditions.
+     * @returns {void}
+     */
     drawGameScreen() {
         this.ctx.clearRect(0, 0, canvas.width, canvas.height);
         this.ctx.translate(this.camera_x, 0);
@@ -251,6 +377,10 @@ class World {
         this.checkEndConditions();
     }
 
+    /**
+     * Draw background, clouds, coins, and bottles.
+     * @returns {void}
+     */
     drawWorldObjects() {
         this.addObjectsToMap(this.level.background);
         this.addObjectsToMap(this.level.clouds);
@@ -258,12 +388,20 @@ class World {
         this.addFixedObjectsToMap(this.level.bottles);
     }
 
+    /**
+     * Draw status bars fixed to screen.
+     * @returns {void}
+     */
     drawStatusBars() {
         this.ctx.translate(-this.camera_x, 0);
         this.addFixedObjectsToMap(this.statusbars);
         this.ctx.translate(this.camera_x, 0);
     }
 
+    /**
+     * Draw enemies, character, and throwable objects.
+     * @returns {void}
+     */
     drawEntities() {
         this.addObjectsToMap(this.level.enemies);
         if (!this.endboss.isDead) { this.endbossHealthbar.drawFixedObject(this.ctx); }
@@ -271,11 +409,19 @@ class World {
         this.addObjectsToMap(this.throwableObjects);
     }
 
+    /**
+     * Check for game over or winning conditions.
+     * @returns {void}
+     */
     checkEndConditions() {
         if (this.character.isDead && this.character.dyingFramesPlayed > 4) { this.showGameOverScreen(); }
         if (this.allEnemiesDead()) { this.showWinningScreen(); }
     }
 
+    /**
+     * Display winning screen and save run time.
+     * @returns {void}
+     */
     showWinningScreen() {
         this.character.stopCharacterIntervals();
         if (!this.winningSoundPlayed) {
@@ -287,11 +433,15 @@ class World {
         }
         this.drawScreenWithoutEnemies(this.youWon);
         if (!this.timeSaved) {
-        saveRun(); 
-        this.timeSaved = true;
-    }
+            saveRun();
+            this.timeSaved = true;
+        }
     }
 
+    /**
+     * Display game over screen.
+     * @returns {void}
+     */
     showGameOverScreen() {
         this.character.stopCharacterIntervals();
         this.drawScreenWithoutEnemies(this.gameOver);
@@ -303,10 +453,19 @@ class World {
         }
     }
 
+    /**
+     * Check if all enemies have been defeated.
+     * @returns {boolean}
+     */
     allEnemiesDead() {
         return this.level.enemies.length < 1
     }
 
+    /**
+     * Draw game screen with end screen overlay.
+     * @param {DrawableObject} fixedObject - End screen object to draw.
+     * @returns {void}
+     */
     drawScreenWithoutEnemies(fixedObject) {
         this.ctx.clearRect(0, 0, canvas.width, canvas.height);
         this.ctx.translate(this.camera_x, 0);
@@ -319,6 +478,10 @@ class World {
         this.ctx.translate(-this.camera_x, 0);
     }
 
+    /**
+     * Draw welcome screen.
+     * @returns {void}
+     */
     drawWelcomeScreen() {
         this.ctx.clearRect(0, 0, canvas.width, canvas.height);
         this.ctx.translate(this.camera_x, 0);

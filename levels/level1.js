@@ -1,4 +1,8 @@
 const lvlLength = 2000;
+/**
+ * Create and return Level 1 with enemies, clouds, backgrounds, coins, and bottles.
+ * @returns {Level}
+ */
 function createLvl1(difficulty) {
     return new Level(
         [

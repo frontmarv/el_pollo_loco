@@ -40,16 +40,28 @@ class ThrowableObject extends MovableObject {
         this.animateBottle();
     }
 
+    /**
+     * Start bottle movement and rotation animation.
+     * @returns {void}
+     */
     animateBottle() {
         this.throwBottle();
         this.checkIfSplashed();
     }
 
+    /**
+     * Clear bottle movement and splash intervals.
+     * @returns {void}
+     */
     stopBottleIntervals(){
         clearInterval(this.throwingInterval);
         clearInterval(this.splashingInverval);
     }
 
+    /**
+     * Move bottle and play rotation animation every 60ms.
+     * @returns {void}
+     */
     throwBottle() {
         this.throwingInterval = setInterval(() => {
             if (this.otherDirection) { this.x -= this.speed; }
@@ -62,6 +74,10 @@ class ThrowableObject extends MovableObject {
         this.applyGravity();
     }
 
+    /**
+     * Monitor bottle state and trigger splash animation when dead.
+     * @returns {void}
+     */
     checkIfSplashed() {
         this.splashingInverval = setInterval(() => {
             if (this.isDead && this.y < 500) {
@@ -75,10 +91,18 @@ class ThrowableObject extends MovableObject {
         }, 1000 / 60);
     }
 
+    /**
+     * Play splash animation for 6 frames.
+     * @returns {void}
+     */
     playSplashAnimation() {
         this.playAnimationOnce(this.BOTTLE_SPLASH, 6);
     }
 
+    /**
+     * Mark bottle as dead if it falls below 1000px.
+     * @returns {void}
+     */
     setBottleDead() {
         if (this.y > 1000) {
             this.isDead = true;
