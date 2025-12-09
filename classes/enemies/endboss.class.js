@@ -47,7 +47,8 @@ class Endboss extends MovableObject {
         this.width = this.height * 0.86;
         this.y = 65;
         this.x = lvlLength - 200;
-        this.speed = 8;
+        this.speed = 10;
+        this.baseSpeed = this.speed;
         this.offset = {
             x: 20,
             y: 50,
@@ -66,7 +67,7 @@ class Endboss extends MovableObject {
             attack: SoundManager.register(new Audio('../audio/enemies/endboss-attack.mp3')),
             dying: SoundManager.register(new Audio('../audio/enemies/chicken-dying.mp3'))
         };
-        if (difficulty === 'hard') { this.speed = 10; this.healthPoints = 30; }
+        if (difficulty === 'hard') { this.speed = 16; this.healthPoints = 30; }
         super.applyGravity();
     }
 
@@ -85,7 +86,6 @@ class Endboss extends MovableObject {
     animate() {
         this.EndbossAnimationInterval = setInterval(() => {
             if (this.isFirstContactWithCharacter()) { this.handleFirstContact(); }
-            if (!this.isAboveGround()) { this.speed = 8; }
             if (!this.firstContactWithCharacter) { this.handleMovement(); }
             if (this.isHurt()) { this.playHurt(); }
             if (this.isDead) { this.playDead(); }
@@ -97,8 +97,8 @@ class Endboss extends MovableObject {
      * @returns {void}
      */
     handleMovement() {
-        if (this.characterIsInRange() && this.readyForNextAttack()) this.playAttack();
-        else this.world.getDistanceCharacterEndboss() > 0 ? this.walkLeft() : this.walkRight();
+        if (this.characterIsInRange() && this.readyForNextAttack()) { this.playAttack(); }
+        else { this.world.getDistanceCharacterEndboss() > 0 ? this.walkLeft() : this.walkRight(); }
     }
 
     /**
@@ -179,6 +179,9 @@ class Endboss extends MovableObject {
             this.jump();
             this.lastAttack = new Date().getTime();
             this.attackFramesPlayed = 0;
+            setTimeout(() => {
+                this.speed = this.baseSpeed;
+            }, 700);
         }
     }
 
@@ -211,6 +214,6 @@ class Endboss extends MovableObject {
      * @returns {boolean}
      */
     characterIsInRange() {
-        return Math.abs(this.world.getDistanceCharacterEndboss()) <= 250
+        return Math.abs(this.world.getDistanceCharacterEndboss()) <= 350
     }
 }

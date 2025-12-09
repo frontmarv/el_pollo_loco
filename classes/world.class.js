@@ -24,6 +24,7 @@ class World {
     sounds;
     lastThrow = 0;
 
+
     /**
      * Get welcome screen visibility state.
      * @returns {boolean}

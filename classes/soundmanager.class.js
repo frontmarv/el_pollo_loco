@@ -2,18 +2,18 @@ class SoundManager {
     static isMuted = false;
     static allSounds = [];
 
-/**
- * Register sound with optional volume and mute state.
- * @param {Audio} sound - Audio object to register.
- * @param {number} volume - Volume level (0-1), defaults to 1.0.
- * @returns {Audio}
- */
-static register(sound, volume = 1.0) {
-    sound.volume = volume;
-    this.allSounds.push(sound);
-    sound.muted = this.isMuted;
-    return sound;
-}
+    /**
+     * Register sound with optional volume and mute state.
+     * @param {Audio} sound - Audio object to register.
+     * @param {number} volume - Volume level (0-1), defaults to 1.0.
+     * @returns {Audio}
+     */
+    static register(sound, volume = 1.0) {
+        sound.volume = volume;
+        this.allSounds.push(sound);
+        sound.muted = this.isMuted;
+        return sound;
+    }
 
     /**
      * Mute all registered sounds.
@@ -38,7 +38,15 @@ static register(sound, volume = 1.0) {
      * @returns {void}
      */
     static resetLoadedSongs() {
-        this.allSounds.forEach(sound => sound.pause());
+        this.allSounds.forEach(sound => {
+            if (!sound.paused && sound.readyState >= 2) {
+                try {
+                    sound.pause();
+                } catch (e) {
+                    console.warn("Failed to pause sound:", e);
+                }
+            }
+        });
         this.allSounds = [];
     }
 }

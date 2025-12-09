@@ -212,6 +212,7 @@ li a {
     display: none;
     flex-direction: row;
     justify-content: space-between;
+    touch-action: none;
 }
 
 .mobile-play-btns img {
@@ -250,8 +251,41 @@ h3 {
     font-size: 25px;
 }
 
+.content-wrapper {
+    max-width: 1920px;
+}
 
-@media only screen and (orientation: portrait) and (max-width: 700px) {
+@media (max-width: 1366px) and (pointer: coarse) and (orientation: landscape) {
+    .mobile-play-btns {
+        display: flex;
+    }
+
+    .desktop-instructions {
+        display: none;
+    }
+
+    .instructions img {
+        display: inline;
+        width: 40px;
+    }
+
+    .game-introduction {
+        display: none;
+    }
+
+    .canvas-position {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    footer {
+        display: none;
+    }
+}
+
+@media only screen and (orientation: portrait) and (max-width: 1024px) {
     section {
         font-size: 16px;
     }
@@ -269,24 +303,6 @@ h3 {
     }
 }
 
-@media only screen and (min-width: 700px) and (max-width: 1024px) {
-    .mobile-play-btns {
-        display: flex;
-    }
-
-    .desktop-instructions {
-        display: none;
-    }
-
-    .instructions img {
-        display: inline;
-        width: 40px;
-    }
-
-    #fullscreen {
-        display: none;
-    }
-}
 
 @media only screen and (max-height: 400px) and (orientation: landscape) {
     canvas {
@@ -299,20 +315,8 @@ h3 {
         display: none;
     }
 
-    main {
-        justify-content: center;
-    }
-
     .game-introduction {
         display: none;
-    }
-
-    footer {
-        display: none;
-    }
-
-    .canvas-position {
-        display: block;
     }
 
     .mobile-play-btns {
@@ -353,7 +357,7 @@ h3 {
     }
 
     section {
-        margin: 1rem;
+        margin: 0rem;
     }
 
 }
