@@ -171,11 +171,11 @@ class Endboss extends MovableObject {
      * @returns {void}
      */
     playAttack() {
-        this.sounds.attack.play();
         this.playAnimation(this.IMAGES_ATTACK);
         this.attackFramesPlayed++;
         if (this.attackFramesPlayed >= 8) {
             this.speed = this.speed * 3;
+            this.sounds.attack.play();
             this.jump();
             this.lastAttack = new Date().getTime();
             this.attackFramesPlayed = 0;

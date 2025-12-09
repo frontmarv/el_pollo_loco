@@ -59,4 +59,14 @@ class CoinBar extends DrawableObject {
         this.world.level.coins.splice(index, 1);
         this.setPercentageCoin(10);
     }
+
+    /**
+ * Check if coin bar is full (100%).
+ * @returns {boolean}
+ */
+    isCoinbarFull() {
+        return this.percentageCoin === 100
+    }
+
+
 }

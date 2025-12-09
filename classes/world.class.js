@@ -1,7 +1,7 @@
 class World {
     difficulty;
-    character = new Character();
     level;
+    character = new Character();
     healthbar = new HealthBar();
     coinbar = new CoinBar();
     bottlebar = new BottleBar();
@@ -145,22 +145,13 @@ class World {
      */
     checkBottleThrow() {
         setInterval(() => {
-            if (this.keyboard.THROW && this.canThrow() && this.bottlebar.percentageBottle > 0) {
+            if (this.keyboard.THROW && this.character.canThrow() && this.bottlebar.percentageBottle > 0) {
                 let bottle = new ThrowableObject(this.character.x, this.character.otherDirection);
                 this.throwableObjects.push(bottle);
                 this.bottlebar.setPercentageBottle(-20);
                 this.lastThrow = new Date().getTime();
             }
         }, 60);
-    }
-
-    /**
-     * Check if enough time passed since last throw.
-     * @returns {boolean}
-     */
-    canThrow() {
-        let timePassed = new Date().getTime() - this.lastThrow;
-        return timePassed > 1000;
     }
 
     /**
@@ -181,12 +172,11 @@ class World {
     /**
      * Check character collision with enemy and handle damage or bounce.
      * @param {MovableObject} enemy - Enemy to check collision with.
-     * @param {number} index - Index of enemy in enemies array.
      * @returns {void}
      */
-    hasCollisionCharacter(enemy, index) {
+    hasCollisionCharacter(enemy) {
         if (this.character.isCollidingFromAbove(enemy)) {
-            this.handleEnemyHit(enemy, index)
+            this.handleEnemyHit(enemy)
             this.character.bounce();
         } else if (this.character.isColliding(enemy)) {
             this.character.isHit();
@@ -197,14 +187,13 @@ class World {
     /**
      * Check bottle collision with enemy and handle removal.
      * @param {MovableObject} enemy - Enemy to check collision with.
-     * @param {number} index - Index of enemy in enemies array.
      * @returns {void}
      */
-    hasCollisionThrowableObject(enemy, index) {
+    hasCollisionThrowableObject(enemy) {
         this.throwableObjects.forEach((projectile, projectileIndex) => {
             if (enemy.isColliding(projectile)) {
                 this.throwableObjects[projectileIndex].isDead = true;
-                this.handleEnemyHit(enemy, index);
+                this.handleEnemyHit(enemy);
                 setTimeout(() => {
                     projectile.stopBottleIntervals();
                     this.throwableObjects = this.throwableObjects.filter(obj => !obj.isDead);
@@ -216,10 +205,9 @@ class World {
     /**
      * Damage enemy and remove if dead.
      * @param {MovableObject} enemy - Enemy to damage.
-     * @param {number} index - Index of enemy in enemies array.
      * @returns {void}
      */
-    handleEnemyHit(enemy, index) {
+    handleEnemyHit(enemy) {
         if (!enemy.isHurt()) {
             enemy.isHit();
             if (enemy instanceof Endboss) {
@@ -232,8 +220,7 @@ class World {
             }, 1000);
         }
     }
-
-    /**
+        /**
      * Check character collision with bottles.
      * @returns {void}
      */
@@ -253,19 +240,11 @@ class World {
         this.level.coins.forEach((collectedCoin, index) => {
             if (this.characterCollectsCoin(collectedCoin)) {
                 this.coinbar.handleCoinCollection(index);
-                if (this.isCoinbarFull()) {
+                if (this.coinbar.isCoinbarFull()) {
                     this.getExtraSalsaBottle();
                 }
             }
         })
-    }
-
-    /**
-     * Check if coin bar is full (100%).
-     * @returns {boolean}
-     */
-    isCoinbarFull() {
-        return this.coinbar.percentageCoin === 100
     }
 
     /**

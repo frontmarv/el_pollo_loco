@@ -105,6 +105,6 @@ class DrawableObject {
         }
         return this.isColliding(object) &&
             this.speedY < 0 &&
-            this.y + this.offset.y + this.height - this.offset.height < object.y + object.offset.y + (object.height * 0.8);
+            this.y + this.offset.y + this.height - this.offset.height < object.y + object.offset.y + (object.height * 0.9);
     }
 }

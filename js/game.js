@@ -113,42 +113,70 @@ window.addEventListener('keyup', (event) => {
 });
 
 // Mobile touch controls
-document.getElementById('move-left-mobile').addEventListener('touchstart', (e) => {
-    e.preventDefault();
-    keyboard.LEFT = true;
-});
-document.getElementById('move-left-mobile').addEventListener('touchend', (e) => {
-    e.preventDefault();
-    keyboard.LEFT = false;
-});
+document.getElementById('move-left-mobile').addEventListener(
+    'touchstart',
+    () => {
+        keyboard.LEFT = true;
+    },
+    { passive: true }
+);
 
-document.getElementById('move-right-mobile').addEventListener('touchstart', (e) => {
-    e.preventDefault();
-    keyboard.RIGHT = true;
-});
-document.getElementById('move-right-mobile').addEventListener('touchend', (e) => {
-    e.preventDefault();
-    keyboard.RIGHT = false;
-});
+document.getElementById('move-left-mobile').addEventListener(
+    'touchend',
+    () => {
+        keyboard.LEFT = false;
+    },
+    { passive: true }
+);
 
-document.getElementById('jump-mobile').addEventListener('touchstart', (e) => {
-    e.preventDefault();
-    keyboard.UP = true;
-});
-document.getElementById('jump-mobile').addEventListener('touchend', (e) => {
-    e.preventDefault();
-    keyboard.UP = false;
-});
+document.getElementById('move-right-mobile').addEventListener(
+    'touchstart',
+    () => {
+        keyboard.RIGHT = true;
+    },
+    { passive: true }
+);
 
-document.getElementById('attack-mobile').addEventListener('touchstart', (e) => {
-    e.preventDefault();
-    keyboard.THROW = true;
-});
+document.getElementById('move-right-mobile').addEventListener(
+    'touchend',
+    () => {
+        keyboard.RIGHT = false;
+    },
+    { passive: true }
+);
 
-document.getElementById('attack-mobile').addEventListener('touchend', (e) => {
-    e.preventDefault();
-    keyboard.THROW = false;
-});
+document.getElementById('jump-mobile').addEventListener(
+    'touchstart',
+    () => {
+        keyboard.UP = true;
+    },
+    { passive: true }
+);
+
+document.getElementById('jump-mobile').addEventListener(
+    'touchend',
+    () => {
+        keyboard.UP = false;
+    },
+    { passive: true }
+);
+
+document.getElementById('attack-mobile').addEventListener(
+    'touchstart',
+    () => {
+        keyboard.THROW = true;
+    },
+    { passive: true }
+);
+
+document.getElementById('attack-mobile').addEventListener(
+    'touchend',
+    () => {
+        keyboard.THROW = false;
+    },
+    { passive: true }
+);
+
 
 document.getElementById('mobile-play-btns').addEventListener("contextmenu", e => e.preventDefault());
 

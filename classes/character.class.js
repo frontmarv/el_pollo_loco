@@ -301,5 +301,15 @@ class Character extends MovableObject {
             this.img = this.imageCache[this.IMAGES_JUMPING[3]];
         }
     }
+
+    /**
+* Check if enough time passed since last throw.
+* @returns {boolean}
+*/
+    canThrow() {
+        let timePassed = new Date().getTime() - this.world.lastThrow;
+        return timePassed > 1000;
+    }
+
 }
 
