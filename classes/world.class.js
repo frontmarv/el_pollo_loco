@@ -42,7 +42,9 @@ class World {
         this._showWelcomeScreen = value;
         if (!value) {
             this.startGame();
-            this.playMusic();
+            setTimeout(() => {
+                this.playMusic();
+            }, 200);
         }
     }
 
@@ -220,10 +222,10 @@ class World {
             }, 1000);
         }
     }
-        /**
-     * Check character collision with bottles.
-     * @returns {void}
-     */
+    /**
+ * Check character collision with bottles.
+ * @returns {void}
+ */
     hasCollisionBottle() {
         this.level.bottles.forEach((bottle, index) => {
             if (this.characterCollectsBottle(bottle)) {
@@ -470,7 +472,3 @@ class World {
         this.ctx.translate(-this.camera_x, 0);
     }
 }
-
-
-
-

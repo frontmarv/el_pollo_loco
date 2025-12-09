@@ -11,18 +11,18 @@ class Cloud extends MovableObject {
         this.animate();
     }
 
-/**
- * Move cloud left continuously and reposition when off-screen.
- * @returns {void}
- */
-animate() {
-    setInterval(() => {
-        this.x -= this.speed;
-        if (this.x <= -700) {
-            this.x = this.levelEndX + 50;
-        }
-    }, 1000 / 60);
-}
+    /**
+     * Move cloud left continuously and reposition when off-screen.
+     * @returns {void}
+     */
+    animate() {
+        setInterval(() => {
+            this.x -= this.speed;
+            if (this.x <= -700) {
+                this.x = this.levelEndX + 50;
+            }
+        }, 1000 / 60);
+    }
 }
 
 
