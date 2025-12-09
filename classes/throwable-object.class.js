@@ -53,7 +53,7 @@ class ThrowableObject extends MovableObject {
      * Clear bottle movement and splash intervals.
      * @returns {void}
      */
-    stopBottleIntervals(){
+    stopBottleIntervals() {
         clearInterval(this.throwingInterval);
         clearInterval(this.splashingInverval);
     }
@@ -70,7 +70,10 @@ class ThrowableObject extends MovableObject {
             }
             this.playAnimation(this.BOTTLE_ROTATION);
         }, 60);
-        this.sounds.throwBottle.play();
+        if (!this.throwSoundPlayed) {
+            this.sounds.throwBottle.play();
+        }
+        this.throwSoundPlayed = true;
         this.applyGravity();
     }
 
@@ -82,10 +85,10 @@ class ThrowableObject extends MovableObject {
         this.splashingInverval = setInterval(() => {
             if (this.isDead && this.y < 500) {
                 clearInterval(this.throwingInterval);
-                if (!this.splashhSoundPlayed) {
+                if (!this.splashSoundPlayed) {
                     this.sounds.splash.play();
                 }
-                this.splashhSoundPlayed = true;
+                this.splashSoundPlayed = true;
                 this.playSplashAnimation();
             }
         }, 1000 / 60);

@@ -20,7 +20,7 @@ class SmallChicken extends MovableObject {
         this.offset = {
             x: 2,
             y: 0,
-            width: 6,
+            width: 8,
             height: 10
         };
         this.healthPoints = 5;
