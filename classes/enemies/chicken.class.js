@@ -26,7 +26,7 @@ class Chicken extends MovableObject {
         this.sounds = {
             dying: SoundManager.register(new Audio('../audio/enemies/chicken-dying.mp3'))
         };
-        if (difficulty === 'hard') { this.speed = 1 + Math.random() * 0.5;; }
+        if (difficulty === 'hard') { this.speed = 1.5 + Math.random() * 0.5;; }
         this.animate();
     }
 

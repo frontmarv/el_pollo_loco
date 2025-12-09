@@ -67,7 +67,7 @@ class Endboss extends MovableObject {
             attack: SoundManager.register(new Audio('../audio/enemies/endboss-attack.mp3')),
             dying: SoundManager.register(new Audio('../audio/enemies/chicken-dying.mp3'))
         };
-        if (difficulty === 'hard') { this.speed = 16; this.healthPoints = 30; }
+        if (difficulty === 'hard') { this.speed = 18; this.healthPoints = 30; }
         super.applyGravity();
     }
 

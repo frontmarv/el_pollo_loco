@@ -5,6 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>El Pollo Loco</title>
+
+    <link reload="auto" href="/audio/background-music.mp3">
+    <link reload="auto" href="/audio/object-throw.mp3">
+    <link reload="auto" href="/audio/character/character-dying.mp3">
+    <link reload="auto" href="/audio/character/character-hurt.mp3">
+    <link reload="auto" href="/audio/character/character-jumping.mp3">
+    <link reload="auto" href="/audio/character/character-snoring.mp3">
+    <link reload="auto" href="/audio/character/character-walking.mp3">
+
     <link rel="icon" href="./imgs/icons/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="./style.css">
     <script src="./templates/leader-board.js"></script>
@@ -66,12 +75,12 @@
                     onclick="toggleFullscreen()">
             </div>
             <div class="select-difficulty">
-                <button class="menu-btns" onclick="hideWelcomeScreen()">Start easy game</button>
-                <button class="menu-btns" onclick="hideWelcomeScreen('hard')">Start hard game</button>
+                <button type="button" class="menu-btns" onclick="hideWelcomeScreen()">Start easy game</button>
+                <button type="button" class="menu-btns" onclick="hideWelcomeScreen('hard')">Start hard game</button>
             </div>
             <div class="game-over-menu">
-                <button class="menu-btns" onclick="tryAgain()">Try Again</button>
-                <button class="menu-btns" onclick="showWelcomeScreen()">Home</button>
+                <button type="button" class="menu-btns" onclick="tryAgain()">Try Again</button>
+                <button type="button" class="menu-btns" onclick="showWelcomeScreen()">Home</button>
             </div>
             <div id="instructions" class="instructions">
                 <p>

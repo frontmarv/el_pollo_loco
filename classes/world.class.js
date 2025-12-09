@@ -424,6 +424,7 @@ class World {
      */
     showGameOverScreen() {
         this.character.stopCharacterIntervals();
+        this.endboss.stopEndbossIntervals();
         this.drawScreenWithoutEnemies(this.gameOver);
         if (!this.gameOverShown) {
             this.gameOverShown = true;
